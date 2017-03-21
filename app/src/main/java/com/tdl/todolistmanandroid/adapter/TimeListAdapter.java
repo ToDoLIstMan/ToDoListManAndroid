@@ -43,25 +43,27 @@ public class TimeListAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return lists.size()+timeLists.size();
     }
-}
 
-class Holder extends RecyclerView.ViewHolder{
+    class Holder extends RecyclerView.ViewHolder{
 
-    @BindView(R.id.txtTitle) TextView txtTitle;
-    @BindView(R.id.txtUndone) TextView txtUndone;
-    @BindView(R.id.txtDone) TextView txtDone;
-    @BindView(R.id.checkBox) TextView checkBox;
+        @BindView(R.id.txtTitle) TextView txtTitle;
+        @BindView(R.id.txtUndone) TextView txtUndone;
+        @BindView(R.id.txtDone) TextView txtDone;
+        @BindView(R.id.checkBox) TextView checkBox;
 
-    public Holder(View itemView) {
-        super(itemView);
-        ButterKnife.bind(itemView);
+        public Holder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(itemView);
+        }
+    }
+
+    class Header extends RecyclerView.ViewHolder{
+        @BindView(R.id.title) TextView txtTime;
+        public Header(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
     }
 }
 
-class Header extends RecyclerView.ViewHolder{
-    @BindView(R.id.title) TextView txtTime;
-    public Header(View itemView) {
-        super(itemView);
-        ButterKnife.bind(itemView);
-    }
-}
+

@@ -54,12 +54,15 @@ public class MainAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return items.size();
     }
-}
-class MainViewHolder extends RecyclerView.ViewHolder{
-    @BindView(R.id.txtTitle) TextView txtTitle;
-    @BindView(R.id.cardView) CardView cardView;
-    MainViewHolder(View itemView) {
-        super(itemView);
-        ButterKnife.bind(itemView);
+
+
+    class MainViewHolder extends RecyclerView.ViewHolder{
+        @BindView(R.id.txtTitle) TextView txtTitle;
+        @BindView(R.id.cardView) CardView cardView;
+        MainViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
     }
+
 }
