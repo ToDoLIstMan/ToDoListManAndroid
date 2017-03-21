@@ -1,4 +1,4 @@
-package com.tdl.todolistmanandroid;
+package com.tdl.todolistmanandroid.activity;
 
 /**
  * Created by HyunWook Kim on 2017-03-21.
@@ -6,8 +6,9 @@ package com.tdl.todolistmanandroid;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.tdl.todolistmanandroid.R;
 
 public class SplashActivity extends Activity {
 
