@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="10"
+    android:background="@color/colorPrimary">
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="2"
+            >
+                <ImageView
+                    android:id="@+id/imageLogo"
+                    android:layout_gravity="center"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:src="@mipmap/temp_logo"/>
+                <TextView
+                    android:id="@+id/textAppName"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textColor="#ffffff"
+                    android:text="ToDoListApp"
+                    android:textSize="20sp"/>
+                <EditText
+                    android:id="@+id/textId"
+                    android:layout_gravity="center"
+                    android:layout_width="200dp"
+                    android:layout_height="42dp"
+                    android:hint="ID"/>
+                <EditText
+                    android:id="@+id/textPassword"
+                    android:layout_gravity="center"
+                    android:layout_width="200dp"
+                    android:layout_height="42dp"
+                    android:hint="Password"/>
+                <Button
+                    android:id="@+id/btLogin"
+                    android:layout_gravity="center"
+                    android:layout_width="103dp"
+                    android:layout_height="42dp"
+                    android:text="Login"/>
+                <TextView
+                    android:id="@+id/textSignUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sign Up"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="or"
+                    android:textColor="#000000"
+                    />
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="200dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/login_kakao"
+                    android:padding="0dp"/>
+        </LinearLayout>
+
+</LinearLayout>
