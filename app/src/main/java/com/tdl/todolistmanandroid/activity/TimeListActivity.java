@@ -50,15 +50,17 @@ public class TimeListActivity extends AppCompatActivity {
         isDone.add(false);
         isDone.add(false);
 
-        for(int i = 0; i<10;i++) {
-            lists.add(new TimeListItem("16:00", "17:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
+        lists.add(new TimeListItem("16:00", "17:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
+        lists.add(new TimeListItem("17:00", "18:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
+        lists.add(new TimeListItem("18:00", "20:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
 
+/*
             if(i>0)
                 if(!timeLists.contains(lists.get(i).getStartTime()))
                   timeLists.add(lists.get(i).getStartTime());
             else
                 timeLists.add(lists.get(i).getStartTime());
-        }
+*/
         recyclerView.setAdapter(new TimeListAdapter(mContext,lists,timeLists));
     }
 }
