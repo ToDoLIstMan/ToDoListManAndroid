@@ -1,7 +1,9 @@
 package com.tdl.todolistmanandroid.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tdl.todolistmanandroid.R;
+import com.tdl.todolistmanandroid.activity.DetailActivity;
 import com.tdl.todolistmanandroid.item.TimeListItem;
 
 import java.util.HashMap;
@@ -79,6 +82,13 @@ public class TimeListAdapter extends RecyclerView.Adapter {
             }
             ((Holder) holder).txtDone.setText(done);
             ((Holder) holder).txtUndone.setText(undone);
+            ((Holder)holder).cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent gotoDetail = new Intent(mContext,DetailActivity.class);
+            //        mContext.startActivity(gotoDetail);
+                }
+            });
 
         } else if(holder instanceof Header){
             headCount++;
@@ -100,6 +110,7 @@ public class TimeListAdapter extends RecyclerView.Adapter {
         @BindView(R.id.txtUndone) TextView txtUndone;
         @BindView(R.id.txtDone) TextView txtDone;
         @BindView(R.id.checkBox) TextView checkBox;
+        @BindView(R.id.cardView) CardView cardView;
 
         public Holder(View itemView) {
             super(itemView);

@@ -1,78 +1,72 @@
 package com.tdl.todolistmanandroid.activity;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tdl.todolistmanandroid.R;
-import com.tdl.todolistmanandroid.adapter.MainAdapter;
-import com.tdl.todolistmanandroid.item.MainItem;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.tdl.todolistmanandroid.R.id.textSignUp;
+import static com.tdl.todolistmanandroid.R.id.txtSignUp;
+
 /**
  * Created by HyunWook Kim on 2017-03-21.
  */
-public class SignInActivity extends AppCompatActivity {
+public class SignInActivity extends Activity implements View.OnClickListener {
+
+    @BindView (R.id.txtId)  EditText txtId;
+    @BindView(R.id.txtPassword) EditText txtPassword;
+    @BindView(R.id.btLogin) Button btLogin;
+    @BindView(R.id.txtSignUp) TextView txtSignUp;
+    @BindView(R.id.kakaoLogin) ImageButton kakaoLogin;
+
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        ButterKnife.bind(this);
 
+        btLogin.setOnClickListener(this);
+        txtSignUp.setOnClickListener(this);
+        kakaoLogin.setOnClickListener(this);
+    }
 
-        final EditText textId = (EditText)findViewById(R.id.textId);
-        final EditText textPassword = (EditText)findViewById(R.id.textPassword);
-        Button btLogin = (Button)findViewById(R.id.btLogin);
-        final TextView textSignUp = (TextView)findViewById(R.id.textSignUp);
-        ImageButton kakaoLogin = (ImageButton)findViewById(R.id.kakaoLogin);
-
-        //로그인 버튼 눌렀을 때
-        btLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-             //   if((textId.getText().toString()).equals("master") && textPassword.getText().toString().equals("password")){
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btLogin:      //로그인 버튼 눌렀을 때
+                //   if((textId.getText().toString()).equals("master") && textPassword.getText().toString().equals("password")){
                 Intent intent = new Intent(
                         getApplicationContext(),MainActivity.class);
                 startActivity(intent);
-            //}
-               // else{
-               //     Toast.makeText(SignInActivity.this, "아이디와 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show();
-               // }
-            }
-        });
-
-        // 회원가입 텍스트 눌렀을 때
-        textSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(
+                //}
+                // else{
+                //     Toast.makeText(SignInActivity.this, "아이디와 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show();
+                // }
+                break;
+            case R.id.txtSignUp:        //회원가입 버튼 눌렀을 때
+                intent = new Intent(
                         getApplicationContext(), SignUpActivity.class);
                 startActivity(intent);
-            }
-        });
-
-        //카카오톡 로그인 눌렀을 때
-        kakaoLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(
+                break;
+            case R.id.kakaoLogin:       //카카오로그인 버튼 눌렀을 때
+                intent = new Intent(
                         getApplicationContext(), KakaoLoginActivity.class);
                 startActivity(intent);
-            }
-        });
+                break;
+
+
+
+        }
     }
 }

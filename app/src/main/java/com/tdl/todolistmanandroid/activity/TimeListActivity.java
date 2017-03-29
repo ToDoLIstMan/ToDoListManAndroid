@@ -36,6 +36,7 @@ public class TimeListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timelist);
         ButterKnife.bind(this);
+        mContext=this;
 
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(mContext);

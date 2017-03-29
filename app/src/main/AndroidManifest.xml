@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.tdl.todolistmanandroid">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -35,10 +36,14 @@
         <activity android:name=".activity.KakaoLoginActivity">
         </activity>
 
+        <activity android:name=".activity.DetailActivity">
+        </activity>
+
         <activity android:name=".activity.TimeListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity"/>
+                android:value=".activity.MainActivity"
+                tools:replace="android:value"/>
         </activity>
 
     </application>
