@@ -29,6 +29,12 @@
         <activity android:name=".activity.SignInActivity">
         </activity>
 
+        <activity android:name=".activity.SignUpActivity">
+        </activity>
+
+        <activity android:name=".activity.KakaoLoginActivity">
+        </activity>
+
         <activity android:name=".activity.TimeListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

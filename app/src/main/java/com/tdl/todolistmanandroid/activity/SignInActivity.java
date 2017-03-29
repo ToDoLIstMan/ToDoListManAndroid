@@ -51,5 +51,23 @@ public class SignInActivity extends AppCompatActivity {
                 }
             }
         });
+
+        textSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(
+                        getApplicationContext(), SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        kakaoLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(
+                        getApplicationContext(), KakaoLoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
