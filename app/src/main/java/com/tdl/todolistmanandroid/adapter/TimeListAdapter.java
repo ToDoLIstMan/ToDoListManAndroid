@@ -3,6 +3,7 @@ package com.tdl.todolistmanandroid.adapter;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.item.TimeListItem;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -23,51 +26,50 @@ import butterknife.ButterKnife;
 public class TimeListAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private List<TimeListItem> lists;
-    private List<String> timeLists;
+    private HashMap<Integer,String> timeLists;
 
     private final int HOLDER = 1;
     private  final int HEADER = 0;
 
-    public TimeListAdapter(Context mContext, List<TimeListItem> lists, List<String> timeLists) {
+    private int headCount = 0;
+    public TimeListAdapter(Context mContext, List<TimeListItem> lists, HashMap<Integer,String> timeLists) {
         this.mContext=mContext;
         this.lists = lists;
-        this.timeLists = timeLists;
+        this.timeLists=timeLists;
+
+        Iterator<Integer> iterator = timeLists.keySet().iterator();
+        while (iterator.hasNext()) {
+            int key = iterator.next();
+            Log.e(""+key,""+timeLists.get(key));
+        }
     }
-/*
     @Override
     public int getItemViewType(int position) {
-        if(position == 0)
-            return HEADER;
-        else if(position>0){
-            if(!lists.get(position).getStartTime().equals(lists.get(position-1).getStartTime()))
-                return HEADER;
-            else
-                return HOLDER;
-        }
+       if(timeLists.containsKey(position))
+           return HEADER;
         else
-            return HEADER;
+            return HOLDER;
     }
 
-  */
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v;
-    /*    if(viewType == HEADER){
-            v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main,parent,false);
+        if(viewType == HEADER){
+            v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_time,parent,false);
             return new Header(v);}
         else if(viewType == HOLDER){
-    */        v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timelist,parent,false);
+            v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timelist,parent,false);
             return new Holder(v);
-     /*   }
+        }
         else
             return null;
-    */}
+    }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-     //   if(holder instanceof Holder){
+        if(holder instanceof Holder){
             String done = "", undone = "";
-            TimeListItem item = lists.get(position);
+            TimeListItem item = lists.get(position-headCount);
             ((Holder)holder).txtTitle.setText(item.getTitle());
             for(int i = 0; i<item.getDoPeople().size();i++) {
                 if(item.getIsDone().get(i))
@@ -78,37 +80,35 @@ public class TimeListAdapter extends RecyclerView.Adapter {
             ((Holder) holder).txtDone.setText(done);
             ((Holder) holder).txtUndone.setText(undone);
 
-       /* } else if(holder instanceof Header){
+        } else if(holder instanceof Header){
+            headCount++;
+            Log.e("ddd",""+headCount);
             String timeItem = timeLists.get(position);
             ((Header)holder).txtTime.setText(timeItem);
-        }*/
+        }
     }
 
     @Override
     public int getItemCount() {
-        return lists.size();
+        return lists.size()+timeLists.size();
     }
 
     class Holder extends RecyclerView.ViewHolder{
 
 
-       TextView txtTitle;
-        TextView txtUndone;
-        TextView txtDone;
-         TextView checkBox;
+        @BindView(R.id.txtTitle) TextView txtTitle;
+        @BindView(R.id.txtUndone) TextView txtUndone;
+        @BindView(R.id.txtDone) TextView txtDone;
+        @BindView(R.id.checkBox) TextView checkBox;
 
         public Holder(View itemView) {
             super(itemView);
-        //    ButterKnife.bind(this,itemView);
-            txtTitle =(TextView)itemView.findViewById(R.id.txtTitle);
-            txtUndone =(TextView)itemView.findViewById(R.id.txtUndone);
-            txtDone =(TextView)itemView.findViewById(R.id.txtDone);
-            checkBox =(TextView)itemView.findViewById(R.id.checkBox);
+            ButterKnife.bind(this,itemView);
         }
     }
 
     class Header extends RecyclerView.ViewHolder{
-        @BindView(R.id.title) TextView txtTime;
+        @BindView(R.id.txtTitle) TextView txtTime;
         public Header(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

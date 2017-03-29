@@ -44,13 +44,14 @@ public class SignInActivity extends AppCompatActivity {
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if((textId.getText().toString()).equals("master") && textPassword.getText().toString().equals("password")){
+             //   if((textId.getText().toString()).equals("master") && textPassword.getText().toString().equals("password")){
                 Intent intent = new Intent(
                         getApplicationContext(),MainActivity.class);
-                startActivity(intent);}
-                else{
-                    Toast.makeText(SignInActivity.this, "아이디와 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show();
-                }
+                startActivity(intent);
+            //}
+               // else{
+               //     Toast.makeText(SignInActivity.this, "아이디와 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show();
+               // }
             }
         });
 
