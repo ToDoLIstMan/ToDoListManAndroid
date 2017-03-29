@@ -33,12 +33,14 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
+
         final EditText textId = (EditText)findViewById(R.id.textId);
         final EditText textPassword = (EditText)findViewById(R.id.textPassword);
         Button btLogin = (Button)findViewById(R.id.btLogin);
         final TextView textSignUp = (TextView)findViewById(R.id.textSignUp);
         ImageButton kakaoLogin = (ImageButton)findViewById(R.id.kakaoLogin);
 
+        //로그인 버튼 눌렀을 때
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,6 +54,7 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
+        // 회원가입 텍스트 눌렀을 때
         textSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,6 +64,7 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
+        //카카오톡 로그인 눌렀을 때
         kakaoLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

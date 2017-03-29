@@ -23,8 +23,10 @@ public class SplashActivity extends Activity {
             @Override
             public void run() {
                 startActivity(new Intent(SplashActivity.this,SignInActivity.class));
+                finish();
             }
         },SPLASH_TIME);
+
 
 
     }
