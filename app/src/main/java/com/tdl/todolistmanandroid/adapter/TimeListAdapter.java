@@ -1,6 +1,7 @@
 package com.tdl.todolistmanandroid.adapter;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +33,7 @@ public class TimeListAdapter extends RecyclerView.Adapter {
         this.lists = lists;
         this.timeLists = timeLists;
     }
-
+/*
     @Override
     public int getItemViewType(int position) {
         if(position == 0)
@@ -47,23 +48,24 @@ public class TimeListAdapter extends RecyclerView.Adapter {
             return HEADER;
     }
 
+  */
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v;
-        if(viewType == HEADER){
+    /*    if(viewType == HEADER){
             v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main,parent,false);
             return new Header(v);}
         else if(viewType == HOLDER){
-            v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timelist,parent,false);
+    */        v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timelist,parent,false);
             return new Holder(v);
-        }
+     /*   }
         else
             return null;
-    }
+    */}
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof Holder){
+     //   if(holder instanceof Holder){
             String done = "", undone = "";
             TimeListItem item = lists.get(position);
             ((Holder)holder).txtTitle.setText(item.getTitle());
@@ -76,27 +78,32 @@ public class TimeListAdapter extends RecyclerView.Adapter {
             ((Holder) holder).txtDone.setText(done);
             ((Holder) holder).txtUndone.setText(undone);
 
-        } else if(holder instanceof Header){
+       /* } else if(holder instanceof Header){
             String timeItem = timeLists.get(position);
             ((Header)holder).txtTime.setText(timeItem);
-        }
+        }*/
     }
 
     @Override
     public int getItemCount() {
-        return lists.size()+timeLists.size();
+        return lists.size();
     }
 
     class Holder extends RecyclerView.ViewHolder{
 
-        @BindView(R.id.txtTitle) TextView txtTitle;
-        @BindView(R.id.txtUndone) TextView txtUndone;
-        @BindView(R.id.txtDone) TextView txtDone;
-        @BindView(R.id.checkBox) TextView checkBox;
+
+       TextView txtTitle;
+        TextView txtUndone;
+        TextView txtDone;
+         TextView checkBox;
 
         public Holder(View itemView) {
             super(itemView);
-            ButterKnife.bind(itemView);
+        //    ButterKnife.bind(this,itemView);
+            txtTitle =(TextView)itemView.findViewById(R.id.txtTitle);
+            txtUndone =(TextView)itemView.findViewById(R.id.txtUndone);
+            txtDone =(TextView)itemView.findViewById(R.id.txtDone);
+            checkBox =(TextView)itemView.findViewById(R.id.checkBox);
         }
     }
 

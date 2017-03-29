@@ -26,6 +26,9 @@
         <activity android:name=".activity.MainActivity">
         </activity>
 
+        <activity android:name=".activity.SignInActivity">
+        </activity>
+
         <activity android:name=".activity.TimeListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
