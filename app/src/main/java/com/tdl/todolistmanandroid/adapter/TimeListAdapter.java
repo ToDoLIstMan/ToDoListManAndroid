@@ -2,13 +2,16 @@ package com.tdl.todolistmanandroid.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.tdl.todolistmanandroid.R;
@@ -69,10 +72,10 @@ public class TimeListAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof Holder){
             String done = "", undone = "";
-            TimeListItem item = lists.get(position-headCount);
+            final TimeListItem item = lists.get(position-headCount);
             ((Holder)holder).txtTitle.setText(item.getTitle());
             for(int i = 0; i<item.getDoPeople().size();i++) {
                 if(item.getIsDone().get(i))
@@ -86,7 +89,25 @@ public class TimeListAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     Intent gotoDetail = new Intent(mContext,DetailActivity.class);
-            //        mContext.startActivity(gotoDetail);
+                    gotoDetail.putExtra("title",item.getTitle());
+                    gotoDetail.putExtra("startTime",item.getStartTime());
+                    gotoDetail.putExtra("endTime",item.getEndTime());
+                    gotoDetail.putExtra("detail",item.getDetail());
+                    gotoDetail.putExtra("supervisior",item.getSupervisor());
+                    //gotoDetail.putExtra("",item.getDoPeople());
+                    //gotoDetail.putExtra("",item.getIsDone());
+                    mContext.startActivity(gotoDetail);
+                }
+            });
+            ((Holder)holder).checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked){
+                        ((Holder)holder).txtTitle.setPaintFlags(((Holder)holder).txtTitle.getPaintFlags()  | Paint.STRIKE_THRU_TEXT_FLAG);
+
+                    }else{
+                        ((Holder)holder).txtTitle.setPaintFlags(((Holder)holder).txtTitle.getPaintFlags()  ^ Paint.STRIKE_THRU_TEXT_FLAG);
+                    }
                 }
             });
 
@@ -109,7 +130,7 @@ public class TimeListAdapter extends RecyclerView.Adapter {
         @BindView(R.id.txtTitle) TextView txtTitle;
         @BindView(R.id.txtUndone) TextView txtUndone;
         @BindView(R.id.txtDone) TextView txtDone;
-        @BindView(R.id.checkBox) TextView checkBox;
+        @BindView(R.id.checkBox) AppCompatCheckBox checkBox;
         @BindView(R.id.cardView) CardView cardView;
 
         public Holder(View itemView) {

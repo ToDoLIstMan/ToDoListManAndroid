@@ -14,9 +14,6 @@ import com.tdl.todolistmanandroid.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.tdl.todolistmanandroid.R.id.textSignUp;
-import static com.tdl.todolistmanandroid.R.id.txtSignUp;
-
 /**
  * Created by HyunWook Kim on 2017-03-21.
  */
@@ -49,6 +46,7 @@ public class SignInActivity extends Activity implements View.OnClickListener {
                 Intent intent = new Intent(
                         getApplicationContext(),MainActivity.class);
                 startActivity(intent);
+                finish();
                 //}
                 // else{
                 //     Toast.makeText(SignInActivity.this, "아이디와 비밀번호를 확인해주세요", Toast.LENGTH_SHORT).show();

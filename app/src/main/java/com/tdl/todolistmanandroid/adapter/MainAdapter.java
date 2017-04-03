@@ -38,13 +38,14 @@ public class MainAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        MainItem curItem = items.get(position);
+        final MainItem curItem = items.get(position);
         ((MainViewHolder)holder).txtTitle.setText(curItem.getTitle());
 
         ((MainViewHolder)holder).cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent gotoToDo = new Intent(mContext,TimeListActivity.class);
+                gotoToDo.putExtra("title",curItem.getTitle());
                 mContext.startActivity(gotoToDo);
             }
         });

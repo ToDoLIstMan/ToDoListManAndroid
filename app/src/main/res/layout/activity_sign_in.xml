@@ -16,10 +16,11 @@
 
                 <ImageView
                     android:id="@+id/imageLogo"
-                    android:layout_width="120dp"
-                    android:layout_height="150dp"
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
                     android:layout_gravity="center"
-                    android:src="@mipmap/temp_logo" />
+                    android:src="@mipmap/temp_logo"
+                    android:layout_marginBottom="30dp"/>
 
                 <EditText
                     android:id="@+id/txtId"
