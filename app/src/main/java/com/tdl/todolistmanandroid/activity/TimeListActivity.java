@@ -3,6 +3,7 @@ package com.tdl.todolistmanandroid.activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -125,11 +126,20 @@ public class TimeListActivity extends AppCompatActivity {
                         if(month>curMon){
                             Toast.makeText(mContext, "잘못 선택하셨습니다.", Toast.LENGTH_SHORT).show();
                         }else if(month<curMon){
-                            Toast.makeText(mContext, ""+year+" . "+(month+1)+" . "+dayOfMonth, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(mContext, ""+year+" . "+(month+1)+" . "+dayOfMonth, Toast.LENGTH_SHORT).show();
+
+                            Intent gotoPreview = new Intent(TimeListActivity.this,PreviewListAcitivity.class);
+                            gotoPreview.putExtra("date",""+year+" . "+(month+1)+" . "+dayOfMonth);
+                            startActivity(gotoPreview);
                         }
                         else{
                             if(dayOfMonth<=curDay) {
-                                Toast.makeText(mContext, "" + year + " . " + (month + 1) + " . " + dayOfMonth, Toast.LENGTH_SHORT).show();
+                            //    Toast.makeText(mContext, "" + year + " . " + (month + 1) + " . " + dayOfMonth, Toast.LENGTH_SHORT).show();
+
+
+                                Intent gotoPreview = new Intent(TimeListActivity.this,PreviewListAcitivity.class);
+                                gotoPreview.putExtra("date",""+year+" . "+(month+1)+" . "+dayOfMonth);
+                                startActivity(gotoPreview);
                             }
                             else
                                 Toast.makeText(mContext, "잘못 선택하셨습니다.", Toast.LENGTH_SHORT).show();

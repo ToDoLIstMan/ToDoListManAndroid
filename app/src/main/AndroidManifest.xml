@@ -61,6 +61,13 @@
                 android:value=".activity.MainActivity"/>
         </activity>
 
+        <activity android:name=".activity.PreviewListAcitivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.TimeListActivity"/>
+        </activity>
+
         <activity android:name=".activity.AddPlanActivity"
             android:screenOrientation="portrait">
             <meta-data
