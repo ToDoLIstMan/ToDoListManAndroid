@@ -75,6 +75,7 @@ public class TimeListAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof Holder){
             String done = "", undone = "";
+            final boolean[] isFinished = {false};
             final TimeListItem item = lists.get(position-headCount);
             ((Holder)holder).txtTitle.setText(item.getTitle());
             for(int i = 0; i<item.getDoPeople().size();i++) {
@@ -94,8 +95,8 @@ public class TimeListAdapter extends RecyclerView.Adapter {
                     gotoDetail.putExtra("endTime",item.getEndTime());
                     gotoDetail.putExtra("detail",item.getDetail());
                     gotoDetail.putExtra("supervisior",item.getSupervisor());
-                    //gotoDetail.putExtra("",item.getDoPeople());
-                    //gotoDetail.putExtra("",item.getIsDone());
+                    gotoDetail.putExtra("people",item.getDoPeople().toString());
+                    gotoDetail.putExtra("isFinished", isFinished[0]);
                     mContext.startActivity(gotoDetail);
                 }
             });
@@ -104,9 +105,10 @@ public class TimeListAdapter extends RecyclerView.Adapter {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(isChecked){
                         ((Holder)holder).txtTitle.setPaintFlags(((Holder)holder).txtTitle.getPaintFlags()  | Paint.STRIKE_THRU_TEXT_FLAG);
-
+                        isFinished[0] = true;
                     }else{
                         ((Holder)holder).txtTitle.setPaintFlags(((Holder)holder).txtTitle.getPaintFlags()  ^ Paint.STRIKE_THRU_TEXT_FLAG);
+                        isFinished[0] = false;
                     }
                 }
             });

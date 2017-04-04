@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#CCA000</color>
     <color name="colorAccent">#123456</color>
     <color name="divider">#CCCCCC</color>
+    <color name="colorNoeDone">#CCCCCC</color>
 </resources>
