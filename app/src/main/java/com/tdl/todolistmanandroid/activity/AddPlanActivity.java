@@ -13,11 +13,10 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.tdl.todolistmanandroid.R;
-import com.tdl.todolistmanandroid.adapter.TimeListAdapter;
-import com.tdl.todolistmanandroid.item.TimeListItem;
+import com.tdl.todolistmanandroid.adapter.AddPlanAdapter;
+import com.tdl.todolistmanandroid.item.AddPlanItem;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -44,6 +43,7 @@ public class AddPlanActivity extends AppCompatActivity {
         makeToolbar();
         initList();
 
+
     }
 
     /**
@@ -63,9 +63,14 @@ public class AddPlanActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
+        List<AddPlanItem> items;
 
+        items = new ArrayList<>();
 
-  //      recyclerView.setAdapter(new TimeListAdapter(mContext,lists));
+        for(int i = 0; i< 3;i++)
+            items.add(new AddPlanItem("test"));
+
+        recyclerView.setAdapter(new AddPlanAdapter(mContext,items));
     }
 
     @OnClick(R.id.fab)

@@ -16,17 +16,20 @@
         android:orientation="horizontal"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:weightSum="6">
             <TextView
                 android:text="제목 : "
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                android:layout_weight="1"/>
         <TextView
             android:id="@+id/txtTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_weight="5"/>
     </LinearLayout>
 
     <LinearLayout
@@ -35,17 +38,20 @@
         android:orientation="horizontal"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:weightSum="6">
         <TextView
             android:text="시간 : "
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_weight="1"/>
         <TextView
             android:id="@+id/txtTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_weight="5"/>
     </LinearLayout>
 
     <LinearLayout
@@ -54,17 +60,20 @@
         android:orientation="horizontal"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:weightSum="6">
         <TextView
             android:text="근무자 : "
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:layout_weight="1"/>
         <TextView
             android:id="@+id/txtPeople"
             android:layout_width="wrap_content"
             android:textSize="18sp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="5"/>
     </LinearLayout>
 
     <LinearLayout
@@ -73,17 +82,20 @@
         android:orientation="horizontal"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginBottom="35dp">
+        android:layout_marginBottom="35dp"
+        android:weightSum="6">
         <TextView
             android:text="세부사항 : "
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_weight="1"/>
         <TextView
             android:id="@+id/txtDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:layout_weight="5"/>
     </LinearLayout>
 
     <Button
