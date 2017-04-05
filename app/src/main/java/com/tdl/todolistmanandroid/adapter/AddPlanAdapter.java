@@ -41,14 +41,14 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
         final AddPlanItem curItem = items.get(position);
         ((AddPlanAdapter.AddPlanViewHolder)holder).addPlanTxtTitle.setText(curItem.getTitle());
 
-        ((AddPlanAdapter.AddPlanViewHolder)holder).addPlanCardView.setOnClickListener(new View.OnClickListener() {
+/*        ((AddPlanAdapter.AddPlanViewHolder)holder).addPlanCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent gotoToDo = new Intent(mContext,AddPlanActivity.class);
                 gotoToDo.putExtra("title",curItem.getTitle());
                 mContext.startActivity(gotoToDo);
             }
-        });
+        });*/
     }
 
     @Override
