@@ -1,7 +1,9 @@
 package com.tdl.todolistmanandroid.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -44,9 +46,33 @@ public class MainAdapter extends RecyclerView.Adapter {
         ((MainViewHolder)holder).cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent gotoToDo = new Intent(mContext,TimeListActivity.class);
-                gotoToDo.putExtra("title",curItem.getTitle());
-                mContext.startActivity(gotoToDo);
+
+                AlertDialog.Builder ab = new AlertDialog.Builder(mContext);
+                ab.setTitle("Alert");
+                ab.setMessage(curItem.getTitle()+"에 참여하시겠습니까?");
+                // 확인버튼
+                ab.setPositiveButton("확인", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent gotoToDo = new Intent(mContext,TimeListActivity.class);
+                        gotoToDo.putExtra("title",curItem.getTitle());
+                        gotoToDo.putExtra("groupId",curItem.getGroupId());
+                        mContext.startActivity(gotoToDo);
+                    }
+                });
+
+                // 취소버튼
+                ab.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                // 메인 다이얼로그 생성
+                AlertDialog alert = ab.create();
+                // 다이얼로그 보기
+                alert.show();
+
             }
         });
     }

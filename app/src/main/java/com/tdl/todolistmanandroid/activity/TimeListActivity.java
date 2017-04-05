@@ -13,15 +13,25 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.adapter.TimeListAdapter;
+import com.tdl.todolistmanandroid.database.group;
+import com.tdl.todolistmanandroid.database.work;
 import com.tdl.todolistmanandroid.item.TimeListItem;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -59,8 +69,15 @@ public class TimeListActivity extends AppCompatActivity {
     private void makeToolbar() {
         toolbar.setTitle(getIntent().getStringExtra("title"));
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() !=null)
+        if(getSupportActionBar() !=null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
     }
 
     /**
@@ -73,8 +90,8 @@ public class TimeListActivity extends AppCompatActivity {
         lists = new ArrayList<>();
         timeLists = new HashMap<>();
         
-        List<String> doPeople = new ArrayList<>();
-        List<Boolean> isDone = new ArrayList<>();
+        final List<String> doPeople = new ArrayList<>();
+        final List<Boolean> isDone = new ArrayList<>();
         doPeople.add("test #1");
         doPeople.add("test #2");
         doPeople.add("test #3");
@@ -82,20 +99,55 @@ public class TimeListActivity extends AppCompatActivity {
         isDone.add(false);
         isDone.add(false);
 
-        lists.add(new TimeListItem("16:00", "17:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
+        lists.add(new TimeListItem("11:00", "12:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
         lists.add(new TimeListItem("17:00", "18:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
         lists.add(new TimeListItem("17:00", "18:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
         lists.add(new TimeListItem("17:00", "18:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
         lists.add(new TimeListItem("18:00", "20:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
 
 
-        for(int i = 0;i<lists.size();i++) {
-            if (i > 0) {
-                if(!lists.get(i-1).getStartTime().equals(lists.get(i).getStartTime()))
-                    timeLists.put(timeLists.size()+(i),lists.get(i).getStartTime());
+        /*Date today = new Date();
+        SimpleDateFormat sDF = new SimpleDateFormat("yyyy-M-dd");
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference().child("work").child(String.valueOf(getIntent().getIntExtra("groupId",-1))).child(sDF.format(today));
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                work work = dataSnapshot.getValue(work.class);
+                lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),"adf",doPeople,isDone));
             }
-            else if(i==0)
-                timeLists.put(0,lists.get(i).getStartTime());
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+*/
+
+
+        for(int i = 0;i<lists.size();i++) {
+            if(lists.get(i).getStartTime().compareTo("12:00")>0 && !timeLists.containsValue("PM")){
+                if(!lists.get(i-1).getStartTime().equals(lists.get(i).getStartTime()))
+                    timeLists.put(timeLists.size()+(i),"PM");
+            }
+            if(lists.get(i).getStartTime().compareTo("12:00")<0 && !timeLists.containsValue("AM"))
+                timeLists.put(0,"AM");
         }
 
 
@@ -129,7 +181,8 @@ public class TimeListActivity extends AppCompatActivity {
                             //Toast.makeText(mContext, ""+year+" . "+(month+1)+" . "+dayOfMonth, Toast.LENGTH_SHORT).show();
 
                             Intent gotoPreview = new Intent(TimeListActivity.this,PreviewListAcitivity.class);
-                            gotoPreview.putExtra("date",""+year+" . "+(month+1)+" . "+dayOfMonth);
+                            gotoPreview.putExtra("groupId",getIntent().getIntExtra("groupId",-1));
+                            gotoPreview.putExtra("date",""+year+"-"+(month+1)+"-"+dayOfMonth);
                             startActivity(gotoPreview);
                         }
                         else{
@@ -138,7 +191,7 @@ public class TimeListActivity extends AppCompatActivity {
 
 
                                 Intent gotoPreview = new Intent(TimeListActivity.this,PreviewListAcitivity.class);
-                                gotoPreview.putExtra("date",""+year+" . "+(month+1)+" . "+dayOfMonth);
+                                gotoPreview.putExtra("date",""+year+"-"+(month+1)+"-"+dayOfMonth);
                                 startActivity(gotoPreview);
                             }
                             else

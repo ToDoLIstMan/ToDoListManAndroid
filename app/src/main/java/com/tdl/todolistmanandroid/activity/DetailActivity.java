@@ -64,8 +64,15 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private void makeToolbar() {
         toolbar.setTitle(getIntent.getStringExtra("title"));
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() !=null)
+        if(getSupportActionBar() !=null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
     }
 
     @Override

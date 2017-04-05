@@ -8,11 +8,19 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.adapter.TimeListAdapter;
+import com.tdl.todolistmanandroid.database.work;
 import com.tdl.todolistmanandroid.item.TimeListItem;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,6 +41,7 @@ public class PreviewListAcitivity extends AppCompatActivity {
 
     List<TimeListItem> lists;
     HashMap<Integer,String> timeLists;
+    String pickday;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +49,8 @@ public class PreviewListAcitivity extends AppCompatActivity {
         setContentView(R.layout.activity_timelist);
         ButterKnife.bind(this);
         mContext = this;
+
+        pickday = getIntent().getStringExtra("date");
 
         makeToolbar();
 
@@ -51,7 +62,7 @@ public class PreviewListAcitivity extends AppCompatActivity {
      * Toolbar 생성 메소드
      */
     private void makeToolbar() {
-        toolbar.setTitle(getIntent().getStringExtra("date"));
+        toolbar.setTitle(pickday);
         setSupportActionBar(toolbar);
         if(getSupportActionBar() !=null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -67,8 +78,8 @@ public class PreviewListAcitivity extends AppCompatActivity {
         lists = new ArrayList<>();
         timeLists = new HashMap<>();
 
-        List<String> doPeople = new ArrayList<>();
-        List<Boolean> isDone = new ArrayList<>();
+        final List<String> doPeople = new ArrayList<>();
+        final List<Boolean> isDone = new ArrayList<>();
         doPeople.add("test #1");
         doPeople.add("test #2");
         doPeople.add("test #3");
@@ -76,12 +87,40 @@ public class PreviewListAcitivity extends AppCompatActivity {
         isDone.add(false);
         isDone.add(false);
 
-        lists.add(new TimeListItem("16:00", "17:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
-        lists.add(new TimeListItem("17:00", "18:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
-        lists.add(new TimeListItem("17:00", "18:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
-        lists.add(new TimeListItem("17:00", "18:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
-        lists.add(new TimeListItem("18:00", "20:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
+        Date today = new Date();
+        SimpleDateFormat sDF = new SimpleDateFormat("yyyy-M-dd");
 
+
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference().child("work").child(String.valueOf(getIntent().getIntExtra("groupId",-1))).child(pickday);
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                work work = dataSnapshot.getValue(work.class);
+                lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),"adf",doPeople,isDone));
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         for(int i = 0;i<lists.size();i++) {
             if (i > 0) {

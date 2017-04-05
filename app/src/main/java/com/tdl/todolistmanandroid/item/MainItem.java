@@ -7,6 +7,7 @@ package com.tdl.todolistmanandroid.item;
 
 public class MainItem {
     private String title;
+    private int groupId;
 
     /**
      *
@@ -15,7 +16,13 @@ public class MainItem {
     public String getTitle() {
         return title;
     }
-    public MainItem(String title){
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public MainItem(int groupId,String title){
         this.title = title;
+        this.groupId = groupId;
     }
 }
