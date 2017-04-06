@@ -57,6 +57,7 @@ public class MainAdapter extends RecyclerView.Adapter {
                         Intent gotoToDo = new Intent(mContext,TimeListActivity.class);
                         gotoToDo.putExtra("title",curItem.getTitle());
                         gotoToDo.putExtra("groupId",curItem.getGroupId());
+                        gotoToDo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         mContext.startActivity(gotoToDo);
                     }
                 });

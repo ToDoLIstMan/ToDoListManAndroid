@@ -1,6 +1,7 @@
 package com.tdl.todolistmanandroid.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -8,14 +9,18 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -40,11 +45,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @BindView(R.id.drawerLayout) DrawerLayout drawerLayout;
     @BindView(R.id.navView) NavigationView navView;
     @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
 
     Context mContext;
     RecyclerView.LayoutManager layoutManager;
     List<MainItem> items;
-
+    private int lastGroupId = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mContext = this;
 
         makeToolbar();
-        initList();
+
 
         fab.setOnClickListener(this);
         navView.setNavigationItemSelectedListener(this);
@@ -93,7 +99,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             });
     }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initList();
+    }
 
     /**
      * 리스트 초기화 메소드
@@ -105,41 +115,51 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         items = new ArrayList<>();
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference().child("group");
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference().child("group");
 
-        myRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                group group = dataSnapshot.getValue(group.class);
-                Log.e("adsfdasf",group.getGroupName());
-                items.add(new MainItem(group.getId(),group.getGroupName()));
-            }
+                myRef.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(final DataSnapshot dataSnapshot, String s) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                group group = dataSnapshot.getValue(group.class);
+                                MainItem item = new MainItem(group.getId(), group.getGroupName());
+                                items.add(item);
+                                recyclerView.setAdapter(new MainAdapter(mContext, items));
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                                progressBar.setVisibility(View.GONE);
+                                if (lastGroupId < group.getId())
+                                    lastGroupId = group.getId();
 
-            }
+                                Log.e("" + group.getId(), group.getGroupName());
+                            }
+                        });
+                    }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-            }
+                    }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-            }
+                    }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            }
-        });
+                    }
 
-        for(int i = 0; i< 3;i++)
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-        recyclerView.setAdapter(new MainAdapter(mContext,items));
+                    }
+                });
+
+
     }
 
     @Override
@@ -163,7 +183,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.fab){
-            Toast.makeText(mContext, "그룹 추가 준비 중입니다.", Toast.LENGTH_SHORT).show();
+            LayoutInflater inflater = LayoutInflater.from(this);
+            View promptView = inflater.inflate(R.layout.edittext_dialog,null);
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("그룹 추가");
+            alert.setView(promptView);
+
+            final EditText input = (EditText)promptView.findViewById(R.id.editGroup);
+            input.requestFocus();
+            input.setHint("그룹명을 입력하세요.");
+            alert.setView(promptView);
+
+            alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference().child("group").child(String.valueOf(lastGroupId+1));
+                    group group = new group(lastGroupId+1,input.getText().toString());
+                    myRef.setValue(group);
+                }
+            }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+
+            AlertDialog dialog = alert.create();
+            dialog.show();
+
         }
     }
 }

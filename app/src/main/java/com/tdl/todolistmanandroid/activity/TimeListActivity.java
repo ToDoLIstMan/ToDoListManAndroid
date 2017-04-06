@@ -10,11 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -45,6 +47,7 @@ import butterknife.ButterKnife;
 public class TimeListActivity extends AppCompatActivity {
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
     RecyclerView.LayoutManager layoutManager;
     Context mContext;
 
@@ -60,6 +63,12 @@ public class TimeListActivity extends AppCompatActivity {
 
         makeToolbar();
 
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         initList();
     }
 
@@ -98,24 +107,28 @@ public class TimeListActivity extends AppCompatActivity {
         isDone.add(true);
         isDone.add(false);
         isDone.add(false);
-
+/*
         lists.add(new TimeListItem("11:00", "12:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
         lists.add(new TimeListItem("17:00", "18:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
         lists.add(new TimeListItem("17:00", "18:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
         lists.add(new TimeListItem("17:00", "18:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
         lists.add(new TimeListItem("18:00", "20:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
+*/
 
-
-        /*Date today = new Date();
+        Date today = new Date();
         SimpleDateFormat sDF = new SimpleDateFormat("yyyy-M-dd");
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference().child("work").child(String.valueOf(getIntent().getIntExtra("groupId",-1))).child(sDF.format(today));
+        DatabaseReference myRef = database.getReference().child("work").child(String.valueOf(getIntent().getIntExtra("groupId",-1))).child("2017-4-5");
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 work work = dataSnapshot.getValue(work.class);
+                Log.e("asdf",work.getTitle());
                 lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),"adf",doPeople,isDone));
+
+                recyclerView.setAdapter(new TimeListAdapter(mContext,lists,timeLists));
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
@@ -138,20 +151,8 @@ public class TimeListActivity extends AppCompatActivity {
 
             }
         });
-*/
 
 
-        for(int i = 0;i<lists.size();i++) {
-            if(lists.get(i).getStartTime().compareTo("12:00")>0 && !timeLists.containsValue("PM")){
-                if(!lists.get(i-1).getStartTime().equals(lists.get(i).getStartTime()))
-                    timeLists.put(timeLists.size()+(i),"PM");
-            }
-            if(lists.get(i).getStartTime().compareTo("12:00")<0 && !timeLists.containsValue("AM"))
-                timeLists.put(0,"AM");
-        }
-
-
-        recyclerView.setAdapter(new TimeListAdapter(mContext,lists,timeLists));
     }
 
     @Override

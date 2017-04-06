@@ -97,6 +97,7 @@ public class TimeListAdapter extends RecyclerView.Adapter {
                     gotoDetail.putExtra("supervisior",item.getSupervisor());
                     gotoDetail.putExtra("people",item.getDoPeople().toString());
                     gotoDetail.putExtra("isFinished", isFinished[0]);
+                    gotoDetail.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(gotoDetail);
                 }
             });

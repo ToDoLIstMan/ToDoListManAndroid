@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -32,10 +35,9 @@ import butterknife.ButterKnife;
  */
 
 public class PreviewListAcitivity extends AppCompatActivity {
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
     RecyclerView.LayoutManager layoutManager;
     Context mContext;
 
@@ -66,6 +68,12 @@ public class PreviewListAcitivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if(getSupportActionBar() !=null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     /**
@@ -87,18 +95,17 @@ public class PreviewListAcitivity extends AppCompatActivity {
         isDone.add(false);
         isDone.add(false);
 
-        Date today = new Date();
-        SimpleDateFormat sDF = new SimpleDateFormat("yyyy-M-dd");
-
-
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference().child("work").child(String.valueOf(getIntent().getIntExtra("groupId",-1))).child(pickday);
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 work work = dataSnapshot.getValue(work.class);
+                Log.e("asdf",work.getTitle());
                 lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),"adf",doPeople,isDone));
+
+                recyclerView.setAdapter(new TimeListAdapter(mContext,lists,timeLists));
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
@@ -121,18 +128,6 @@ public class PreviewListAcitivity extends AppCompatActivity {
 
             }
         });
-
-        for(int i = 0;i<lists.size();i++) {
-            if (i > 0) {
-                if(!lists.get(i-1).getStartTime().equals(lists.get(i).getStartTime()))
-                    timeLists.put(timeLists.size()+(i),lists.get(i).getStartTime());
-            }
-            else if(i==0)
-                timeLists.put(0,lists.get(i).getStartTime());
-        }
-
-
-        recyclerView.setAdapter(new TimeListAdapter(mContext,lists,timeLists));
     }
 }
 
