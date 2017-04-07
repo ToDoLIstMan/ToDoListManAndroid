@@ -7,27 +7,27 @@
         android:id="@+id/signUpId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="ID"/>
+        android:hint="e-mail"/>
     <EditText
         android:id="@+id/signUpPw"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"/>
+        android:hint="비밀번호"/>
     <EditText
         android:id="@+id/signUpPwChck"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password Check"/>
+        android:hint="비밀번호 확인"/>
     <EditText
         android:id="@+id/signUpName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name"/>
+        android:hint="이름"/>
     <EditText
         android:id="@+id/signUpBelonging"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Belongs To"/>
+        android:hint="소속"/>
     <Button
         android:id="@+id/btSignUpSignUp"
         android:layout_width="match_parent"

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Bundle;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.tdl.todolistmanandroid.R;
 
 public class SplashActivity extends Activity {
@@ -22,7 +23,10 @@ public class SplashActivity extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashActivity.this,SignInActivity.class));
+                if(FirebaseAuth.getInstance().getCurrentUser()!=null)
+                    startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                else
+                    startActivity(new Intent(SplashActivity.this,SignInActivity.class));
                 finish();
             }
         },SPLASH_TIME);
