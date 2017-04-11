@@ -9,6 +9,9 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
 
 
+    <service android:name=".NotificationService"
+        android:enabled="true"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/temp_logo"
@@ -17,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-
+        <receiver android:name=".Receiver.AlarmReceiver"/>
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait">

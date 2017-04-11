@@ -1,9 +1,12 @@
 package com.tdl.todolistmanandroid.activity;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.tdl.todolistmanandroid.R;
+import com.tdl.todolistmanandroid.Receiver.AlarmReceiver;
 import com.tdl.todolistmanandroid.adapter.TimeListAdapter;
 import com.tdl.todolistmanandroid.database.group;
 import com.tdl.todolistmanandroid.database.work;
@@ -126,9 +130,15 @@ public class TimeListActivity extends AppCompatActivity {
                 work work = dataSnapshot.getValue(work.class);
                 Log.e("asdf",work.getTitle());
                 lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),"adf",doPeople,isDone));
-
                 recyclerView.setAdapter(new TimeListAdapter(mContext,lists,timeLists));
                 progressBar.setVisibility(View.GONE);
+
+                String[] arr;
+                for(int i= 0;i<lists.size();i++) {
+                    arr = lists.get(i).getStartTime().split(":");
+                    new AlarmHATT(mContext).Alarm(i,Integer.valueOf(arr[0]),Integer.valueOf(arr[1]),lists.get(i).getTitle());
+                }
+
             }
 
             @Override
@@ -154,6 +164,44 @@ public class TimeListActivity extends AppCompatActivity {
 
 
     }
+
+
+    public class AlarmHATT {
+        private Context context;
+        public AlarmHATT(Context context) {
+            this.context=context;
+        }
+        public void Alarm(int count,int hour,int min, String title) {
+            AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(TimeListActivity.this, AlarmReceiver.class);
+            intent.putExtra("num",count);
+            intent.putExtra("title",title);
+            Log.e("adsf","nkjkjk");
+            PendingIntent sender = PendingIntent.getBroadcast(TimeListActivity.this, count, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            Calendar calendar = Calendar.getInstance();
+            //알람시간 calendar에 set해주기
+            calendar.set(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)),calendar.get(Calendar.DATE),hour,min,0);
+            Log.e("month",""+calendar.get(Calendar.MONTH));
+            calendar.add(Calendar.SECOND,10);
+
+            if(Build.VERSION.SDK_INT >= 23 ){
+                am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+                Log.e("adsf","11111");
+        }
+            else {
+                if (Build.VERSION.SDK_INT >= 19) {
+                    am.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);Log.e("adsf","22222");
+
+                } else {
+                    am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);Log.e("adsf","33333");
+
+                }
+            }
+
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

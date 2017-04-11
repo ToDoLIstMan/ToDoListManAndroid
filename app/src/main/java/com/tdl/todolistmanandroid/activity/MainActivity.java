@@ -1,8 +1,12 @@
 package com.tdl.todolistmanandroid.activity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -17,7 +21,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -29,15 +35,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.tdl.todolistmanandroid.R;
+import com.tdl.todolistmanandroid.Receiver.AlarmReceiver;
 import com.tdl.todolistmanandroid.adapter.MainAdapter;
 import com.tdl.todolistmanandroid.database.group;
 import com.tdl.todolistmanandroid.item.MainItem;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -211,7 +221,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             AlertDialog dialog = alert.create();
             dialog.show();
-
         }
     }
 }
