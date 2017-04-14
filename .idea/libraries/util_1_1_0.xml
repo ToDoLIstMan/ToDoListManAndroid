@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="util-1.1.0">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.android/build-cache/d44c7ef86a7ee12f7178d40dfde0b7a4eced9dbe/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/d44c7ef86a7ee12f7178d40dfde0b7a4eced9dbe/output/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.kakao.sdk/util/1.1.0/ecccd10ebef34027be4537f55499ed3a8935237f/util-1.1.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

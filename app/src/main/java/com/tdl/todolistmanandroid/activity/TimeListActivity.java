@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.Receiver.AlarmReceiver;
 import com.tdl.todolistmanandroid.adapter.TimeListAdapter;
+import com.tdl.todolistmanandroid.adapter.TimeTabAdapter;
 import com.tdl.todolistmanandroid.database.group;
 import com.tdl.todolistmanandroid.database.work;
 import com.tdl.todolistmanandroid.item.TimeListItem;
@@ -49,11 +52,13 @@ import butterknife.ButterKnife;
  */
 
 public class TimeListActivity extends AppCompatActivity {
-    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+  //  @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.progressBar) ProgressBar progressBar;
-    RecyclerView.LayoutManager layoutManager;
+    @BindView(R.id.viewPager) ViewPager viewPager;
+    @BindView(R.id.tabLayout) TabLayout tabLayout;
     Context mContext;
+    TimeTabAdapter timeTabAdapter;
 
     List<TimeListItem> lists;
     HashMap<Integer,String> timeLists;
@@ -66,14 +71,14 @@ public class TimeListActivity extends AppCompatActivity {
         mContext=this;
 
         makeToolbar();
-
+        makeViewPager();
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        initList();
+       // initList();
     }
 
     /**
@@ -93,44 +98,50 @@ public class TimeListActivity extends AppCompatActivity {
         }
     }
 
+
+
+    private void makeViewPager(){
+        tabLayout.addTab(tabLayout.newTab().setText("전체"));
+        tabLayout.addTab(tabLayout.newTab().setText("실시"));
+        tabLayout.addTab(tabLayout.newTab().setText("미실시"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
+
     /**
      * 데이터 불어와 리스트 초기화하는 메소드
      */
-    private void initList() {
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(mContext);
-        recyclerView.setLayoutManager(layoutManager);
-        lists = new ArrayList<>();
-        timeLists = new HashMap<>();
-        
-        final List<String> doPeople = new ArrayList<>();
-        final List<Boolean> isDone = new ArrayList<>();
-        doPeople.add("test #1");
-        doPeople.add("test #2");
-        doPeople.add("test #3");
-        isDone.add(true);
-        isDone.add(false);
-        isDone.add(false);
-/*
-        lists.add(new TimeListItem("11:00", "12:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
-        lists.add(new TimeListItem("17:00", "18:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
-        lists.add(new TimeListItem("17:00", "18:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
-        lists.add(new TimeListItem("17:00", "18:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
-        lists.add(new TimeListItem("18:00", "20:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
-*/
 
+    private void initList() {
         Date today = new Date();
         SimpleDateFormat sDF = new SimpleDateFormat("yyyy-M-dd");
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference().child("work").child(String.valueOf(getIntent().getIntExtra("groupId",-1))).child("2017-4-5");
+        DatabaseReference myRef = database.getReference().child("work").child(String.valueOf(getIntent().getIntExtra("groupId",-1))).child(sDF.format(today).toString());
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 work work = dataSnapshot.getValue(work.class);
                 Log.e("asdf",work.getTitle());
-                lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),"adf",doPeople,isDone));
-                recyclerView.setAdapter(new TimeListAdapter(mContext,lists,timeLists));
+             //   lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),"adf",doPeople,isDone));
+              //  recyclerView.setAdapter(new TimeListAdapter(mContext,lists,timeLists));
                 progressBar.setVisibility(View.GONE);
 
                 String[] arr;
@@ -139,6 +150,9 @@ public class TimeListActivity extends AppCompatActivity {
                     new AlarmHATT(mContext).Alarm(i,Integer.valueOf(arr[0]),Integer.valueOf(arr[1]),lists.get(i).getTitle());
                 }
 
+                timeTabAdapter = new TimeTabAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),lists);
+                viewPager.setAdapter(timeTabAdapter);
+                viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
             }
 
             @Override
@@ -161,8 +175,6 @@ public class TimeListActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
 
