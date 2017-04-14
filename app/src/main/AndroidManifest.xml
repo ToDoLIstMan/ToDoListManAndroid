@@ -14,9 +14,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/temp_logo"
         android:supportsRtl="true"
+        android:name=".ToDoListManAndroid"
         android:theme="@style/AppTheme">
 
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <receiver android:name=".Receiver.AlarmReceiver"/>
+
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait">
@@ -77,7 +80,5 @@
 
     </application>
 
-    <service android:name=".NotificationService"
-        android:enabled="true"/>
 
 </manifest>
