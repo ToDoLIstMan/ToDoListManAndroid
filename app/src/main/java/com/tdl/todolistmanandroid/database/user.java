@@ -7,24 +7,25 @@ import java.util.List;
  */
 
 public class user {
-    String name, belong;
-    List<group> groups;
-    public String getBelong() {
-        return belong;
+    String name, rank;
+    String[] groups;
+    public String getRank() {
+        return rank;
     }
 
     public String getName() {
         return name;
     }
 
-    public List<group> getGroups() {
+    public String[] getGroups() {
         return groups;
     }
 
     public user(){}
-    public user(String name, String belong,List<group> groups){
+
+    public user(String name, String rank,String[] groups){
         this.name = name;
-        this.belong = belong;
+        this.rank = rank;
         this.groups = groups;
 
     }

@@ -3,4 +3,6 @@
     <string name="open">open</string>
     <string name="close">close</string>
     <string name="facebook_app_id">1301328716568982</string>
+    <string name="kakao_app_key">1508df11056ab490a6aa18779eba2915</string>
+    <string name="validation_server_domain">https://googledrive.com/host/0B-_yneHGEnBfT3NVakd5bFJEOWs</string>
 </resources>

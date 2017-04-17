@@ -7,6 +7,7 @@ package com.tdl.todolistmanandroid.database;
 public class work {
     String title, detail, startTime, endTime;
     int id;
+
     public String getTitle() {
         return title;
     }
