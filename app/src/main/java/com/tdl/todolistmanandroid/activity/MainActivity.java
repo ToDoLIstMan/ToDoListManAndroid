@@ -1,12 +1,8 @@
 package com.tdl.todolistmanandroid.activity;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -73,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         makeToolbar();
 
-
         fab.setOnClickListener(this);
         navView.setNavigationItemSelectedListener(this);
     }
@@ -115,6 +110,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStart() {
         super.onStart();
+     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         initList();
     }
 
@@ -147,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 if (lastGroupId < group.getId())
                                     lastGroupId = group.getId();
 
-                                Log.e("" + group.getId(), group.getGroupName());
                             }
                         });
                     }
@@ -215,7 +214,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     DatabaseReference myRef = database.getReference().child("group").child(String.valueOf(lastGroupId+1));
                     group group = new group(lastGroupId+1, FirebaseAuth.getInstance().getCurrentUser().getUid(),input.getText().toString(),new ArrayList<String>(),new ArrayList<String>());
                     myRef.setValue(group);
-                    myRef = database.getReference().child("user").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                 }
             }).setNegativeButton("취소", new DialogInterface.OnClickListener() {

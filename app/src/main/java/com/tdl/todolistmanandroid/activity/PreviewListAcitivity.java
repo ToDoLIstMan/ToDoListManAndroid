@@ -48,7 +48,7 @@ public class PreviewListAcitivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timelist);
+        setContentView(R.layout.activity_preview);
         ButterKnife.bind(this);
         mContext = this;
 
