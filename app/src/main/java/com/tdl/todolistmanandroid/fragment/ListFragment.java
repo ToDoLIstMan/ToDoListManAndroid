@@ -57,11 +57,11 @@ public class ListFragment extends Fragment {
         isDone.add(false);
         isDone.add(false);
 
-        lists.add(new TimeListItem("11:00", "12:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
-        lists.add(new TimeListItem("17:00", "18:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
-        lists.add(new TimeListItem("17:00", "18:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
-        lists.add(new TimeListItem("17:00", "18:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
-        lists.add(new TimeListItem("18:00", "20:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, isDone));
+        lists.add(new TimeListItem("11:00", "12:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, null,isDone));
+        lists.add(new TimeListItem("17:00", "18:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, null,isDone));
+        lists.add(new TimeListItem("17:00", "18:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, null,isDone));
+        lists.add(new TimeListItem("17:00", "18:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, null,isDone));
+        lists.add(new TimeListItem("18:00", "20:00", "Work #1", "detail is detail.", "Supervisor #1", doPeople, null,isDone));
 
 
 

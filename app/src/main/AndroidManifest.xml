@@ -41,11 +41,6 @@
             android:screenOrientation="portrait">
         </activity>
 
-        <activity
-            android:name=".activity.SignUpActivity"
-            android:screenOrientation="portrait">
-        </activity>
-
         <activity android:name=".activity.KakaoLoginActivity"
             android:screenOrientation="portrait">
         </activity>

@@ -102,7 +102,7 @@ public class PreviewListAcitivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 work work = dataSnapshot.getValue(work.class);
                 Log.e("asdf",work.getTitle());
-                lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),"adf",doPeople,isDone));
+                lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),"adf",doPeople,null,isDone));
 
                 recyclerView.setAdapter(new TimeListAdapter(mContext,lists,timeLists));
                 progressBar.setVisibility(View.GONE);
