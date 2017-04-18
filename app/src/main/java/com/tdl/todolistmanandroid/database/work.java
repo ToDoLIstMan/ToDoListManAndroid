@@ -1,5 +1,8 @@
 package com.tdl.todolistmanandroid.database;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by songmho on 2017. 4. 5..
  */
@@ -7,6 +10,8 @@ package com.tdl.todolistmanandroid.database;
 public class work {
     String title, detail, startTime, endTime;
     int id;
+    List<String> name, uId;
+    List<Boolean> isDone;
 
     public String getTitle() {
         return title;
@@ -29,12 +34,20 @@ public class work {
     }
 
     public work(){}
-    public work(int id, String title, String detail, String startTime, String endTime){
+    public work(int id, String title, String detail, String startTime, String endTime,List<String> name,List<String> uId,List<Boolean> isDone){
         this.id = id;
         this.title = title;
         this.detail = detail;
         this.startTime = startTime;
         this.endTime = endTime;
 
+
+        this.name = new ArrayList<>();
+        this.uId = new ArrayList<>();
+        this.isDone = new ArrayList<>();
+
+        this.name.addAll(name);
+        this.uId.addAll(uId);
+        this.isDone.addAll(isDone);
     }
 }

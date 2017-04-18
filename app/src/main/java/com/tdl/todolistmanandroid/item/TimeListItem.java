@@ -9,8 +9,8 @@ import java.util.List;
 
 public class TimeListItem {
     private String startTime, endTime, title, detail, supervisor;
-    private List<String> doPeople = new ArrayList<>();
-    private List<Boolean> isDone = new ArrayList<>();
+    private List<String> doPeople, peopleUid;
+    private List<Boolean> isDone;
 
     public String getTitle() {
         return title;
@@ -36,17 +36,27 @@ public class TimeListItem {
         return doPeople;
     }
 
+    public List<String> getPeopleUid() {
+        return peopleUid;
+    }
+
     public List<Boolean> getIsDone() {
         return isDone;
     }
-    public TimeListItem(String startTime, String endTime, String title, String detail, String supervisor, List<String> doPeople,  List<Boolean> isDone){
+    public TimeListItem(String startTime, String endTime, String title, String detail, String supervisor, List<String> doPeople, List<String> peopleUid, List<Boolean> isDone){
         this.startTime = startTime;
         this.endTime =endTime;
         this.title = title;
         this.detail =detail;
         this.supervisor = supervisor;
-        this.doPeople = doPeople;
-        this.isDone = isDone;
+
+        this.doPeople = new ArrayList<>();
+        this.peopleUid = new ArrayList<>();
+        this.isDone = new ArrayList<>();
+
+        this.doPeople.addAll(doPeople);
+        this.peopleUid.addAll(peopleUid);
+        this.isDone.addAll(isDone);
 
     }
 }

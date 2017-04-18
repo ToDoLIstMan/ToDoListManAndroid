@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             @Override
                             public void run() {
                                 group group = dataSnapshot.getValue(group.class);
-                                MainItem item = new MainItem(group.getId(), group.getGroupName());
+                                MainItem item = new MainItem(group.getId(), group.getMasterUid(),group.getGroupName());
                                 items.add(item);
                                 recyclerView.setAdapter(new MainAdapter(mContext, items));
 
