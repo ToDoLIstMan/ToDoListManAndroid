@@ -9,8 +9,8 @@ import java.util.List;
 
 public class TimeListItem {
     private String startTime, endTime, title, detail, supervisor;
-    private List<String> doPeople, peopleUid;
-    private List<Boolean> isDone;
+    private List<String> doPeople =new ArrayList<>(), peopleUid =new ArrayList<>();
+    private List<Boolean> isDone =new ArrayList<>();
 
     public String getTitle() {
         return title;

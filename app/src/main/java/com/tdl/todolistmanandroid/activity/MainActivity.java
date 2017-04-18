@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     RecyclerView.LayoutManager layoutManager;
     List<MainItem> items;
     private int lastGroupId = -1;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,8 +137,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                Log.e("df",dataSnapshot.getValue().toString());
                                 group group = dataSnapshot.getValue(group.class);
-                                MainItem item = new MainItem(group.getId(), group.getMasterUid(),group.getGroupName());
+                                MainItem item = new MainItem(group.getId(), group.getMasterUid(),group.getGroupName(),group.getMemberUid(),group.getMemberName());
                                 items.add(item);
                                 recyclerView.setAdapter(new MainAdapter(mContext, items));
 
@@ -210,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onClick(DialogInterface dialog, int which) {
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference().child("group").child(String.valueOf(lastGroupId+1));
-                    group group = new group(lastGroupId+1, FirebaseAuth.getInstance().getCurrentUser().getUid(),input.getText().toString());
+                    group group = new group(lastGroupId+1, FirebaseAuth.getInstance().getCurrentUser().getUid(),input.getText().toString(),new ArrayList<String>(),new ArrayList<String>());
                     myRef.setValue(group);
                     myRef = database.getReference().child("user").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 

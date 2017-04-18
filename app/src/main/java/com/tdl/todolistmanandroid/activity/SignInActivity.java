@@ -85,21 +85,6 @@ public class SignInActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         ButterKnife.bind(this);
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.tdl.todolistmanandroid", PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.i("KeyHash:",
-                        Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-
-        } catch (NoSuchAlgorithmException e) {
-
-        }
-
 
         facebookLogin();
 

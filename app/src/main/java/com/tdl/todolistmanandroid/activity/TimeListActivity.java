@@ -141,7 +141,7 @@ public class TimeListActivity extends AppCompatActivity {
                 work work = dataSnapshot.getValue(work.class);
                 Log.e("asdf",work.getTitle());
              //   lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),"adf",doPeople,isDone));
-              //  recyclerView.setAdapter(new TimeListAdapter(mContext,lists,timeLists));
+             //   recyclerView.setAdapter(new TimeListAdapter(mContext,lists,timeLists));
                 progressBar.setVisibility(View.GONE);
 
                 String[] arr;

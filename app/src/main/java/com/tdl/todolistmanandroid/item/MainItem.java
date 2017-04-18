@@ -1,5 +1,8 @@
 package com.tdl.todolistmanandroid.item;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by songm on 2017-03-21.
  */
@@ -8,6 +11,9 @@ package com.tdl.todolistmanandroid.item;
 public class MainItem {
     private String title, masterUid;
     private int groupId;
+    List<String> memberUid =new ArrayList<>();
+    List<String> memberName =new ArrayList<>();
+
 
     /**
      *
@@ -25,9 +31,19 @@ public class MainItem {
         return masterUid;
     }
 
-    public MainItem(int groupId, String masterUid, String title){
+    public List<String> getMemberName() {
+        return memberName;
+    }
+
+    public List<String> getMemberUid() {
+        return memberUid;
+    }
+
+    public MainItem(int groupId, String masterUid, String title, List<String> memberUid, List<String> memberName){
         this.title = title;
         this.masterUid = masterUid;
         this.groupId = groupId;
+        this.memberUid.addAll(memberUid);
+        this.memberName.addAll(memberName);
     }
 }

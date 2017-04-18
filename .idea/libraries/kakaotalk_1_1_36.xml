@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="kakaotalk-1.1.36">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.android/build-cache/a6312a348227cfb9505018b1db6abab53a3776f6/output/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.android/build-cache/a6312a348227cfb9505018b1db6abab53a3776f6/output/res" />
+      <root url="file://$USER_HOME$/.android/build-cache/9f98cb278ed59d4437f31ec2c3d17a5ae3683514/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/9f98cb278ed59d4437f31ec2c3d17a5ae3683514/output/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
