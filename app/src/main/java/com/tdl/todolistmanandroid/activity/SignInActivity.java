@@ -102,14 +102,25 @@ public class SignInActivity extends Activity {
 
 
         facebookLogin();
-                callback = new SessionCallback();
-                Session.getCurrentSession().addCallback(callback);
-                Session.getCurrentSession().checkAndImplicitOpen();
+
+        kakaoLogin();
 
     }
 
-    private class SessionCallback implements ISessionCallback {
+    /**
+     * 카카오톡 로그인 구동 메소드
+     *
+     */
+    private void kakaoLogin() {
+        callback = new SessionCallback();
+        Session.getCurrentSession().addCallback(callback);
+        Session.getCurrentSession().checkAndImplicitOpen();
+    }
 
+    /**
+     * 카카오톡 로그인 관련 session callback 클래스
+     */
+    private class SessionCallback implements ISessionCallback {
         @Override
         public void onSessionOpened() {
             Toast.makeText(SignInActivity.this, "adsfasdf", Toast.LENGTH_SHORT).show();
@@ -136,8 +147,6 @@ public class SignInActivity extends Activity {
                         }
                     }
                 });
-
-
         }
 
         @Override
@@ -149,6 +158,9 @@ public class SignInActivity extends Activity {
         }
     }
 
+    /**
+     * 페이스북 로그인 구동 메소드
+     */
     private void facebookLogin() {
         mFacebookCallbackManager  = CallbackManager.Factory.create();
         mAuth = FirebaseAuth.getInstance();
@@ -160,26 +172,24 @@ public class SignInActivity extends Activity {
                 public void onSuccess(LoginResult loginResult) {
                     AuthCredential credential = FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
                     mAuth.signInWithCredential(credential);
-                    //계급,소속 디비 넣는 공간 필요.
+
+                    //현재 유저 이름 찾기 위한 메소드 실행.
                     pt = new ProfileTracker() {
                         @Override
                         protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                             userName = currentProfile.getName();
-
-                        //    getRank();
+                            getRank();
                         }
                     };
                 }
 
                 @Override
                 public void onCancel() {
-
                     Log.d("CANCEL : ", "Facebook login canceled.");
                 }
 
                 @Override
                 public void onError(FacebookException error) {
-
                     Log.d("ERROR : ", error.toString());
                 }
             });
@@ -189,6 +199,9 @@ public class SignInActivity extends Activity {
         }
     }
 
+    /**
+     * 추가정보를 받고 파이어베이스로 전달하는 메소드
+     */
     private void getRank() {
         LayoutInflater inflater = LayoutInflater.from(this);
         View promptView = inflater.inflate(R.layout.edittext_dialog,null);
@@ -240,7 +253,6 @@ public class SignInActivity extends Activity {
                 } catch (Exception e) {
                     source.setException(e);
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
