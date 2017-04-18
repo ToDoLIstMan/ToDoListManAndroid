@@ -3,12 +3,17 @@ package com.tdl.todolistmanandroid.activity;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageInstaller;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -46,6 +51,8 @@ import com.tdl.todolistmanandroid.database.user;
 
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,12 +85,26 @@ public class SignInActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         ButterKnife.bind(this);
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.tdl.todolistmanandroid", PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.i("KeyHash:",
+                        Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
+
 
         facebookLogin();
-
-        callback = new SessionCallback();
-        Session.getCurrentSession().addCallback(callback);
-        Session.getCurrentSession().checkAndImplicitOpen();
+                callback = new SessionCallback();
+                Session.getCurrentSession().addCallback(callback);
+                Session.getCurrentSession().checkAndImplicitOpen();
 
     }
 
@@ -92,7 +113,7 @@ public class SignInActivity extends Activity {
         @Override
         public void onSessionOpened() {
             Toast.makeText(SignInActivity.this, "adsfasdf", Toast.LENGTH_SHORT).show();
-            /*
+
             Toast.makeText(getApplicationContext(), "Successfully logged in to Kakao. Now creating or updating a Firebase User.", Toast.LENGTH_LONG).show();
             String accessToken = Session.getCurrentSession().getAccessToken();
             getFirebaseJwt(accessToken).continueWithTask(new Continuation<String, Task<AuthResult>>() {
@@ -116,7 +137,7 @@ public class SignInActivity extends Activity {
                     }
                 });
 
-            */
+
         }
 
         @Override
@@ -145,7 +166,7 @@ public class SignInActivity extends Activity {
                         protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                             userName = currentProfile.getName();
 
-                            getRank();
+                        //    getRank();
                         }
                     };
                 }
@@ -249,6 +270,8 @@ public class SignInActivity extends Activity {
         }catch (Exception error){
             Log.e("error : ",error.toString());
         }
+
+        Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data);
     }
 
     @Override
