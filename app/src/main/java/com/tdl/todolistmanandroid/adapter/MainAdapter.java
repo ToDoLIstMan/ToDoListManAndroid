@@ -85,14 +85,10 @@ public class MainAdapter extends RecyclerView.Adapter {
                                             uids.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
                                             names.add(curName);
 
-                                            Toast.makeText(mContext, "" + uids, Toast.LENGTH_SHORT).show();
-                                            Log.e("dfdf", uids.toString());
-
                                             dataSnapshot.getRef().child("memberUid").setValue(uids);
                                             dataSnapshot.getRef().child("memberName").setValue(names);
 
                                             timeIntent(curItem);
-
                                         }
 
                                         @Override
@@ -122,8 +118,8 @@ public class MainAdapter extends RecyclerView.Adapter {
                     AlertDialog alert = ab.create();
                     // 다이얼로그 보기
                     alert.show();
-
                 }
+
                 else                //그룹에 현재 유저가 포함되어 있을 경우
                     timeIntent(curItem);
             }

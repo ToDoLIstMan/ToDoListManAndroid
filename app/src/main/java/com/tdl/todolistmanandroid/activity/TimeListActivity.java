@@ -12,8 +12,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -31,14 +29,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.Receiver.AlarmReceiver;
-import com.tdl.todolistmanandroid.adapter.TimeListAdapter;
 import com.tdl.todolistmanandroid.adapter.TimeTabAdapter;
-import com.tdl.todolistmanandroid.database.group;
 import com.tdl.todolistmanandroid.database.work;
 import com.tdl.todolistmanandroid.item.TimeListItem;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -54,7 +49,6 @@ import butterknife.ButterKnife;
 public class TimeListActivity extends AppCompatActivity {
   //  @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.viewPager) ViewPager viewPager;
     @BindView(R.id.tabLayout) TabLayout tabLayout;
     Context mContext;
@@ -106,6 +100,10 @@ public class TimeListActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("미실시"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
+        timeTabAdapter = new TimeTabAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(timeTabAdapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -140,19 +138,15 @@ public class TimeListActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 work work = dataSnapshot.getValue(work.class);
                 Log.e("asdf",work.getTitle());
-             //   lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),"adf",doPeople,isDone));
-             //   recyclerView.setAdapter(new TimeListAdapter(mContext,lists,timeLists));
-                progressBar.setVisibility(View.GONE);
 
                 String[] arr;
                 for(int i= 0;i<lists.size();i++) {
                     arr = lists.get(i).getStartTime().split(":");
+                    lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),work.getId(), work.getName(),work.getuId(),work.getIsDone()));
                     new AlarmHATT(mContext).Alarm(i,Integer.valueOf(arr[0]),Integer.valueOf(arr[1]),lists.get(i).getTitle());
                 }
 
-                timeTabAdapter = new TimeTabAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),lists);
-                viewPager.setAdapter(timeTabAdapter);
-                viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
             }
 
             @Override

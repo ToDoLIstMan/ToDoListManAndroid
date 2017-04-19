@@ -29,51 +29,24 @@ import butterknife.ButterKnife;
  * Created by songm on 2017-03-21.
  */
 
-public class TimeListAdapter extends RecyclerView.Adapter {
+public class ListAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private List<TimeListItem> lists;
-    private HashMap<Integer,String> timeLists;
-
-    private final int HOLDER = 1;
-    private  final int HEADER = 0;
-
     private int headCount = 0;
-    public TimeListAdapter(Context mContext, List<TimeListItem> lists, HashMap<Integer,String> timeLists) {
+    public ListAdapter(Context mContext, List<TimeListItem> lists) {
         this.mContext=mContext;
         this.lists = lists;
-        this.timeLists=timeLists;
 
-        Iterator<Integer> iterator = timeLists.keySet().iterator();
-        while (iterator.hasNext()) {
-            int key = iterator.next();
-            Log.e(""+key,""+timeLists.get(key));
-        }
-    }
-    @Override
-    public int getItemViewType(int position) {
-       if(timeLists.containsKey(position))
-           return HEADER;
-        else
-            return HOLDER;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v;
-        if(viewType == HEADER){
-            v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_time,parent,false);
-            return new Header(v);}
-        else if(viewType == HOLDER){
-            v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timelist,parent,false);
+        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timelist,parent,false);
             return new Holder(v);
-        }
-        else
-            return null;
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof Holder){
             String done = "", undone = "";
             final boolean[] isFinished = {false};
             final TimeListItem item = lists.get(position-headCount);
@@ -94,7 +67,7 @@ public class TimeListAdapter extends RecyclerView.Adapter {
                     gotoDetail.putExtra("startTime",item.getStartTime());
                     gotoDetail.putExtra("endTime",item.getEndTime());
                     gotoDetail.putExtra("detail",item.getDetail());
-                    gotoDetail.putExtra("supervisior",item.getSupervisor());
+                    gotoDetail.putExtra("supervisior",item.getId());
                     gotoDetail.putExtra("people",item.getDoPeople().toString());
                     gotoDetail.putExtra("isFinished", isFinished[0]);
                     gotoDetail.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -114,17 +87,11 @@ public class TimeListAdapter extends RecyclerView.Adapter {
                 }
             });
 
-        } else if(holder instanceof Header){
-            headCount++;
-            Log.e("ddd",""+headCount);
-            String timeItem = timeLists.get(position);
-            ((Header)holder).txtTime.setText(timeItem);
-        }
     }
 
     @Override
     public int getItemCount() {
-        return lists.size()+timeLists.size();
+        return lists.size();
     }
 
     class Holder extends RecyclerView.ViewHolder{

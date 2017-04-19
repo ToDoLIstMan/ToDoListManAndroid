@@ -33,6 +33,18 @@ public class work {
         return id;
     }
 
+    public List<String> getName() {
+        return name;
+    }
+
+    public List<String> getuId() {
+        return uId;
+    }
+
+    public List<Boolean> getIsDone() {
+        return isDone;
+    }
+
     public work(){}
     public work(int id, String title, String detail, String startTime, String endTime,List<String> name,List<String> uId,List<Boolean> isDone){
         this.id = id;

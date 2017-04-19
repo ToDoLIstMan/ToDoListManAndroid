@@ -17,13 +17,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.tdl.todolistmanandroid.R;
-import com.tdl.todolistmanandroid.adapter.TimeListAdapter;
+import com.tdl.todolistmanandroid.adapter.ListAdapter;
 import com.tdl.todolistmanandroid.database.work;
 import com.tdl.todolistmanandroid.item.TimeListItem;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -102,9 +100,9 @@ public class PreviewListAcitivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 work work = dataSnapshot.getValue(work.class);
                 Log.e("asdf",work.getTitle());
-                lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),"adf",doPeople,null,isDone));
+                lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),work.getId(),work.getName(),work.getuId(),work.getIsDone()));
 
-                recyclerView.setAdapter(new TimeListAdapter(mContext,lists,timeLists));
+                recyclerView.setAdapter(new ListAdapter(mContext,lists));
                 progressBar.setVisibility(View.GONE);
             }
 

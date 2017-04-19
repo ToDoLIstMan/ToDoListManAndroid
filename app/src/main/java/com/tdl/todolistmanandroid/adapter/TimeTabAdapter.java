@@ -1,13 +1,12 @@
 package com.tdl.todolistmanandroid.adapter;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.ListFragment;
 
-import com.tdl.todolistmanandroid.item.TimeListItem;
-
-import java.util.List;
+import com.tdl.todolistmanandroid.fragment.TimeListFragment;
 
 /**
  * Created by songmho on 2017. 4. 14..
@@ -16,32 +15,37 @@ import java.util.List;
 public class TimeTabAdapter extends FragmentStatePagerAdapter {
     FragmentManager fm;
     int tabCount;
-    List<TimeListItem> lists;
 
-    public TimeTabAdapter(FragmentManager fm, int tabCount, List<TimeListItem> lists) {
+    public TimeTabAdapter(FragmentManager fm, int tabCount) {
         super(fm);
         this.fm = fm;
         this.tabCount = tabCount;
-        this.lists = lists;
     }
 
     @Override
     public Fragment getItem(int position) {
-        ListFragment listFragment;
+        TimeListFragment listFragment;
+       Bundle bundle= new Bundle();
         switch (position){
             case 0:
-                listFragment = new ListFragment();
-
-                return listFragment;
+                listFragment = new TimeListFragment();
+                bundle.putString("status","whole");
+                listFragment.setArguments(bundle);
+                break;
             case 1:
-                listFragment = new ListFragment();
-                return listFragment;
+                listFragment = new TimeListFragment();
+                bundle.putString("status","done");
+                listFragment.setArguments(bundle);
+                break;
             case 2:
-                listFragment = new ListFragment();
-                return listFragment;
+                listFragment = new TimeListFragment();
+                bundle.putString("status","doing");
+                listFragment.setArguments(bundle);
+                break;
             default:
                 return null;
         }
+        return listFragment;
 
     }
 

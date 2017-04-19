@@ -8,7 +8,8 @@ import java.util.List;
  */
 
 public class TimeListItem {
-    private String startTime, endTime, title, detail, supervisor;
+    private int id;
+    private String startTime, endTime, title, detail;
     private List<String> doPeople =new ArrayList<>(), peopleUid =new ArrayList<>();
     private List<Boolean> isDone =new ArrayList<>();
 
@@ -28,8 +29,8 @@ public class TimeListItem {
         return endTime;
     }
 
-    public String getSupervisor() {
-        return supervisor;
+    public int getId() {
+        return id;
     }
 
     public List<String> getDoPeople() {
@@ -43,12 +44,12 @@ public class TimeListItem {
     public List<Boolean> getIsDone() {
         return isDone;
     }
-    public TimeListItem(String startTime, String endTime, String title, String detail, String supervisor, List<String> doPeople, List<String> peopleUid, List<Boolean> isDone){
+    public TimeListItem(String startTime, String endTime, String title, String detail, int id, List<String> doPeople, List<String> peopleUid, List<Boolean> isDone){
         this.startTime = startTime;
         this.endTime =endTime;
         this.title = title;
         this.detail =detail;
-        this.supervisor = supervisor;
+        this.id = id;
 
         this.doPeople = new ArrayList<>();
         this.peopleUid = new ArrayList<>();
