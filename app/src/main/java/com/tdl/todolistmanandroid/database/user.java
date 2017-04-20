@@ -9,7 +9,7 @@ import java.util.List;
 
 public class user {
     String name, rank, email;
-    List<String> groups = new ArrayList<>();
+    List<Integer> groups = new ArrayList<>();
     public String getRank() {
         return rank;
     }
@@ -22,13 +22,13 @@ public class user {
         return email;
     }
 
-    public List<String> getGroups() {
+    public List<Integer> getGroups() {
         return groups;
     }
 
     public user(){}
 
-    public user(String name, String email, String rank, List<String> groups){
+    public user(String name, String rank, List<Integer> groups){
         this.name = name;
         this.rank = rank;
         this.groups = groups;

@@ -73,6 +73,9 @@ public class MainAdapter extends RecyclerView.Adapter {
                             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
+                                    List<Integer> groups = dataSnapshot.getValue(user.class).getGroups();
+                                    groups.add(curItem.getGroupId());
+                                    dataSnapshot.getRef().child("groups").setValue(groups);
                                     final String curName = dataSnapshot.getValue(user.class).getName();
                                     DatabaseReference myRef = mDatabase.getReference().child("group").child("" + curItem.getGroupId());
                                     myRef.addListenerForSingleValueEvent(new ValueEventListener() {

@@ -165,7 +165,6 @@ public class SignInActivity extends Activity {
                         @Override
                         protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                             userName = currentProfile.getName();
-                            userEmail = currentProfile.getId();
                             getRank();
                         }
                     };
@@ -208,8 +207,8 @@ public class SignInActivity extends Activity {
                 rank= input.getText().toString();
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference().child("user");
-                List<String> group = new ArrayList<>();
-                user user = new user(userName,userEmail,rank,group);
+                List<Integer> group = new ArrayList<>();
+                user user = new user(userName,rank,group);
                 myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
 
                 startActivity(new Intent(SignInActivity.this,MainActivity.class));

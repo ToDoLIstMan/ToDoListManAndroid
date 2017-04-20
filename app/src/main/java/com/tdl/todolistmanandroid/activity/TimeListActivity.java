@@ -246,6 +246,7 @@ public class TimeListActivity extends AppCompatActivity {
 
 
                                 Intent gotoPreview = new Intent(TimeListActivity.this,PreviewListAcitivity.class);
+                                gotoPreview.putExtra("groupId",getIntent().getIntExtra("groupId",-1));
                                 gotoPreview.putExtra("date",""+year+"-"+(month+1)+"-"+dayOfMonth);
                                 startActivity(gotoPreview);
                             }
