@@ -99,9 +99,13 @@ public class PreviewListAcitivity extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 work work = dataSnapshot.getValue(work.class);
-                Log.e("asdf",work.getTitle());
-                lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),work.getId(),work.getName(),work.getuId(),work.getIsDone()));
+                try{
+                    lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),work.getId(),doPeople,doPeople,isDone));
+                }
+                catch(Exception error){
+                    Log.e("asdf",error.toString());
 
+                }
                 recyclerView.setAdapter(new ListAdapter(mContext,lists));
                 progressBar.setVisibility(View.GONE);
             }
