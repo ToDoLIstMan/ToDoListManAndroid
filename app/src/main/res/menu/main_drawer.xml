@@ -9,7 +9,14 @@
             android:title="일정 전송하기"
             />
     </group>
-
+    <group
+        android:id="@+id/menu_group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/group"
+            android:title="전체 그룹 보기"
+            />
+    </group>
     <group
         android:id="@+id/menu_obligatory"
         android:checkableBehavior="single">

@@ -14,18 +14,20 @@ import com.tdl.todolistmanandroid.fragment.TimeListFragment;
 
 public class TimeTabAdapter extends FragmentStatePagerAdapter {
     FragmentManager fm;
-    int tabCount;
+    int tabCount, curGroupUid;
 
-    public TimeTabAdapter(FragmentManager fm, int tabCount) {
+    public TimeTabAdapter(FragmentManager fm, int tabCount, int curGroupId) {
         super(fm);
         this.fm = fm;
         this.tabCount = tabCount;
+        this.curGroupUid = curGroupId;
     }
 
     @Override
     public Fragment getItem(int position) {
         TimeListFragment listFragment;
-       Bundle bundle= new Bundle();
+        Bundle bundle= new Bundle();
+        bundle.putInt("uid",curGroupUid);
         switch (position){
             case 0:
                 listFragment = new TimeListFragment();

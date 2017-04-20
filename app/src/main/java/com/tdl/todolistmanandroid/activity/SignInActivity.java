@@ -3,20 +3,13 @@ package com.tdl.todolistmanandroid.activity;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageInstaller;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -51,8 +44,6 @@ import com.tdl.todolistmanandroid.database.user;
 
 import org.json.JSONObject;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -208,10 +199,13 @@ public class SignInActivity extends Activity {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference().child("user");
                 List<Integer> group = new ArrayList<>();
-                user user = new user(userName,rank,group);
-                myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
 
-                startActivity(new Intent(SignInActivity.this,MainActivity.class));
+                List<String> groupName = new ArrayList<>();
+                user user = new user(userName,rank,group,groupName);
+                myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
+                Intent gotoMain = new Intent(SignInActivity.this,MainActivity.class);
+
+                startActivity(gotoMain);
             }
         });
 

@@ -6,12 +6,10 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -20,7 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tdl.todolistmanandroid.R;
-import com.tdl.todolistmanandroid.activity.TimeListActivity;
+import com.tdl.todolistmanandroid.activity.MainActivity;
+import com.tdl.todolistmanandroid.activity.PickGroupActivity;
 import com.tdl.todolistmanandroid.database.user;
 import com.tdl.todolistmanandroid.item.MainItem;
 
@@ -74,8 +73,11 @@ public class MainAdapter extends RecyclerView.Adapter {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     List<Integer> groups = dataSnapshot.getValue(user.class).getGroups();
+                                    List<String> groupName = dataSnapshot.getValue(user.class).getGroupName();
                                     groups.add(curItem.getGroupId());
+                                    groupName.add(curItem.getTitle());
                                     dataSnapshot.getRef().child("groups").setValue(groups);
+                                    dataSnapshot.getRef().child("groupName").setValue(groupName);
                                     final String curName = dataSnapshot.getValue(user.class).getName();
                                     DatabaseReference myRef = mDatabase.getReference().child("group").child("" + curItem.getGroupId());
                                     myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -134,11 +136,13 @@ public class MainAdapter extends RecyclerView.Adapter {
      * @param curItem
      */
     private void timeIntent(MainItem curItem) {
-        Intent gotoToDo = new Intent(mContext, TimeListActivity.class);
+        Intent gotoToDo = new Intent(mContext, MainActivity.class);
         gotoToDo.putExtra("title", curItem.getTitle());
         gotoToDo.putExtra("groupId", curItem.getGroupId());
         gotoToDo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mContext.startActivity(gotoToDo);
+        //mContext.startActivity(gotoToDo);
+        ((PickGroupActivity)mContext).finish();
+
     }
 
     @Override
@@ -155,5 +159,4 @@ public class MainAdapter extends RecyclerView.Adapter {
             ButterKnife.bind(this, itemView);
         }
     }
-
 }

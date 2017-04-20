@@ -2,7 +2,6 @@ package com.tdl.todolistmanandroid.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,9 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tdl.todolistmanandroid.R;
-import com.tdl.todolistmanandroid.activity.TimeListActivity;
 import com.tdl.todolistmanandroid.adapter.ListAdapter;
-import com.tdl.todolistmanandroid.adapter.TimeTabAdapter;
 import com.tdl.todolistmanandroid.database.work;
 import com.tdl.todolistmanandroid.item.TimeListItem;
 
@@ -86,7 +83,7 @@ public class TimeListFragment extends Fragment {
 
     private void hasData() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference().child("work").child(String.valueOf(getActivity().getIntent().getIntExtra("groupId",-1))).child(sDF.format(today).toString());
+        DatabaseReference myRef = database.getReference().child("work").child(String.valueOf(getArguments().getInt("uid",-2))).child(sDF.format(today).toString());
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

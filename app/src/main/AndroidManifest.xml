@@ -32,7 +32,7 @@
         </activity>
 
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.PickGroupActivity"
             android:screenOrientation="portrait">
         </activity>
 
@@ -49,28 +49,28 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.TimeListActivity"/>
+                android:value=".activity.MainActivity"/>
         </activity>
 
-        <activity android:name=".activity.TimeListActivity"
+        <activity android:name=".activity.MainActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity"/>
+                android:value=".activity.PickGroupActivity"/>
         </activity>
 
         <activity android:name=".activity.PreviewListAcitivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.TimeListActivity"/>
+                android:value=".activity.MainActivity"/>
         </activity>
 
         <activity android:name=".activity.AddPlanActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity"/>
+                android:value=".activity.PickGroupActivity"/>
         </activity>
 
         <activity

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.google.firebase.database.ChildEventListener;
@@ -16,6 +17,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.adapter.ListAdapter;
 import com.tdl.todolistmanandroid.database.work;
@@ -36,6 +38,8 @@ public class PreviewListAcitivity extends AppCompatActivity {
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.progressBar) ProgressBar progressBar;
+    @BindView(R.id.noneWork)
+    FrameLayout noneWork;
     RecyclerView.LayoutManager layoutManager;
     Context mContext;
 
@@ -93,36 +97,61 @@ public class PreviewListAcitivity extends AppCompatActivity {
         isDone.add(false);
         isDone.add(false);
 
+        Log.e("asdf",""+getIntent().getIntExtra("groupId",-1));
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference().child("work").child(String.valueOf(getIntent().getIntExtra("groupId",-1))).child(pickday);
-        myRef.addChildEventListener(new ChildEventListener() {
+        final DatabaseReference myRef = database.getReference().child("work").child(String.valueOf(getIntent().getIntExtra("groupId",-1))).child(pickday);
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                work work = dataSnapshot.getValue(work.class);
-                try{
-                    lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),work.getId(),doPeople,doPeople,isDone));
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot!=null){
+                    Log.e("asdf","qoeoiwiwiewiew");
+
+                    myRef.addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                            Log.e("asdfasd","asdf");
+                            if(dataSnapshot.exists()){
+                                work work = dataSnapshot.getValue(work.class);
+                                lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),work.getId(),doPeople,doPeople,isDone));
+
+                                recyclerView.setAdapter(new ListAdapter(mContext,lists));
+
+                                progressBar.setVisibility(View.GONE);
+                            }
+                            else{
+                            }
+                        }
+
+                        @Override
+                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                            Log.e("asdf","1");
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+                            Log.e("asdf","2");
+
+                        }
+
+                        @Override
+                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                            Log.e("asdf","3");
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.e("asdf","4");
+
+                        }
+                    });
+                }else{
+
+                    Log.e("asdf","-1");
+                    noneWork.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
                 }
-                catch(Exception error){
-                    Log.e("asdf",error.toString());
-
-                }
-                recyclerView.setAdapter(new ListAdapter(mContext,lists));
-                progressBar.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
@@ -130,6 +159,8 @@ public class PreviewListAcitivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 }
 

@@ -68,16 +68,12 @@ public class AddPlanActivity extends AppCompatActivity {
 
         items = new ArrayList<>();
 
-        for(int i = 0; i< 3;i++)
+        for(int i = 0; i< 10;i++)
             items.add(new AddPlanItem("test"));
 
         recyclerView.setAdapter(new AddPlanAdapter(mContext,items));
     }
 
-    @OnClick(R.id.fab)
-    void fabClick(){
-        startActivity(new Intent(AddPlanActivity.this,AddWorkActivity.class));
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

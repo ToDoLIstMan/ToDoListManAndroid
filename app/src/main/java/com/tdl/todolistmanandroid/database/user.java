@@ -10,6 +10,7 @@ import java.util.List;
 public class user {
     String name, rank, email;
     List<Integer> groups = new ArrayList<>();
+    List<String> groupName = new ArrayList<>();
     public String getRank() {
         return rank;
     }
@@ -26,12 +27,17 @@ public class user {
         return groups;
     }
 
+    public List<String> getGroupName() {
+        return groupName;
+    }
+
     public user(){}
 
-    public user(String name, String rank, List<Integer> groups){
+    public user(String name, String rank, List<Integer> groups, List<String> groupName){
         this.name = name;
         this.rank = rank;
-        this.groups = groups;
+        this.groups.addAll(groups);
+        this.groupName.addAll(groupName);
 
     }
 
