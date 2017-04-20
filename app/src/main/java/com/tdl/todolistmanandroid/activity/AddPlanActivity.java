@@ -1,6 +1,7 @@
 package com.tdl.todolistmanandroid.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -75,7 +76,7 @@ public class AddPlanActivity extends AppCompatActivity {
 
     @OnClick(R.id.fab)
     void fabClick(){
-        Toast.makeText(mContext, "준비중...", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(AddPlanActivity.this,AddWorkActivity.class));
     }
 
     @Override

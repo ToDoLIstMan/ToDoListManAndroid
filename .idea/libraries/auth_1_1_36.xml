@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="auth-1.1.36">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.android/build-cache/62ae239edef4a923f5cf5c0097f9657857a8bb5c/output/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.android/build-cache/62ae239edef4a923f5cf5c0097f9657857a8bb5c/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/3076c3fb1f74964288f5fa2476fd6442d306e5b9/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/3076c3fb1f74964288f5fa2476fd6442d306e5b9/output/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

@@ -27,42 +27,56 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <EditText
-            android:id="@+id/workStartTimeHourText"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="HH"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=":"
-            android:textSize="20sp"/>
-        <EditText
-            android:id="@+id/workStartTimeMinText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="MM"/>
+            android:id="@+id/workStartTime">
+            <TextView
+                android:id="@+id/workStartTimeHourText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HH"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textSize="20sp"/>
+            <TextView
+                android:id="@+id/workStartTimeMinText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MM"
+                android:textSize="20sp"/>
+        </LinearLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" ~ "
             android:textSize="20sp"/>
-        <EditText
-            android:id="@+id/workEndTimeHourText"
+        <LinearLayout
+            android:id="@+id/workEndTime"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="HH"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=":"
-            android:textSize="20sp"/>
-        <EditText
-            android:id="@+id/workEndTimeMinText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="MM"/>
-    </LinearLayout>
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/workEndTimeHourText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HH"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textSize="20sp"/>
+            <TextView
+                    android:id="@+id/workEndTimeMinText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MM"
+                android:textSize="20sp"/>
+            </LinearLayout>
+        </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -78,6 +92,7 @@
         </LinearLayout>
     <Button
         android:id="@+id/btAddWork"
+
         android:layout_height="0dp"
         android:layout_width="match_parent"
         android:layout_weight="1"

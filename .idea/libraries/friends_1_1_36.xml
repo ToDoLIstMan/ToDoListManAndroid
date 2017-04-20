@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="friends-1.1.36">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.android/build-cache/fdeb22c8f546e5538f290e0125842faa133be052/output/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.android/build-cache/fdeb22c8f546e5538f290e0125842faa133be052/output/res" />
+      <root url="file://$USER_HOME$/.android/build-cache/69253fa973c82b30fd6f0d7728a208f065707ac5/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/69253fa973c82b30fd6f0d7728a208f065707ac5/output/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
