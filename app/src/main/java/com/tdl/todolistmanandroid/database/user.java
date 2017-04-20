@@ -1,5 +1,6 @@
 package com.tdl.todolistmanandroid.database;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,8 +8,8 @@ import java.util.List;
  */
 
 public class user {
-    String name, rank;
-    String[] groups;
+    String name, rank, email;
+    List<String> groups = new ArrayList<>();
     public String getRank() {
         return rank;
     }
@@ -17,13 +18,17 @@ public class user {
         return name;
     }
 
-    public String[] getGroups() {
+    public String getEmail() {
+        return email;
+    }
+
+    public List<String> getGroups() {
         return groups;
     }
 
     public user(){}
 
-    public user(String name, String rank,String[] groups){
+    public user(String name, String email, String rank, List<String> groups){
         this.name = name;
         this.rank = rank;
         this.groups = groups;

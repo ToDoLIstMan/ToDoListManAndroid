@@ -53,7 +53,9 @@ import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -77,7 +79,7 @@ public class SignInActivity extends Activity {
 
     private SessionCallback callback;
 
-    String userName;
+    String userName, userEmail;
     String rank;
 
     @Override
@@ -163,6 +165,7 @@ public class SignInActivity extends Activity {
                         @Override
                         protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                             userName = currentProfile.getName();
+                            userEmail = currentProfile.getId();
                             getRank();
                         }
                     };
@@ -205,8 +208,8 @@ public class SignInActivity extends Activity {
                 rank= input.getText().toString();
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference().child("user");
-                String[] group = new String[0];
-                user user = new user(userName,rank,group);
+                List<String> group = new ArrayList<>();
+                user user = new user(userName,userEmail,rank,group);
                 myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
 
                 startActivity(new Intent(SignInActivity.this,MainActivity.class));
