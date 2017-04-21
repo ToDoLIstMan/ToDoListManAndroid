@@ -23,21 +23,20 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class SelectPeopleActivity extends AppCompatActivity{
 
-//    @BindView(R.id.toolbar) Toolbar toolbar;
-//
-//
-//    private void makeToolbar() {
-//        toolbar.setTitle("인원추가하기");
-//        setSupportActionBar(toolbar);
-//        if(getSupportActionBar() !=null)
-//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//    }
+    @BindView(R.id.toolbar) Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_people);
-//        makeToolbar();
+
+        Toolbar searchBar = (Toolbar) findViewById(R.id.searchToolbar);
+        searchBar.setTitle("인원추가하기");
+        setSupportActionBar((Toolbar) findViewById(R.id.searchToolbar));
+        if(getSupportActionBar() !=null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.selectPeopleRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
