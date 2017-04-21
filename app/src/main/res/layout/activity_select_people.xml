@@ -4,7 +4,15 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.SelectPeopleActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/searchToolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
+        android:titleTextColor="@color/white"/>
     <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="?attr/actionBarSize"
         android:id="@+id/selectPeopleRecyclerView"
         android:layout_height="match_parent"
         android:layout_width="match_parent"/>
