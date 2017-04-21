@@ -155,8 +155,6 @@ public class SignInActivity extends Activity {
                     AuthCredential credential = FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
                     mAuth.signInWithCredential(credential);
 
-
-
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference().child("user").child(""+FirebaseAuth.getInstance().getCurrentUser().getUid());
 
@@ -233,11 +231,12 @@ public class SignInActivity extends Activity {
                 List<Integer> group = new ArrayList<>();
 
                 List<String> groupName = new ArrayList<>();
-                user user = new user(userName,rank,group,groupName);
+                user user = new user(userName,rank,group,groupName,group,groupName);
                 myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
                 Intent gotoMain = new Intent(SignInActivity.this,MainActivity.class);
 
                 startActivity(gotoMain);
+                finish();
             }
         });
 

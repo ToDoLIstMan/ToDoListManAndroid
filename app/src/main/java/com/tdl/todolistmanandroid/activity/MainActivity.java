@@ -58,11 +58,8 @@ import butterknife.ButterKnife;
  */
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-  //  @BindView(R.id.recyclerView) RecyclerView recyclerView;
-  @BindView(R.id.drawerLayout)
-  DrawerLayout drawerLayout;
-    @BindView(R.id.navView)
-    NavigationView navView;
+  @BindView(R.id.drawerLayout) DrawerLayout drawerLayout;
+    @BindView(R.id.navView) NavigationView navView;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.viewPager) ViewPager viewPager;
     @BindView(R.id.tabLayout) TabLayout tabLayout;
@@ -84,31 +81,51 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ButterKnife.bind(this);
         mContext=this;
 
-
-        database = FirebaseDatabase.getInstance();
-
         makeToolbar();
-        makeDrawer();
         makeViewPager();
 
         navView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        makeDrawer();
     }
 
     private void makeDrawer() {
         navView.getMenu().clear();
         final SubMenu itema = navView.getMenu().addSubMenu("내그룹");
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference().child("user").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        myRef.addValueEventListener(new ValueEventListener() {
+        DatabaseReference myRef = database.getReference().child("user");
+        myRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                user u = dataSnapshot.getValue(user.class);
-                List<String> a = u.getGroupName();
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if((FirebaseAuth.getInstance().getCurrentUser().getUid()).equals(dataSnapshot.getKey())) {
+                    user u = dataSnapshot.getValue(user.class);
+           //         Toast.makeText(mContext, "추가되었습니다", Toast.LENGTH_SHORT).show();
+                    List<String> a = u.getGroupName();
 
-                navGroupId.addAll(u.getGroups());
-                navGroupName.addAll(a);
-                for(String i : a)
-                    itema.add(i).setTitle(i);
+                    navGroupId.addAll(u.getGroups());
+                    navGroupName.addAll(a);
+                    for (String i : a)
+                        itema.add(i).setTitle(i);
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
             }
 
             @Override
@@ -119,11 +136,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navView.inflateMenu(R.menu.main_drawer);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-       // initList();
-    }
 
     /**
      * Toolbar 생성 메소드
@@ -347,6 +359,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

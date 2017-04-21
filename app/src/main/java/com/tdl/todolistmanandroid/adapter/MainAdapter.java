@@ -24,7 +24,9 @@ import com.tdl.todolistmanandroid.database.user;
 import com.tdl.todolistmanandroid.item.MainItem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,8 +78,12 @@ public class MainAdapter extends RecyclerView.Adapter {
                                     List<String> groupName = dataSnapshot.getValue(user.class).getGroupName();
                                     groups.add(curItem.getGroupId());
                                     groupName.add(curItem.getTitle());
-                                    dataSnapshot.getRef().child("groups").setValue(groups);
-                                    dataSnapshot.getRef().child("groupName").setValue(groupName);
+
+                                    Map<String,Object> g = new HashMap<>();
+                                    g.put("groups",groups);
+                                    g.put("groupName",groupName);
+                                    dataSnapshot.getRef().updateChildren(g);
+
                                     final String curName = dataSnapshot.getValue(user.class).getName();
                                     DatabaseReference myRef = mDatabase.getReference().child("group").child("" + curItem.getGroupId());
                                     myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -87,11 +93,14 @@ public class MainAdapter extends RecyclerView.Adapter {
                                             List<String> names = new ArrayList<>();
                                             uids.addAll(curItem.getMemberUid());
                                             names.addAll(curItem.getMemberName());
+
                                             uids.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
                                             names.add(curName);
 
-                                            dataSnapshot.getRef().child("memberUid").setValue(uids);
-                                            dataSnapshot.getRef().child("memberName").setValue(names);
+                                            Map<String,Object> g = new HashMap<>();
+                                            g.put("memberUid",uids);
+                                            g.put("memberName",names);
+                                            dataSnapshot.getRef().updateChildren(g);
 
                                             timeIntent(curItem);
                                         }
@@ -136,10 +145,11 @@ public class MainAdapter extends RecyclerView.Adapter {
      * @param curItem
      */
     private void timeIntent(MainItem curItem) {
-        Intent gotoToDo = new Intent(mContext, MainActivity.class);
-        gotoToDo.putExtra("title", curItem.getTitle());
-        gotoToDo.putExtra("groupId", curItem.getGroupId());
-        gotoToDo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent gotoToDo = ((PickGroupActivity)mContext).getIntent();
+        gotoToDo.putExtra("groupName", curItem.getTitle());
+        gotoToDo.putExtra("groupUid", curItem.getGroupId());
+        //((PickGroupActivity)mContext).setResult(R.integer.PICK_GROUP,gotoToDo);
+        //gotoToDo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         //mContext.startActivity(gotoToDo);
         ((PickGroupActivity)mContext).finish();
 

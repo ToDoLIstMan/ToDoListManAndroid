@@ -11,6 +11,9 @@ public class user {
     String name, rank, email;
     List<Integer> groups = new ArrayList<>();
     List<String> groupName = new ArrayList<>();
+    List<Integer> masterGroups = new ArrayList<>();
+    List<String> masterGroupName = new ArrayList<>();
+
     public String getRank() {
         return rank;
     }
@@ -31,13 +34,23 @@ public class user {
         return groupName;
     }
 
+    public List<Integer> getMasterGroups() {
+        return masterGroups;
+    }
+
+    public List<String> getMasterGroupName() {
+        return masterGroupName;
+    }
+
     public user(){}
 
-    public user(String name, String rank, List<Integer> groups, List<String> groupName){
+    public user(String name, String rank, List<Integer> groups, List<String> groupName, List<Integer> masterGroups, List<String> masterGroupName){
         this.name = name;
         this.rank = rank;
         this.groups.addAll(groups);
         this.groupName.addAll(groupName);
+        this.masterGroupName.addAll(masterGroupName);
+        this.masterGroups.addAll(masterGroups);
 
     }
 

@@ -36,16 +36,15 @@ public class SplashActivity extends Activity {
                 final Intent gotoMain = new Intent(SplashActivity.this, MainActivity.class);
                 if(FirebaseAuth.getInstance().getCurrentUser()!=null) {
                     database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference().child("user")
+                    final DatabaseReference myRef = database.getReference().child("user")
                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    myRef.addValueEventListener(new ValueEventListener() {
+                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             user curuser = dataSnapshot.getValue(user.class);
                             try{
                                 int groupUid = curuser.getGroups().get(0);
-                                user curUser = dataSnapshot.getValue(user.class);
-                                DatabaseReference myRef = database.getReference().child("group").child(""+groupUid);
+                                final DatabaseReference myRef = database.getReference().child("group").child(""+groupUid);
                                 myRef.addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -53,6 +52,7 @@ public class SplashActivity extends Activity {
                                         gotoMain.putExtra("groupName",dataSnapshot.getValue(group.class).getGroupName());
                                         startActivity(gotoMain);
                                         finish();
+                                        myRef.onDisconnect();
                                     }
 
                                     @Override
@@ -64,8 +64,10 @@ public class SplashActivity extends Activity {
                                 gotoMain.putExtra("groupUid",-1);
                                 gotoMain.putExtra("groupName","");
 
+                                myRef.onDisconnect();
                                 startActivity(gotoMain);finish();
                             }
+
                         }
 
                         @Override
@@ -73,6 +75,7 @@ public class SplashActivity extends Activity {
 
                         }
                     });
+
 
                 }
                 else {
@@ -84,5 +87,10 @@ public class SplashActivity extends Activity {
 
 
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

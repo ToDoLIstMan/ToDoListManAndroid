@@ -32,6 +32,7 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
 
     private final int BODY = 0;
     private final int FOOTER = 1;
+    private final int HEADER  = -1;
     public AddPlanAdapter(Context mContext, List<AddPlanItem> items) {
         this.mContext = mContext;
         this.items = items;
@@ -39,12 +40,15 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        if(position<items.size())
+
+         if(position==0)
+             return HEADER;
+         else if(position<items.size())
             return BODY;
         else if(position==items.size())
             return FOOTER;
         else
-            return -1;
+            return -100;
     }
 
     @Override
@@ -56,6 +60,10 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
         else if(viewType == FOOTER){
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.footer_plan, parent, false);
             return new AddPlanAdapter.AddPlanFooter(v);
+        }
+        else if(viewType==HEADER){
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_plan, parent, false);
+            return new AddPlanAdapter.AddPlanViewHeader(v);
         }
         else
             return null;
@@ -75,7 +83,7 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                 mContext.startActivity(gotoToDo);
             }
         });*/
-        }else{
+        }else if(holder instanceof  AddPlanFooter){
             ((AddPlanFooter)holder).btnAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -83,6 +91,9 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                     ((AddPlanFooter)holder).bckInput.setVisibility(View.VISIBLE);
                 }
             });
+
+        }
+        else{
 
         }
     }
@@ -93,6 +104,13 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
     }
 
 
+    class AddPlanViewHeader extends RecyclerView.ViewHolder{
+
+        public AddPlanViewHeader(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this,itemView);
+        }
+    }
     class AddPlanViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.addPlanTxtTitle)
         TextView addPlanTxtTitle;

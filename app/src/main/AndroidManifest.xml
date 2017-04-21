@@ -34,6 +34,9 @@
         <activity
             android:name=".activity.PickGroupActivity"
             android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity"/>
         </activity>
 
         <activity
@@ -54,10 +57,8 @@
 
         <activity android:name=".activity.MainActivity"
             android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.PickGroupActivity"/>
         </activity>
+
 
         <activity android:name=".activity.PreviewListAcitivity"
             android:screenOrientation="portrait">
@@ -93,8 +94,7 @@
         </activity>
 
         <activity android:name=".activity.SelectPeopleActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".activity.MainActivity">
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity"/>
