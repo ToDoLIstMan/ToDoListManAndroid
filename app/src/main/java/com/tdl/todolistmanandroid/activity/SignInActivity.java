@@ -33,13 +33,17 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.kakao.auth.Session;
 import com.kakao.util.exception.KakaoException;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.util.helper.log.Logger;
 import com.tdl.todolistmanandroid.R;
+import com.tdl.todolistmanandroid.database.group;
 import com.tdl.todolistmanandroid.database.user;
 
 import org.json.JSONObject;
@@ -147,18 +151,46 @@ public class SignInActivity extends Activity {
             login_button.setReadPermissions("email", "public_profile");
             login_button.registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
                 @Override
-                public void onSuccess(LoginResult loginResult) {
+                public void onSuccess(final LoginResult loginResult) {
                     AuthCredential credential = FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
                     mAuth.signInWithCredential(credential);
 
-                    //현재 유저 이름 찾기 위한 메소드 실행.
-                    pt = new ProfileTracker() {
+
+
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference().child("user").child(""+FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+                    myRef.addValueEventListener(new ValueEventListener() {
                         @Override
-                        protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-                            userName = currentProfile.getName();
-                            getRank();
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Log.e("data",dataSnapshot.toString());
+                            if(dataSnapshot!=null){
+                                Intent gotoMain = new Intent(SignInActivity.this,MainActivity.class);
+                                gotoMain.putExtra("groupUid",dataSnapshot.getValue(user.class).getGroups().get(0));
+                                gotoMain.putExtra("groupName",dataSnapshot.getValue(user.class).getGroupName().get(0));
+
+                                startActivity(gotoMain);
+                                finish();
+                            }else {
+
+                                //현재 유저 이름 찾기 위한 메소드 실행.
+                                pt = new ProfileTracker() {
+                                    @Override
+                                    protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                                        userName = currentProfile.getName();
+                                        getRank();
+                                    }
+                                };
+                            }
+
                         }
-                    };
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
                 }
 
                 @Override
