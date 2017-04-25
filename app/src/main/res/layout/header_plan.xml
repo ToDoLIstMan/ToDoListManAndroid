@@ -30,12 +30,12 @@
             android:layout_height="wrap_content"
             android:text="포맷 추가  "/>
         <TextView
-            android:id="@+id/txtPomat"
+            android:id="@+id/txtFormat"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             />
         <Button
-            android:id="@+id/btAddPomat"
+            android:id="@+id/btAddFormat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

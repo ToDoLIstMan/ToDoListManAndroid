@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -21,13 +22,17 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.adapter.MainAdapter;
 import com.tdl.todolistmanandroid.database.group;
+import com.tdl.todolistmanandroid.database.user;
 import com.tdl.todolistmanandroid.item.MainItem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -166,6 +171,32 @@ public class PickGroupActivity extends AppCompatActivity implements View.OnClick
                     group group = new group(lastGroupId+1, FirebaseAuth.getInstance().getCurrentUser().getUid(),input.getText().toString(),new ArrayList<String>(),new ArrayList<String>());
                     myRef.setValue(group);
 
+                    myRef = database.getReference().child("user").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            Map<String,Object> g = new HashMap<>();
+                            List<Integer> masterGroups = dataSnapshot.getValue(user.class).getMasterGroups();
+                            List<String> masterGroupName =dataSnapshot.getValue(user.class).getMasterGroupName();
+
+                            masterGroups.add(lastGroupId+1);
+                            masterGroupName.add(input.getText().toString());
+
+                            g.put("masterGroups",masterGroups);
+                            g.put("masterGroupName",masterGroupName);
+                            g.put("groups",masterGroups);
+                            g.put("groupName",masterGroupName);
+
+                            dataSnapshot.getRef().updateChildren(g);
+                            Toast.makeText(mContext, "추가되었습니다.", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
                 @Override

@@ -1,5 +1,6 @@
 package com.tdl.todolistmanandroid.adapter;
 
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
@@ -9,9 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.activity.AddPlanActivity;
@@ -43,9 +47,9 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
 
          if(position==0)
              return HEADER;
-         else if(position<items.size())
+         else if(position<=items.size())
             return BODY;
-        else if(position==items.size())
+        else if(position==(items.size()+1))
             return FOOTER;
         else
             return -100;
@@ -71,8 +75,10 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+
+        //body(holder)
         if(holder instanceof AddPlanViewHolder) {
-            final AddPlanItem curItem = items.get(position);
+            final AddPlanItem curItem = items.get(position-1);
             ((AddPlanAdapter.AddPlanViewHolder) holder).addPlanTxtTitle.setText(curItem.getTitle());
 
 /*        ((AddPlanAdapter.AddPlanViewHolder)holder).addPlanCardView.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +89,13 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                 mContext.startActivity(gotoToDo);
             }
         });*/
-        }else if(holder instanceof  AddPlanFooter){
+
+
+        }
+
+
+        //footer
+        else if(holder instanceof  AddPlanFooter){
             ((AddPlanFooter)holder).btnAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -92,20 +104,104 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                 }
             });
 
-        }
-        else{
+            ((AddPlanFooter)holder).btAddWork.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((AddPlanFooter)holder).bckAdd.setVisibility(View.VISIBLE);
+                    ((AddPlanFooter)holder).bckInput.setVisibility(View.GONE);
 
+                    ((AddPlanFooter)holder).txtStartTime.getText().toString();
+                    ((AddPlanFooter)holder).txtEndTime.getText().toString();
+                    ((AddPlanFooter)holder).editWorkDetail.getText().toString();
+
+                    items.add(new AddPlanItem( ((AddPlanFooter)holder).editTitle.getText().toString()));
+                    notifyDataSetChanged();     //리스트 추가한 것 띄어주는 코드
+
+                    ((AddPlanFooter)holder).editTitle.setText("");
+                    Toast.makeText(mContext, "추가되었습니다", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            ((AddPlanFooter)holder).btnStartTime.setOnClickListener(new View.OnClickListener() {
+                int hour, minute;
+                @Override
+                public void onClick(View v) {
+                   TimePickerDialog t = new TimePickerDialog(mContext, new TimePickerDialog.OnTimeSetListener() {
+                       @Override
+                       public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                           ((AddPlanFooter)holder).txtStartTime.setText(hourOfDay+":"+minute);
+                       }
+                   }, hour, minute, true);
+                    t.show();
+                }
+            });
+            ((AddPlanFooter)holder).btnEndTime.setOnClickListener(new View.OnClickListener() {
+                int hour, minute;
+                @Override
+                public void onClick(View v) {
+                    TimePickerDialog t = new TimePickerDialog(mContext, new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            ((AddPlanFooter)holder).txtEndTime.setText(hourOfDay+":"+minute);
+                        }
+                    }, hour, minute, true);
+                    t.show();
+                }
+            });
+
+            ((AddPlanFooter)holder).btnAddPeople.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext, "준비중...", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+
+
+        // Header
+        else{
+            ((AddPlanViewHeader)holder).btAddGroup.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((AddPlanViewHeader)holder).txtGroup.setText("HELLO");
+                }
+            });
+
+
+            ((AddPlanViewHeader)holder).btAddFormat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((AddPlanViewHeader)holder).txtFormat.setText("HELLO");
+
+                }
+            });
+
+            ((AddPlanViewHeader)holder).btAddWorker.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((AddPlanViewHeader)holder).txtWorker.setText("HELLO");
+
+                }
+            });
         }
     }
 
+
+
     @Override
     public int getItemCount() {
-        return items.size() +1;
+        return items.size() +2;
     }
 
 
     class AddPlanViewHeader extends RecyclerView.ViewHolder{
-
+        @BindView(R.id.btAddGroup) Button btAddGroup;
+        @BindView(R.id.btAddFormat) Button btAddFormat;
+        @BindView(R.id.btAddWorker) Button btAddWorker;
+        @BindView(R.id.txtGroup) TextView txtGroup;
+        @BindView(R.id.txtFormat) TextView txtFormat;
+        @BindView(R.id.txtWorker) TextView txtWorker;
         public AddPlanViewHeader(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
@@ -127,8 +223,21 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
         LinearLayout bckInput;
         @BindView(R.id.bckAdd)
         FrameLayout bckAdd;
+        @BindView(R.id.btAddWork) Button btAddWork;
         @BindView(R.id.btnAdd)
         FloatingActionButton btnAdd;
+
+        @BindView(R.id.editTitle)
+        EditText editTitle;
+        @BindView(R.id.txtStartTime) TextView txtStartTime;
+        @BindView(R.id.txtEndTime) TextView txtEndTime;
+        @BindView(R.id.txtPeople) TextView txtPeople;
+        @BindView(R.id.editWorkDetail) EditText editWorkDetail;
+
+        @BindView(R.id.btnStartTime) Button btnStartTime;
+        @BindView(R.id.btnEndTime) Button btnEndTime;
+        @BindView(R.id.btnAddPeople) Button btnAddPeople;
+
 
         public AddPlanFooter(View itemView) {
             super(itemView);

@@ -55,9 +55,11 @@ public class TimeListItem {
         this.peopleUid = new ArrayList<>();
         this.isDone = new ArrayList<>();
 
-        this.doPeople.addAll(doPeople);
-        this.peopleUid.addAll(peopleUid);
-        this.isDone.addAll(isDone);
+        if(doPeople!=null && peopleUid!=null && isDone!=null ) {
+            this.doPeople.addAll(doPeople);
+            this.peopleUid.addAll(peopleUid);
+            this.isDone.addAll(isDone);
+        }
 
     }
 }

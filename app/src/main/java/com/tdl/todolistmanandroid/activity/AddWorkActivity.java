@@ -31,14 +31,14 @@ public class AddWorkActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.footer_plan);
         ButterKnife.bind(this);
-        final EditText workTitleEditText = (EditText) findViewById(R.id.workTitleEditText);
+     /*   final EditText workTitleEditText = (EditText) findViewById(R.id.workTitleEditText);
         final EditText workDetailText = (EditText) findViewById(R.id.workDetailText);
         workStartTimeHourText = (TextView) findViewById(R.id.workStartTimeHourText);
         workEndTimeHourText = (TextView) findViewById(R.id.workEndTimeHourText);
         Button btAddWork = (Button) findViewById(R.id.btAddWork);
         final TimePickerDialog startTimePickDialog =  new TimePickerDialog(this, startListener, 0, 0, false);
         final TimePickerDialog endTimePickDialog =  new TimePickerDialog(this, endListener, 0, 0, false);
-
+*/
 
         /*workStartTime.setOnClickListener(new View.OnClickListener() {
             @Override

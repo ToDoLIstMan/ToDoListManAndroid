@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:text="제목 "/>
             <EditText
-                android:id="@+id/workTitleEditText"
+                android:id="@+id/editTitle"
                 android:layout_width="match_parent"
                 android:maxLines="1"
                 android:layout_height="wrap_content"/>
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:text="시작시간  "/>
             <TextView
-                android:id="@+id/workStartTimeHourText"
+                android:id="@+id/txtStartTime"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="00 : 00"/>
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:text="종료시간  "/>
             <TextView
-                android:id="@+id/workEndTimeHourText"
+                android:id="@+id/txtEndTime"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="00 : 00"/>
@@ -82,6 +82,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="참여인원  "/>
+            <TextView
+                android:id="@+id/txtPeople"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="    "/>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -89,17 +94,12 @@
                 android:text="추가"/>
         </LinearLayout>
 
-            <TextView
-                android:id="@+id/txtPoeple"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="00 : 00"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Detail"/>
+            android:text="상세 내용"/>
         <EditText
-            android:id="@+id/workDetailText"
+            android:id="@+id/editWorkDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="5"

@@ -70,9 +70,6 @@ public class TimeListFragment extends Fragment {
         today = new Date();
         sDF = new SimpleDateFormat("yyyy-M-dd");
 
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference().child("work").child(String.valueOf(getActivity().getIntent().getIntExtra("groupId",-1))).child(sDF.format(today).toString());
-
         hasData();
 
         return v;
@@ -82,8 +79,8 @@ public class TimeListFragment extends Fragment {
 
 
     private void hasData() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference().child("work").child(String.valueOf(getArguments().getInt("uid",-2))).child(sDF.format(today).toString());
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference().child("work").child(String.valueOf(getArguments().getInt("uid",-2))).child(sDF.format(today).toString());
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -130,11 +127,14 @@ public class TimeListFragment extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
+                Log.e("asdf",""+dataSnapshot.getValue());
                 work work = dataSnapshot.getValue(work.class);
-                lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),work.getId(),work.getName(),work.getuId(),work.getIsDone()));
 
                 switch (status){
-                    case "done":
+                    case "whole":
+                        lists.add(new TimeListItem(work.getStartTime(), work.getEndTime(), work.getTitle(), work.getDetail(), work.getId(), work.getName(), work.getuId(), work.getIsDone()));
+                        break;
+/*                    case "done":
                         for(int i = 0;i<work.getuId().size();i++){
                             if(work.getuId().get(i).equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) && work.getIsDone().get(i)) {
                                 lists.add(new TimeListItem(work.getStartTime(), work.getEndTime(), work.getTitle(), work.getDetail(), work.getId(), work.getName(), work.getuId(), work.getIsDone()));
@@ -150,10 +150,9 @@ public class TimeListFragment extends Fragment {
                         }
                     }
                         break;
-                    case "whole":
-                        lists.add(new TimeListItem(work.getStartTime(), work.getEndTime(), work.getTitle(), work.getDetail(), work.getId(), work.getName(), work.getuId(), work.getIsDone()));
-                        break;
-                }
+  */
+                default:
+                break;}
 
                 recyclerView.setAdapter(new ListAdapter(getActivity(),lists));
                 progressBar.setVisibility(View.GONE);

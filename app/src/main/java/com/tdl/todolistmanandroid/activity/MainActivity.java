@@ -194,10 +194,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         addViewPagerAdapter();
+    }
 
+    private void addViewPagerAdapter() {
+        timeTabAdapter = new TimeTabAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),curGroupId);
+        viewPager.setAdapter(timeTabAdapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                Log.e("curPosition aa: ",""+tab.getPosition());
                 viewPager.setCurrentItem(tab.getPosition());
 
             }
@@ -212,12 +218,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
-    }
-
-    private void addViewPagerAdapter() {
-        timeTabAdapter = new TimeTabAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),curGroupId);
-        viewPager.setAdapter(timeTabAdapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
 
     /**

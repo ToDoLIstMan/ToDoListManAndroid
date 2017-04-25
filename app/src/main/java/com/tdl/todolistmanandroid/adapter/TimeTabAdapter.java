@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 
 import com.tdl.todolistmanandroid.fragment.TimeListFragment;
 
@@ -30,24 +31,26 @@ public class TimeTabAdapter extends FragmentStatePagerAdapter {
         bundle.putInt("uid",curGroupUid);
         switch (position){
             case 0:
+                Log.e("curPosition",""+position);
                 listFragment = new TimeListFragment();
                 bundle.putString("status","whole");
                 listFragment.setArguments(bundle);
-                break;
+                return listFragment;
             case 1:
+                Log.e("curPosition",""+position);
                 listFragment = new TimeListFragment();
                 bundle.putString("status","done");
                 listFragment.setArguments(bundle);
-                break;
+                return listFragment;
             case 2:
+                Log.e("curPosition",""+position);
                 listFragment = new TimeListFragment();
                 bundle.putString("status","doing");
                 listFragment.setArguments(bundle);
-                break;
+                return listFragment;
             default:
                 return null;
         }
-        return listFragment;
 
     }
 
