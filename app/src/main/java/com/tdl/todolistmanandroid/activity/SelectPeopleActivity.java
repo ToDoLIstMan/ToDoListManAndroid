@@ -1,10 +1,12 @@
 package com.tdl.todolistmanandroid.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.tdl.todolistmanandroid.R;
@@ -25,13 +27,14 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class SelectPeopleActivity extends AppCompatActivity{
 
     @BindView(R.id.toolbar) Toolbar toolbar;
-
+    Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_people);
 
+        mContext = this;
         Toolbar searchBar = (Toolbar) findViewById(R.id.searchToolbar);
         searchBar.setTitle("그룹선택");
         setSupportActionBar((Toolbar) findViewById(R.id.searchToolbar));
@@ -57,6 +60,6 @@ public class SelectPeopleActivity extends AppCompatActivity{
             items.add(item[i]);
         }
 
-        recyclerView.setAdapter(new SelectPeopleAdapter(getApplicationContext(), items,getIntent().getIntExtra("status",-1000)));
+        recyclerView.setAdapter(new SelectPeopleAdapter(mContext, items,getIntent().getIntExtra("status",-1000)));
     }
 }

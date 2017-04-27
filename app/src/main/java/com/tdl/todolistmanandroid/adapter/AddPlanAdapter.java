@@ -23,11 +23,13 @@ import com.tdl.todolistmanandroid.activity.MainActivity;
 import com.tdl.todolistmanandroid.activity.PickGroupActivity;
 import com.tdl.todolistmanandroid.activity.SelectPeopleActivity;
 import com.tdl.todolistmanandroid.item.AddPlanItem;
+import com.tdl.todolistmanandroid.item.SelectPeopleItem;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 
 /**
  * Created by HyunWook Kim on 2017-04-05.
@@ -40,6 +42,8 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
     private final int BODY = 0;
     private final int FOOTER = 1;
     private final int HEADER  = -1;
+
+    private String worker ="", format ="", group ="";
     public AddPlanAdapter(Context mContext, List<AddPlanItem> items) {
         this.mContext = mContext;
         this.items = items;
@@ -70,6 +74,7 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
         }
         else if(viewType==HEADER){
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_plan, parent, false);
+
             return new AddPlanAdapter.AddPlanViewHeader(v);
         }
         else
@@ -164,15 +169,17 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
 
 
 
-        // Header
         else{
+
+            // Header
+            ((AddPlanViewHeader)holder).txtWorker.setText(worker);
             ((AddPlanViewHeader)holder).btAddGroup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent  gotoA = new Intent(mContext,SelectPeopleActivity.class);
                     gotoA.putExtra("status",2);
                     gotoA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(gotoA);
+                    ((AddPlanActivity)mContext).startActivityForResult(gotoA,0);
                 }
             });
 
@@ -198,6 +205,7 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
             });
         }
     }
+
 
 
 
@@ -255,6 +263,18 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+
+    public void setWorker(String worker) {
+        this.worker = worker;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 
 }

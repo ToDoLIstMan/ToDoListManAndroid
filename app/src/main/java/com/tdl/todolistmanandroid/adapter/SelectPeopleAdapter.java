@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.activity.AddPlanActivity;
 import com.tdl.todolistmanandroid.activity.SelectPeopleActivity;
-import com.tdl.todolistmanandroid.activity.SelectPeopleActivity_ViewBinding;
 import com.tdl.todolistmanandroid.item.SelectPeopleItem;
 import com.tdl.todolistmanandroid.item.SelectSomethingItem;
 
@@ -42,6 +41,7 @@ public class SelectPeopleAdapter extends RecyclerView.Adapter<SelectPeopleAdapte
     List<SelectPeopleItem> items;
     List<SelectSomethingItem> items2;
     Integer i;
+    Intent thisIntent;
 
 
     int item_layout;
@@ -49,6 +49,7 @@ public class SelectPeopleAdapter extends RecyclerView.Adapter<SelectPeopleAdapte
         this.context = context;
         this.items = items;
         this.item_layout = item_layout;
+        thisIntent = ((SelectPeopleActivity)this.context).getIntent();
     }
 
 
@@ -81,11 +82,11 @@ public class SelectPeopleAdapter extends RecyclerView.Adapter<SelectPeopleAdapte
             holder.selectSomethingItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent sendInfo = new Intent(context,AddPlanActivity.class);
-                    sendInfo.putExtra("itemTitle", item.getUserName());
-                    sendInfo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(sendInfo);
-                    //((SelectPeopleActivity)context).finish();
+                    Intent i = new Intent();
+                    i.putExtra("itemTitle", item.getUserName());
+
+                    ((SelectPeopleActivity)context).setResult(0,i);
+                    ((SelectPeopleActivity)context).finish();
                 }});
 
         }
