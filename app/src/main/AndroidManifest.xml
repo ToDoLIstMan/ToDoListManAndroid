@@ -93,11 +93,9 @@
                 android:value=".activity.AddPlanActivity"/>
         </activity>
 
-        <activity android:name=".activity.SelectPeopleActivity"
+        <activity
+            android:name=".activity.SelectPeopleActivity"
             android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity"/>
         </activity>
 
     </application>

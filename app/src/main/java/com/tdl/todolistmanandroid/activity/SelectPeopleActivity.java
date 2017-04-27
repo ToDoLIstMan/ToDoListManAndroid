@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.adapter.SelectPeopleAdapter;
@@ -32,11 +33,17 @@ public class SelectPeopleActivity extends AppCompatActivity{
         setContentView(R.layout.activity_select_people);
 
         Toolbar searchBar = (Toolbar) findViewById(R.id.searchToolbar);
-        searchBar.setTitle("인원추가하기");
+        searchBar.setTitle("그룹선택");
         setSupportActionBar((Toolbar) findViewById(R.id.searchToolbar));
-        if(getSupportActionBar() !=null)
+        if(getSupportActionBar() !=null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+            searchBar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.selectPeopleRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -46,10 +53,10 @@ public class SelectPeopleActivity extends AppCompatActivity{
         List<SelectPeopleItem> items = new ArrayList<>();
         SelectPeopleItem[] item = new SelectPeopleItem[500];
         for(int i=0;i<5;i++){
-            item[i] = new SelectPeopleItem(R.drawable.kakao_default_profile_image,i+"");
+             item[i] = new SelectPeopleItem(R.drawable.kakao_default_profile_image,i+"");
             items.add(item[i]);
         }
 
-        recyclerView.setAdapter(new SelectPeopleAdapter(getApplicationContext(), items,R.layout.activity_select_people));
+        recyclerView.setAdapter(new SelectPeopleAdapter(getApplicationContext(), items,getIntent().getIntExtra("status",-1000)));
     }
 }

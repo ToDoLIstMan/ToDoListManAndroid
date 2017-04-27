@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    startActivity(new Intent(MainActivity.this,PickGroupActivity.class));
+                startActivity(new Intent(MainActivity.this,PickGroupActivity.class));
                 }
             },500);
         }

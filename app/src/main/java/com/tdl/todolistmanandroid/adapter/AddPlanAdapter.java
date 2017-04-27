@@ -19,6 +19,9 @@ import android.widget.Toast;
 
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.activity.AddPlanActivity;
+import com.tdl.todolistmanandroid.activity.MainActivity;
+import com.tdl.todolistmanandroid.activity.PickGroupActivity;
+import com.tdl.todolistmanandroid.activity.SelectPeopleActivity;
 import com.tdl.todolistmanandroid.item.AddPlanItem;
 
 import java.util.List;
@@ -152,8 +155,10 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
             ((AddPlanFooter)holder).btnAddPeople.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, "준비중...", Toast.LENGTH_SHORT).show();
-                }
+                    Intent gotoB = new Intent(mContext,SelectPeopleActivity.class);
+                    gotoB.putExtra("status",0);
+                    gotoB.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(gotoB);}
             });
         }
 
@@ -164,7 +169,10 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
             ((AddPlanViewHeader)holder).btAddGroup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((AddPlanViewHeader)holder).txtGroup.setText("HELLO");
+                    Intent  gotoA = new Intent(mContext,SelectPeopleActivity.class);
+                    gotoA.putExtra("status",2);
+                    gotoA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(gotoA);
                 }
             });
 
@@ -172,16 +180,20 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
             ((AddPlanViewHeader)holder).btAddFormat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((AddPlanViewHeader)holder).txtFormat.setText("HELLO");
-
+                    Intent  gotoA = new Intent(mContext,SelectPeopleActivity.class);
+                    gotoA.putExtra("status",1);
+                    gotoA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(gotoA);
                 }
             });
 
             ((AddPlanViewHeader)holder).btAddWorker.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((AddPlanViewHeader)holder).txtWorker.setText("HELLO");
-
+                    Intent  gotoA = new Intent(mContext,SelectPeopleActivity.class);
+                    gotoA.putExtra("status",0);
+                    gotoA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(gotoA);
                 }
             });
         }
