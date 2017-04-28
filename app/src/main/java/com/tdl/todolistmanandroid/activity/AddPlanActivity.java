@@ -1,5 +1,6 @@
 package com.tdl.todolistmanandroid.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,7 +46,6 @@ public class AddPlanActivity extends AppCompatActivity {
         makeToolbar();
         initList();
 
-
     }
 
     /**
@@ -89,12 +89,37 @@ public class AddPlanActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    public void sendIntent(int position, int status){
+        Intent  gotoA = new Intent(AddPlanActivity.this,SelectPeopleActivity.class);
+        gotoA.putExtra("status",status);
+        if(status==0){
+            gotoA.putExtra("groupId",position);
+        }
+        gotoA.putExtra("position",position);
+        startActivityForResult(gotoA,777);
+
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==0) {
-                Log.e("dddd",data.getStringExtra("itemTitle"));
-                ((AddPlanAdapter)recyclerView.getAdapter()).setWorker(data.getStringExtra("itemTitle"));
-                recyclerView.getAdapter().notifyDataSetChanged();
-        }
+        if(requestCode == 777)
+            if(resultCode == 778)
+                ((AddPlanAdapter) recyclerView.getAdapter()).setWorker(data.getStringExtra("itemTitle"));
+            else if(resultCode == 779)
+                ((AddPlanAdapter) recyclerView.getAdapter()).setFormat(data.getStringExtra("itemTitle"));
+            else if(resultCode == 780) {
+                ((AddPlanAdapter) recyclerView.getAdapter()).setGroup(data.getStringExtra("itemTitle"));
+                ((AddPlanAdapter) recyclerView.getAdapter()).setGroupId(Integer.valueOf(data.getIntExtra("groupId",-1)));
+            }
+
+        recyclerView.getAdapter().notifyDataSetChanged();
+        Log.e("gggg",""+((AddPlanAdapter) recyclerView.getAdapter()).getGroupId());
+
     }
 }

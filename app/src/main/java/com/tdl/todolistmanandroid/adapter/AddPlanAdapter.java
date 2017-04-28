@@ -1,11 +1,13 @@
 package com.tdl.todolistmanandroid.adapter;
 
+import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +46,7 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
     private final int HEADER  = -1;
 
     private String worker ="", format ="", group ="";
+    private int groupId= -1;
     public AddPlanAdapter(Context mContext, List<AddPlanItem> items) {
         this.mContext = mContext;
         this.items = items;
@@ -64,6 +67,8 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        Log.e("gggg",""+groupId);
         if(viewType==BODY) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_add_plan, parent, false);
             return new AddPlanAdapter.AddPlanViewHolder(v);
@@ -82,8 +87,9 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
+        Log.e("gggg",""+groupId);
         //body(holder)
         if(holder instanceof AddPlanViewHolder) {
             final AddPlanItem curItem = items.get(position-1);
@@ -161,7 +167,8 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     Intent gotoB = new Intent(mContext,SelectPeopleActivity.class);
-                    gotoB.putExtra("status",0);
+                    Log.e("adsf",""+groupId);
+                    gotoB.putExtra("status",groupId);
                     gotoB.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(gotoB);}
             });
@@ -173,13 +180,13 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
 
             // Header
             ((AddPlanViewHeader)holder).txtWorker.setText(worker);
+            ((AddPlanViewHeader)holder).txtFormat.setText(format);
+            ((AddPlanViewHeader)holder).txtGroup.setText(group);
             ((AddPlanViewHeader)holder).btAddGroup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent  gotoA = new Intent(mContext,SelectPeopleActivity.class);
-                    gotoA.putExtra("status",2);
-                    gotoA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    ((AddPlanActivity)mContext).startActivityForResult(gotoA,0);
+
+                    ((AddPlanActivity)mContext).sendIntent(position,2);
                 }
             });
 
@@ -187,20 +194,21 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
             ((AddPlanViewHeader)holder).btAddFormat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent  gotoA = new Intent(mContext,SelectPeopleActivity.class);
-                    gotoA.putExtra("status",1);
-                    gotoA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(gotoA);
+
+                    ((AddPlanActivity)mContext).sendIntent(position,1);
                 }
             });
 
             ((AddPlanViewHeader)holder).btAddWorker.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent  gotoA = new Intent(mContext,SelectPeopleActivity.class);
-                    gotoA.putExtra("status",0);
-                    gotoA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(gotoA);
+
+                    Log.e("gggg",""+groupId);
+                    if(groupId!=-1) {
+                        ((AddPlanActivity) mContext).sendIntent(groupId, 0);
+                    }
+                    else
+                        Toast.makeText(mContext, "그룹을 먼저 선택해 주세요.", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -277,4 +285,15 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
         this.group = group;
     }
 
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public String getGroup() {
+        return group;
+    }
 }
