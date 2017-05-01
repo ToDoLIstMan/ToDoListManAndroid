@@ -17,6 +17,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.adapter.FormatManageAdapter;
 import com.tdl.todolistmanandroid.adapter.MakeFormatAdapter;
@@ -98,18 +99,28 @@ public class FormatManageActivity extends AppCompatActivity implements View.OnCl
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference().child("format");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("df",dataSnapshot.getValue().toString());
+                format format = dataSnapshot.getValue(format.class);
+                FormatManageItem item = new FormatManageItem(format.getFormatName(), format.getMasterUid(), format.getFormatId(), format.getWork());
+                items.add(item);
+                recyclerView.setAdapter(new FormatManageAdapter(mContext, items));
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(final DataSnapshot dataSnapshot, String s) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Log.e("df",dataSnapshot.getValue().toString());
-                        format format = dataSnapshot.getValue(format.class);
-                        FormatManageItem item = new FormatManageItem(format.getFormatName(), format.getMasterUid(), format.getFormatId(), format.getWork());
-                        items.add(item);
-                        recyclerView.setAdapter(new FormatManageAdapter(mContext, items));
+
 
 
 
