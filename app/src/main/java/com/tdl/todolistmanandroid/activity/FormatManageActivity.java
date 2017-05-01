@@ -34,6 +34,7 @@ public class FormatManageActivity extends AppCompatActivity implements View.OnCl
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.progressBar) ProgressBar progressBar;
 
+
     Context mContext;
     RecyclerView.LayoutManager layoutManager;
     List<MakeFormatItem> items;
