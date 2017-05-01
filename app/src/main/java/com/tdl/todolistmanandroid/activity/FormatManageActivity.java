@@ -18,8 +18,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.tdl.todolistmanandroid.R;
+import com.tdl.todolistmanandroid.adapter.FormatManageAdapter;
 import com.tdl.todolistmanandroid.adapter.MakeFormatAdapter;
 import com.tdl.todolistmanandroid.database.format;
+import com.tdl.todolistmanandroid.item.FormatManageItem;
 import com.tdl.todolistmanandroid.item.MakeFormatItem;
 
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ public class FormatManageActivity extends AppCompatActivity implements View.OnCl
 
     Context mContext;
     RecyclerView.LayoutManager layoutManager;
-    List<MakeFormatItem> items;
+    List<FormatManageItem> items;
 //    private int lastFormatId = -1;
 
 
@@ -51,6 +53,8 @@ public class FormatManageActivity extends AppCompatActivity implements View.OnCl
         makeToolbar();
 
         fab.setOnClickListener(this);
+
+        progressBar.setVisibility(View.GONE);
     }
     /**
      * Toolbar 생성 메소드
@@ -103,13 +107,11 @@ public class FormatManageActivity extends AppCompatActivity implements View.OnCl
                     public void run() {
                         Log.e("df",dataSnapshot.getValue().toString());
                         format format = dataSnapshot.getValue(format.class);
-                        MakeFormatItem item = new MakeFormatItem(format.getFormatName(), format.getMasterUid(), format.getFormatId()/*, format.getWork()*/);
+                        FormatManageItem item = new FormatManageItem(format.getFormatName(), format.getMasterUid(), format.getFormatId(), format.getWork());
                         items.add(item);
-                        recyclerView.setAdapter(new MakeFormatAdapter(mContext, items));
+                        recyclerView.setAdapter(new FormatManageAdapter(mContext, items));
 
-                        progressBar.setVisibility(View.GONE);
-//                        if (lastFormatId < group.getId())
-//                            lastFormatId = group.getId();
+
 
                     }
                 });
@@ -145,7 +147,6 @@ public class FormatManageActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         if(v.getId()==R.id.fab) {
 
-//            Toast.makeText(mContext, "준비중!", Toast.LENGTH_SHORT).show();
             Intent makeFormat = new Intent(this,MakeFormatActivity.class);
             startActivity(makeFormat);
         }

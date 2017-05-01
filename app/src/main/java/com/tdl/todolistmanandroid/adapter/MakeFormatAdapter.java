@@ -110,7 +110,7 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
                     ((FormatFooter)holder).txtEndTime.getText().toString();
                     ((FormatFooter)holder).editWorkDetail.getText().toString();
 
-                    items.add(new MakeFormatItem( ((FormatFooter)holder).editTitle.getText().toString(),null,null));
+                    items.add(new MakeFormatItem( ((FormatFooter)holder).editTitle.getText().toString()));
                     notifyDataSetChanged();     //리스트 추가한 것 띄어주는 코드
 
                     ((FormatFooter)holder).editTitle.setText("");

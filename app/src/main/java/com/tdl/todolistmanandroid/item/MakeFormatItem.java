@@ -9,8 +9,7 @@ import java.util.List;
 
 public class MakeFormatItem {
 
-    private String formatName, masterUid, formatId;
-    List<String> work =new ArrayList<>();
+    private String formatName;
 
 
     /**
@@ -21,23 +20,8 @@ public class MakeFormatItem {
         return formatName;
     }
 
-    public String getFormatId() {
-        return formatId;
-    }
-
-    public String getMasterUid() {
-        return masterUid;
-    }
-
-    public List<String> getWork() {
-        return work;
-    }
-
-    public MakeFormatItem(String formatName, String formatId, String masterUid/*, List<String> work*/){
+    public MakeFormatItem(String formatName){
         this.formatName = formatName;
-        this.masterUid = masterUid;
-        this.formatId = formatId;
-        this.work.addAll(work);
     }
 
 }
