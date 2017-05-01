@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,14 +43,16 @@ public class SelectPeopleAdapter extends RecyclerView.Adapter<SelectPeopleAdapte
     List<SelectSomethingItem> items2;
     Integer i;
     Intent thisIntent;
+    SelectPeopleActivity pActivity;
 
 
     int item_layout;
-    public SelectPeopleAdapter(Context context, List<SelectPeopleItem> items, int item_layout) {
+    public SelectPeopleAdapter(Context context, List<SelectPeopleItem> items, int item_layout, SelectPeopleActivity selectPeopleActivity) {
         this.context = context;
         this.items = items;
         this.item_layout = item_layout;
         thisIntent = ((SelectPeopleActivity)this.context).getIntent();
+        pActivity= selectPeopleActivity;
     }
 
 
@@ -82,24 +85,23 @@ public class SelectPeopleAdapter extends RecyclerView.Adapter<SelectPeopleAdapte
             holder.selectSomethingItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent i = new Intent();
-                    i.putExtra("itemTitle", item.getUserName());
 
-                    ((SelectPeopleActivity)context).setResult(0,i);
-                    ((SelectPeopleActivity)context).finish();
+
+                    pActivity.sendIntent(item,item_layout);
                 }});
 
         }
-        else if(item_layout==1||item_layout==2)
-        {SelectPeopleItem item = items.get(position);
-            holder.userName.setText(item.getUserName());}
-        else i=1;
-//        holder.recyclerView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(context, item.getUserName(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        else if (item_layout == 1 || item_layout == 2) {
+                final SelectPeopleItem item1 = items.get(position);
+                holder.userName.setText(item1.getUserName());
+                holder.selectSomethingItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        pActivity.sendIntent(item1,item_layout);
+                    }
+                });
+
+        }
     }
 
     @Override
