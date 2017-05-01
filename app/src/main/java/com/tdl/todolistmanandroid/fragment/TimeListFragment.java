@@ -92,7 +92,9 @@ public class TimeListFragment extends Fragment {
                 }
             }
 
-            @Override
+
+
+        @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
@@ -116,6 +118,7 @@ public class TimeListFragment extends Fragment {
                 }else {
                     progressBar.setVisibility(View.GONE);
                 }
+
             }
 
             @Override

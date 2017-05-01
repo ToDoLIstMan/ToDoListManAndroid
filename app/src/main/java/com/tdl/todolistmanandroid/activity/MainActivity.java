@@ -377,6 +377,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(MainActivity.this,AddPlanActivity.class));
                 drawerLayout.closeDrawer(navView);
                 break;
+            case R.id.format:
+                startActivity(new Intent(MainActivity.this,FormatManageActivity.class));
+                drawerLayout.closeDrawer(navView);
+                break;
             case R.id.group:
                 startActivity(new Intent(MainActivity.this,PickGroupActivity.class));
                 drawerLayout.closeDrawer(navView);

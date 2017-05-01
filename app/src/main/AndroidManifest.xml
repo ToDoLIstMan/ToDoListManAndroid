@@ -98,6 +98,21 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".activity.FormatManageActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity"/>
+        </activity>
+
+        <activity android:name=".activity.MakeFormatActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.FormatManageActivity"/>
+        </activity>
+
+
     </application>
 
 
