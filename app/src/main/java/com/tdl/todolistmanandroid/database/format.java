@@ -9,7 +9,7 @@ import java.util.List;
 
 public class format {
 
-    String formatName, masterUid, formatId;
+    String formatName, masterUid, formatId, detail, startTime, endTime, planNumber, planName;
     List<String> work = new ArrayList<>();
 
     public String getFormatName() {
@@ -28,14 +28,38 @@ public class format {
         return work;
     }
 
-    public format(){}
+    public String getPlanNumber() {
+        return planNumber;
+    }
 
-    public format(String formatName, String masterUid, String formatId, List<String> work){
+    public String getDetail() {
+        return detail;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public String getPlanName() {
+        return planName;
+    }
+
+
+    public format(String formatName, String masterUid, String formatId){
         this.formatName = formatName;
         this.masterUid = masterUid;
         this.formatId = formatId;
-        this.work.addAll(work);
-
     }
 
+    public void plan(String planNumber, String detail, String startTime, String endTime, String planName){
+        this.planNumber = planNumber;
+        this.detail = detail;
+        this.startTime= startTime;
+        this.endTime= endTime;
+        this.planName= planName;
+    }
 }

@@ -57,7 +57,7 @@ public class FormatManageAdapter extends RecyclerView.Adapter {
                 gotoDetail.putExtra("formatName",item.getFormatName());
                 gotoDetail.putExtra("formatId",item.getFormatId());
                 gotoDetail.putExtra("masterUid",item.getMasterUid());
-                gotoDetail.putExtra("work",item.getWork().toString());
+//                gotoDetail.putExtra("work",item.getWork().toString());
                 gotoDetail.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(gotoDetail);
             }

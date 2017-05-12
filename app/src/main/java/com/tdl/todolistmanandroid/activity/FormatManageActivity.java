@@ -42,6 +42,7 @@ public class FormatManageActivity extends AppCompatActivity implements View.OnCl
     RecyclerView.LayoutManager layoutManager;
     List<FormatManageItem> items;
 //    private int lastFormatId = -1;
+    int lastGrpId = -1;
 
 
     @Override
@@ -102,10 +103,10 @@ public class FormatManageActivity extends AppCompatActivity implements View.OnCl
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("df",dataSnapshot.getValue().toString());
-                format format = dataSnapshot.getValue(format.class);
-                FormatManageItem item = new FormatManageItem(format.getFormatName(), format.getMasterUid(), format.getFormatId(), format.getWork());
-                items.add(item);
+//                format format = dataSnapshot.getValue(format.class);
+//                FormatManageItem item = new FormatManageItem(format.getFormatName(), format.getMasterUid(), format.getFormatId());
+//                items.add(item);
+                lastGrpId=items.size();
                 recyclerView.setAdapter(new FormatManageAdapter(mContext, items));
             }
 
@@ -159,6 +160,7 @@ public class FormatManageActivity extends AppCompatActivity implements View.OnCl
         if(v.getId()==R.id.fab) {
 
             Intent makeFormat = new Intent(this,MakeFormatActivity.class);
+            makeFormat.putExtra("lastGrpId",lastGrpId);
             startActivity(makeFormat);
         }
     }

@@ -33,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.adapter.AddPlanAdapter;
 import com.tdl.todolistmanandroid.adapter.MakeFormatAdapter;
+import com.tdl.todolistmanandroid.database.format;
 import com.tdl.todolistmanandroid.database.group;
 import com.tdl.todolistmanandroid.database.user;
 import com.tdl.todolistmanandroid.item.AddPlanItem;
@@ -51,12 +52,12 @@ import butterknife.ButterKnife;
  */
 
 public class MakeFormatActivity extends AppCompatActivity {
-
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     Context mContext;
-    int lastGroupId = 0;
+    int lastGroupId = 0, lastPlanNumber = 0;
+    List<MakeFormatItem> items;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,11 +89,12 @@ public class MakeFormatActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
-        List<MakeFormatItem> items;
 
         items = new ArrayList<>();
 
         recyclerView.setAdapter(new MakeFormatAdapter(mContext,items));
+
+        lastGroupId = getIntent().getIntExtra("lastGrpId",-1);
     }
 
 
@@ -104,46 +106,59 @@ public class MakeFormatActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         if(item.getItemId()==R.id.action_send){
-            Toast.makeText(this, "준비중", Toast.LENGTH_SHORT).show();
-//            LayoutInflater inflater = LayoutInflater.from(this);
-//            View promptView = inflater.inflate(R.layout.edittext_dialog,null);
-//            AlertDialog.Builder alert = new AlertDialog.Builder(this);
-//            alert.setTitle("포멧 추가");
-//            alert.setView(promptView);
-//
-//            final EditText input = (EditText)promptView.findViewById(R.id.editGroup);
-//            input.requestFocus();
-//            input.setHint("포멧명을 입력하세요.");
-//            alert.setView(promptView);
-//
-//            alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
+//            Log.e("adfadf",""+items.size());
+
+//            // edittext_dialogue layout의 폼을 가진 AlertDialogue 생성 후 이름을 포멧 추가라고 지정
+            LayoutInflater inflater = LayoutInflater.from(this);
+            View promptView = inflater.inflate(R.layout.edittext_dialog,null);
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("포멧 추가");
+            alert.setView(promptView);
+
+            // 내용 지정
+            final EditText input = (EditText)promptView.findViewById(R.id.editGroup);
+            input.requestFocus();
+            input.setHint("포멧명을 입력하세요.");
+            alert.setView(promptView);
+
+            // 확인을 누를 시
+            alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent formatManage = new Intent(mContext,FormatManageActivity.class);
+                    
+                    finish();
+
 //                    FirebaseDatabase database = FirebaseDatabase.getInstance();
 //                    DatabaseReference myRef = database.getReference().child("format").child(String.valueOf(lastGroupId+1));
-//                    group group = new group(lastGroupId+1, FirebaseAuth.getInstance().getCurrentUser().getUid(),input.getText().toString(),new ArrayList<String>(),new ArrayList<String>());
-//                    myRef.setValue(group);
-//
+//                    DatabaseReference myRefPlan = database.getReference().child("format").child(String.valueOf(lastPlanNumber+1));
+
+//                    format format = new format(input.getText().toString(),FirebaseAuth.getInstance().getCurrentUser().getUid(),lastGroupId+1+"");
+//                    //format.plan(editFormatDetail.getText().toString(),startTime.getText().toString(),endTime.getText().toString(),
+//                     //       lastPlanNumber+1+"", planName.getText().toString());
+//                    myRef.setValue(format);
+//                    myRefPlan.setValue(format);
+
 //                    myRef = database.getReference().child("user").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 //                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
 //                        @Override
 //                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+//                            Map<String,Object> f = new HashMap<>();
+////                            List<Integer> masterGroups = dataSnapshot.getValue(user.class).getMasterGroups();
+////                            List<String> masterGroupName =dataSnapshot.getValue(user.class).getMasterGroupName();
+////
+////                            masterGroups.add(lastGroupId+1);
+////                            masterGroupName.add(input.getText().toString());
+////
+////                            f.put("masterGroups",masterGroups);
+////                            f.put("masterGroupName",masterGroupName);
+////                            f.put("groups",masterGroups);
+////                            f.put("groupName",masterGroupName);
 //
-//                            Map<String,Object> g = new HashMap<>();
-//                            List<Integer> masterGroups = dataSnapshot.getValue(user.class).getMasterGroups();
-//                            List<String> masterGroupName =dataSnapshot.getValue(user.class).getMasterGroupName();
-//
-//                            masterGroups.add(lastGroupId+1);
-//                            masterGroupName.add(input.getText().toString());
-//
-//                            g.put("masterGroups",masterGroups);
-//                            g.put("masterGroupName",masterGroupName);
-//                            g.put("groups",masterGroups);
-//                            g.put("groupName",masterGroupName);
-//
-//                            dataSnapshot.getRef().updateChildren(g);
+//                            dataSnapshot.getRef().updateChildren(f);
 //                            Toast.makeText(mContext, "추가되었습니다.", Toast.LENGTH_SHORT).show();
 //                        }
 //
@@ -152,17 +167,17 @@ public class MakeFormatActivity extends AppCompatActivity {
 //
 //                        }
 //                    });
-//                }
-//            }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//
-//                }
-//            });
-//
-//            AlertDialog dialog = alert.create();
-//            dialog.show();
-//
+                }
+            }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+
+            AlertDialog dialog = alert.create();
+            dialog.show();
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -171,13 +186,13 @@ public class MakeFormatActivity extends AppCompatActivity {
 
 
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if(resultCode==0) {
-//            Log.e("dddd",data.getStringExtra("itemTitle"));
-//            ((AddPlanAdapter)recyclerView.getAdapter()).setWorker(data.getStringExtra("itemTitle"));
-//            recyclerView.getAdapter().notifyDataSetChanged();
-//        }
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==0) {
+            Log.e("dddd",data.getStringExtra("itemTitle"));
+            ((AddPlanAdapter)recyclerView.getAdapter()).setWorker(data.getStringExtra("itemTitle"));
+            recyclerView.getAdapter().notifyDataSetChanged();
+        }
+    }
 }

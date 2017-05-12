@@ -29,15 +29,15 @@ public class FormatManageItem {
         return masterUid;
     }
 
-    public List<String> getWork() {
-        return work;
-    }
+//    public List<String> getWork() {
+//        return work;
+//    }
 
-    public FormatManageItem(String formatName, String formatId, String masterUid, List<String> work){
+    public FormatManageItem(String formatName, String formatId, String masterUid/*, List<String> work*/){
         this.formatName = formatName;
         this.masterUid = masterUid;
-        this.formatId = formatId;
-        this.work.addAll(work);
+//        this.formatId = formatId;
+//        this.work.addAll(work);
     }
 
 }

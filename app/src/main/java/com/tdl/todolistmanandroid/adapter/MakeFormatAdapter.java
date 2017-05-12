@@ -3,9 +3,11 @@ package com.tdl.todolistmanandroid.adapter;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +64,7 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
             return new FormatViewHolder(v);
         }
         else if(viewType == FOOTER){
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.footer_plan, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.footer_format, parent, false);
             return new FormatFooter(v);
         }
         else
@@ -75,16 +77,19 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
         //body(holder)
         if(holder instanceof FormatViewHolder) {
             final MakeFormatItem curItem = items.get(position);
+//            ((FormatViewHolder)holder).txtEndTime.setText(curItem.getEndTime());
+//            ((FormatViewHolder)holder).txtStartTime.setText(curItem.getStartTime());
             ((FormatViewHolder)holder).addPlanTxtTitle.setText(curItem.getFormatName());
 
-            ((FormatViewHolder)holder).addPlanCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent gotoToDo = new Intent(mContext,FormatManageActivity.class);
-                gotoToDo.putExtra("FormatName",curItem.getFormatName());
-                mContext.startActivity(gotoToDo);
-            }
-        });
+
+//            ((FormatViewHolder)holder).addPlanCardView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent gotoToDo = new Intent(mContext,FormatManageActivity.class);
+//                gotoToDo.putExtra("PlanName",curItem.getPlanName());
+//                mContext.startActivity(gotoToDo);
+//            }
+//        });
 
 
         }
@@ -108,8 +113,9 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
 
                     ((FormatFooter)holder).txtStartTime.getText().toString();
                     ((FormatFooter)holder).txtEndTime.getText().toString();
-                    ((FormatFooter)holder).editWorkDetail.getText().toString();
+                    ((FormatFooter)holder).editFormatDetail.getText().toString();
 
+//                    Log.e("fgfgfgg",((FormatFooter)holder).editTitle.getText().toString());
                     items.add(new MakeFormatItem( ((FormatFooter)holder).editTitle.getText().toString()));
                     notifyDataSetChanged();     //리스트 추가한 것 띄어주는 코드
 
@@ -145,14 +151,6 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
                 }
             });
 
-            ((FormatFooter)holder).btnAddPeople.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent gotoB = new Intent(mContext,SelectPeopleActivity.class);
-                    gotoB.putExtra("status",0);
-                    gotoB.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(gotoB);}
-            });
         }
 
 
@@ -202,22 +200,9 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
         return items.size() +1;
     }
 
-
-  /*  class FormatViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.btAddGroup) Button btAddGroup;
-        @BindView(R.id.btAddFormat) Button btAddFormat;
-        @BindView(R.id.btAddWorker) Button btAddWorker;
-        @BindView(R.id.txtGroup) TextView txtGroup;
-        @BindView(R.id.txtFormat) TextView txtFormat;
-        @BindView(R.id.txtWorker) TextView txtWorker;
-        public FormatViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this,itemView);
-        }
-    }*/
     class FormatViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.addPlanTxtTitle) TextView addPlanTxtTitle;
-        @BindView(R.id.addPlanCardView) CardView addPlanCardView;
+        @Nullable@BindView(R.id.addPlanTxtTitle) TextView addPlanTxtTitle;
+        @Nullable@BindView(R.id.addPlanCardView) CardView addPlanCardView;
         FormatViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
@@ -230,15 +215,14 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
         @BindView(R.id.btAddWork) Button btAddWork;
         @BindView(R.id.btnAdd) FloatingActionButton btnAdd;
 
+
         @BindView(R.id.editTitle) EditText editTitle;
         @BindView(R.id.txtStartTime) TextView txtStartTime;
         @BindView(R.id.txtEndTime) TextView txtEndTime;
-        @BindView(R.id.txtPeople) TextView txtPeople;
-        @BindView(R.id.editWorkDetail) EditText editWorkDetail;
+        @BindView(R.id.editFormatDetail) EditText editFormatDetail;
 
         @BindView(R.id.btnStartTime) Button btnStartTime;
         @BindView(R.id.btnEndTime) Button btnEndTime;
-        @BindView(R.id.btnAddPeople) Button btnAddPeople;
 
 
         public FormatFooter(View itemView) {
