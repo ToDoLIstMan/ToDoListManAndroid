@@ -191,7 +191,7 @@ public class MakeFormatActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode==0) {
             Log.e("dddd",data.getStringExtra("itemTitle"));
-            ((AddPlanAdapter)recyclerView.getAdapter()).setWorker(data.getStringExtra("itemTitle"));
+         //   ((AddPlanAdapter)recyclerView.getAdapter()).setWorker(data.getStringExtra("itemTitle"));
             recyclerView.getAdapter().notifyDataSetChanged();
         }
     }

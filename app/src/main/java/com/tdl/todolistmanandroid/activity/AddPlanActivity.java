@@ -93,17 +93,15 @@ public class AddPlanActivity extends AppCompatActivity {
             Log.e("dfdf","입력한다!");
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef = database.getReference().child("work");
-            List<Boolean> isDone =new ArrayList<>();
             for(int i =0; i<items.size();i++) {
                 Log.e("몇번째?", ""+i);
-                for(int j =0;j<items.get(i).getName().size();j++)
-                    isDone.add(false);
-                myRef.child("" + groupId).child("2017-5-12").child(""+i).setValue(
+                myRef.child("" + groupId).child("2017-5-13").child(""+i).setValue(
                         new work(i, items.get(i).getTitle(), items.get(i).getDetail(),
                                 items.get(i).getStartTime(), items.get(i).getEndTime(),
-                                items.get(i).getName(), items.get(i).getuId(), isDone));
+                                items.get(i).getName(), items.get(i).getuId(), items.get(i).getIsDone()));
             }
-
+            Toast.makeText(mContext, "일정이 전송되었습니다.", Toast.LENGTH_SHORT).show();
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

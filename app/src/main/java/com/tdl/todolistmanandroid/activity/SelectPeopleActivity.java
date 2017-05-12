@@ -171,11 +171,9 @@ public class SelectPeopleActivity extends AppCompatActivity{
             i.putExtra("memberUid", uIds);
 
             if(status==0) {
-                Log.e("Adsf","여기여깅");
                 i.putExtra("curView","header");
                 setResult(778, i);
             } else if(status==4) {
-                Log.e("Adsf","asdf");
                 i.putExtra("curView","footer");
                 setResult(781, i);
             }

@@ -28,6 +28,7 @@ import com.tdl.todolistmanandroid.item.AddPlanItem;
 import com.tdl.todolistmanandroid.item.SelectPeopleItem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -134,12 +135,19 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                     ((AddPlanFooter)holder).editWorkDetail.getText().toString();
 
 
+                    List<String> a = new ArrayList<>(Arrays.asList(curWkNames));
+                    List<String> b = new ArrayList<>(Arrays.asList(curWkUids));
+
+
+                    List<Boolean> isDone =new ArrayList<>();
+                    for(int j =0;j<curWkNames.length;j++)
+                        isDone.add(false);
                     items.add(new AddPlanItem(items.size(),
                             ((AddPlanFooter)holder).editTitle.getText().toString(),
                             ((AddPlanFooter)holder).editWorkDetail.getText().toString(),
                             ((AddPlanFooter)holder).txtStartTime.getText().toString(),
                             ((AddPlanFooter)holder).txtEndTime.getText().toString(),
-                            new ArrayList<String>(), new ArrayList<String>(), new ArrayList<Boolean>()
+                            a, b,isDone
                             ));
 
                     notifyDataSetChanged();     //리스트 추가한 것 띄어주는 코드
@@ -239,6 +247,8 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return items.size() +2;
     }
+
+
 
 
     class AddPlanViewHeader extends RecyclerView.ViewHolder{
