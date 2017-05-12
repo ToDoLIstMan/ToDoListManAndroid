@@ -15,8 +15,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.adapter.AddPlanAdapter;
+import com.tdl.todolistmanandroid.database.work;
 import com.tdl.todolistmanandroid.item.AddPlanItem;
 
 import java.util.ArrayList;
@@ -36,6 +39,11 @@ public class AddPlanActivity extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     Context mContext;
 
+    String[] memberNames;
+    String[] memberUids;
+    List<AddPlanItem> items;
+    int groupId;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +53,6 @@ public class AddPlanActivity extends AppCompatActivity {
 
         makeToolbar();
         initList();
-
     }
 
     /**
@@ -65,7 +72,7 @@ public class AddPlanActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(layoutManager);
-        List<AddPlanItem> items;
+
 
         items = new ArrayList<>();
 
@@ -83,7 +90,20 @@ public class AddPlanActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.action_send){
-            Toast.makeText(mContext, "준비중...", Toast.LENGTH_SHORT).show();
+            Log.e("dfdf","입력한다!");
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference().child("work");
+            List<Boolean> isDone =new ArrayList<>();
+            for(int i =0; i<items.size();i++) {
+                Log.e("몇번째?", ""+i);
+                for(int j =0;j<items.get(i).getName().size();j++)
+                    isDone.add(false);
+                myRef.child("" + groupId).child("2017-5-12").child(""+i).setValue(
+                        new work(i, items.get(i).getTitle(), items.get(i).getDetail(),
+                                items.get(i).getStartTime(), items.get(i).getEndTime(),
+                                items.get(i).getName(), items.get(i).getuId(), isDone));
+            }
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -97,10 +117,11 @@ public class AddPlanActivity extends AppCompatActivity {
     public void sendIntent(int position, int status){
         Intent  gotoA = new Intent(AddPlanActivity.this,SelectPeopleActivity.class);
         gotoA.putExtra("status",status);
-        if(status==0){
+        if(status==0 || status==4){
             gotoA.putExtra("groupId",position);
         }
-        gotoA.putExtra("position",position);
+        else
+            gotoA.putExtra("position",position);
         startActivityForResult(gotoA,777);
 
     }
@@ -108,18 +129,32 @@ public class AddPlanActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 777)
-            if(resultCode == 778)
-                ((AddPlanAdapter) recyclerView.getAdapter()).setWorker(data.getStringExtra("itemTitle"));
-            else if(resultCode == 779)
+        if(requestCode == 777) {
+            if (resultCode == 778) {
+                memberNames = new String[data.getStringArrayExtra("memberName").length];
+                memberUids = new String[data.getStringArrayExtra("memberUid").length];
+                memberNames = data.getStringArrayExtra("memberName");
+                memberUids = data.getStringArrayExtra("memberUid");
+
+                ((AddPlanAdapter) recyclerView.getAdapter()).setWorker(memberNames,memberUids);
+            } else if (resultCode == 779)
                 ((AddPlanAdapter) recyclerView.getAdapter()).setFormat(data.getStringExtra("itemTitle"));
-            else if(resultCode == 780) {
+            else if (resultCode == 780) {
                 ((AddPlanAdapter) recyclerView.getAdapter()).setGroup(data.getStringExtra("itemTitle"));
-                ((AddPlanAdapter) recyclerView.getAdapter()).setGroupId(Integer.valueOf(data.getIntExtra("groupId",-1)));
+                groupId = Integer.valueOf(data.getIntExtra("groupId", -1));
+                ((AddPlanAdapter) recyclerView.getAdapter()).setGroupId(Integer.valueOf(data.getIntExtra("groupId", -1)));
+            }
+            else if(resultCode==781){
+                memberNames = new String[data.getStringArrayExtra("memberName").length];
+                memberUids = new String[data.getStringArrayExtra("memberUid").length];
+                memberNames = data.getStringArrayExtra("memberName");
+                memberUids = data.getStringArrayExtra("memberUid");
+
+                ((AddPlanAdapter) recyclerView.getAdapter()).setTodayWorker(memberNames,memberUids);
+
             }
 
-        recyclerView.getAdapter().notifyDataSetChanged();
-        Log.e("gggg",""+((AddPlanAdapter) recyclerView.getAdapter()).getGroupId());
-
+            recyclerView.getAdapter().notifyDataSetChanged();
+        }
     }
 }

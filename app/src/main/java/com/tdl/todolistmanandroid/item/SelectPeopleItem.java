@@ -7,6 +7,11 @@ package com.tdl.todolistmanandroid.item;
 public class SelectPeopleItem {
     int image;
     String userName;
+    String useruId;
+
+    public String getUseruId() {
+        return useruId;
+    }
 
     public int getImage(){
         return this.image;
@@ -16,8 +21,9 @@ public class SelectPeopleItem {
         return this.userName;
     }
 
-    public SelectPeopleItem(int image, String userName) {
+    public SelectPeopleItem(int image, String userName, String useruId) {
         this.image = image;
         this.userName = userName;
+        this.useruId = useruId;
     }
 }

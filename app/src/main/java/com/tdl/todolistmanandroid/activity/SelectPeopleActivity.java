@@ -8,7 +8,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -38,17 +42,34 @@ public class SelectPeopleActivity extends AppCompatActivity{
     @BindView(R.id.toolbar) Toolbar toolbar;
     Context mContext;
 
+    List<String> memberName = new ArrayList<>();
+    List<String> memberUid = new ArrayList<>();
+
+    Intent getintent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_people);
         mContext = this;
 
-        Intent getintent = getIntent();
+        getintent = getIntent();
 
         Toolbar searchBar = (Toolbar) findViewById(R.id.searchToolbar);
-        searchBar.setTitle("그룹선택");
-        setSupportActionBar((Toolbar) findViewById(R.id.searchToolbar));
+        Log.e("ddd",""+getintent.getIntExtra("status",-1));
+        switch (getintent.getIntExtra("status",-1)) {
+            case 0:     //당번 선택
+            case 4:
+                searchBar.setTitle("당번선택");
+                break;
+            case 1:
+                searchBar.setTitle("포맷선택");
+                break;
+            case 2:             //그룹 선택
+                searchBar.setTitle("그룹선택");
+                break;
+        }
+        setSupportActionBar(searchBar);
         if(getSupportActionBar() !=null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             searchBar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -70,16 +91,17 @@ public class SelectPeopleActivity extends AppCompatActivity{
         switch (getintent.getIntExtra("status",-1)){
 
             case 0:
-                Log.e("hghghghg", ""+getintent.getIntExtra("groupId",-1));
+            case 4:
                 myRef = database.getReference().child("group").child(""+getintent.getIntExtra("groupId",-1));
                 myRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         group group = dataSnapshot.getValue(group.class);
-                        for(String s1 : group.getMemberName()) {
-                            SelectPeopleItem item = new SelectPeopleItem(R.drawable.kakao_default_profile_image, s1);
-                            items.add(item);
-                        }
+                        List<String> names = group.getMemberName();
+                        List<String> uIds = group.getMemberUid();
+                        for(int i = 0; i<names.size();i++)
+                            items.add(new SelectPeopleItem(R.drawable.kakao_default_profile_image, names.get(i),
+                                    uIds.get(i)));
                     }
 
                     @Override
@@ -97,14 +119,13 @@ public class SelectPeopleActivity extends AppCompatActivity{
 
 
             case 2:
-
                 myRef = database.getReference().child("user").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 myRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         user user = dataSnapshot.getValue(user.class);
                         for(int i = 0; i<user.getGroupName().size();i++) {
-                            SelectPeopleItem item = new SelectPeopleItem(user.getGroups().get(i), user.getGroupName().get(i));
+                            SelectPeopleItem item = new SelectPeopleItem(user.getGroups().get(i), user.getGroupName().get(i), null);
                             items.add(item);
                         }
                     }
@@ -116,26 +137,77 @@ public class SelectPeopleActivity extends AppCompatActivity{
                 });
                 break;
 
-
-
-
-
         }
 
         recyclerView.setAdapter(new SelectPeopleAdapter(mContext, items,getIntent().getIntExtra("status",-1000),this));
     }
 
+    public void setList(String uId, String name){
+        memberName.add(name);
+        memberUid.add(uId);
+        Log.e("dd",memberName.toString());
+    }
+    public void deleteMember(String uId, String name){
+        memberUid.remove(uId);
+        memberName.remove(name);
+        Log.e("dd",memberName.toString());
+    }
+
     public void sendIntent(SelectPeopleItem s, int status){
         Intent i = getIntent();
-        i.putExtra("itemTitle", s.getUserName());
-        if(status==0)
-            setResult(778,i);
-        else if(status==1)
-            setResult(779,i);
-        else if(status==2) {
-            i.putExtra("groupId", s.getImage());
-            setResult(780, i);
+
+        if(status==0 || status==4) {
+            String[] names = new String[memberName.size()];
+            String[] uIds = new String[memberUid.size()];
+
+
+            for(int j = 0;j<memberName.size();j++)
+                names[j] = memberName.get(j);
+            for(int j = 0;j<memberUid.size();j++)
+                uIds[j] = memberUid.get(j);
+
+
+            i.putExtra("memberName", names);
+            i.putExtra("memberUid", uIds);
+
+            if(status==0) {
+                Log.e("Adsf","여기여깅");
+                i.putExtra("curView","header");
+                setResult(778, i);
+            } else if(status==4) {
+                Log.e("Adsf","asdf");
+                i.putExtra("curView","footer");
+                setResult(781, i);
+            }
+        }
+        else {
+            i.putExtra("itemTitle", s.getUserName());
+            if (status == 1)
+                setResult(779, i);
+            else if (status == 2) {
+                i.putExtra("groupId", s.getImage());
+                setResult(780, i);
+            }
         }
         finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        if(getintent.getIntExtra("status",-1)==0 || getintent.getIntExtra("status",-1)==4)
+        inflater.inflate(R.menu.menu_seclectstn,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==R.id.action_done){
+            if(getintent.getIntExtra("status",-1)==0)
+                sendIntent(null,0);
+            else if(getintent.getIntExtra("status",-1)==4)
+                sendIntent(null,4);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

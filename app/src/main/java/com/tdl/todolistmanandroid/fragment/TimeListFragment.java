@@ -104,7 +104,7 @@ public class TimeListFragment extends Fragment {
 
     private void initList(final String status) {
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         lists = new ArrayList<>();
 
@@ -113,8 +113,6 @@ public class TimeListFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
-                    Toast.makeText(getActivity(), "adsfdsaf", Toast.LENGTH_SHORT).show();
-                    Log.e("asdf","asdfadsf");
                 }else {
                     progressBar.setVisibility(View.GONE);
                 }

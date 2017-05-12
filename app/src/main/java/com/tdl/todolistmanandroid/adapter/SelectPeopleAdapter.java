@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -60,7 +62,7 @@ public class SelectPeopleAdapter extends RecyclerView.Adapter<SelectPeopleAdapte
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = null;
 //        item_layout = 0;
-        if(item_layout==0) {
+        if(item_layout==0 || item_layout==4) {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_select_people, null);
         }else if(item_layout==1||item_layout==2){
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_select_something, null);
@@ -73,22 +75,26 @@ public class SelectPeopleAdapter extends RecyclerView.Adapter<SelectPeopleAdapte
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
 //        item_layout=0;
 
 
-        if(item_layout==0){
+        if(item_layout==0 || item_layout==4){
             final SelectPeopleItem item = items.get(position);
             Drawable drawable = context.getResources().getDrawable(item.getImage());
             holder.image.setBackground(drawable);
             holder.userName.setText(item.getUserName());
-            holder.selectSomethingItem.setOnClickListener(new View.OnClickListener() {
+
+            holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onClick(View view) {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked)
+                        ((SelectPeopleActivity)context).setList(item.getUseruId(),item.getUserName());
 
-
-                    pActivity.sendIntent(item,item_layout);
-                }});
+                    else
+                        ((SelectPeopleActivity)context).deleteMember(item.getUseruId(),item.getUserName());
+                }
+            });
 
         }
         else if (item_layout == 1 || item_layout == 2) {
@@ -115,12 +121,16 @@ public class SelectPeopleAdapter extends RecyclerView.Adapter<SelectPeopleAdapte
         Integer itemSelector;
         String workTitle;
         LinearLayout selectSomethingItem;
+        AppCompatCheckBox checkBox;
 
         public ViewHolder(View itemView) {
             super(itemView);
                 image = (ImageView) itemView.findViewById(R.id.profileImage);
                 userName = (TextView) itemView.findViewById(R.id.userNameText);
                 selectSomethingItem = (LinearLayout) itemView.findViewById(R.id.selectSomethingItem);
+            if(item_layout==0 || item_layout==4)
+                checkBox = (AppCompatCheckBox)itemView.findViewById(R.id.checkBox);
+
         }
     }
 

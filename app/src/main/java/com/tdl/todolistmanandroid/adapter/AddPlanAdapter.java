@@ -27,6 +27,7 @@ import com.tdl.todolistmanandroid.activity.SelectPeopleActivity;
 import com.tdl.todolistmanandroid.item.AddPlanItem;
 import com.tdl.todolistmanandroid.item.SelectPeopleItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -45,7 +46,10 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
     private final int FOOTER = 1;
     private final int HEADER  = -1;
 
-    private String worker ="", format ="", group ="";
+    private String worker ="", format ="", group ="",todayWorker="";
+
+    private String[] workerNames, workerUids, curWkNames, curWkUids;
+
     private int groupId= -1;
     public AddPlanAdapter(Context mContext, List<AddPlanItem> items) {
         this.mContext = mContext;
@@ -68,7 +72,6 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        Log.e("gggg",""+groupId);
         if(viewType==BODY) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_add_plan, parent, false);
             return new AddPlanAdapter.AddPlanViewHolder(v);
@@ -89,7 +92,6 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
-        Log.e("gggg",""+groupId);
         //body(holder)
         if(holder instanceof AddPlanViewHolder) {
             final AddPlanItem curItem = items.get(position-1);
@@ -110,6 +112,8 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
 
         //footer
         else if(holder instanceof  AddPlanFooter){
+
+            ((AddPlanFooter)holder).txtPeople.setText(todayWorker);
             ((AddPlanFooter)holder).btnAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -121,6 +125,7 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
             ((AddPlanFooter)holder).btAddWork.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    todayWorker="";
                     ((AddPlanFooter)holder).bckAdd.setVisibility(View.VISIBLE);
                     ((AddPlanFooter)holder).bckInput.setVisibility(View.GONE);
 
@@ -128,7 +133,15 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                     ((AddPlanFooter)holder).txtEndTime.getText().toString();
                     ((AddPlanFooter)holder).editWorkDetail.getText().toString();
 
-                    items.add(new AddPlanItem( ((AddPlanFooter)holder).editTitle.getText().toString()));
+
+                    items.add(new AddPlanItem(items.size(),
+                            ((AddPlanFooter)holder).editTitle.getText().toString(),
+                            ((AddPlanFooter)holder).editWorkDetail.getText().toString(),
+                            ((AddPlanFooter)holder).txtStartTime.getText().toString(),
+                            ((AddPlanFooter)holder).txtEndTime.getText().toString(),
+                            new ArrayList<String>(), new ArrayList<String>(), new ArrayList<Boolean>()
+                            ));
+
                     notifyDataSetChanged();     //리스트 추가한 것 띄어주는 코드
 
                     ((AddPlanFooter)holder).editTitle.setText("");
@@ -166,11 +179,15 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
             ((AddPlanFooter)holder).btnAddPeople.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent gotoB = new Intent(mContext,SelectPeopleActivity.class);
-                    Log.e("adsf",""+groupId);
-                    gotoB.putExtra("status",groupId);
-                    gotoB.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(gotoB);}
+
+
+                    if(groupId!=-1) {
+                        ((AddPlanActivity) mContext).sendIntent(groupId, 4);
+                        Log.e("asdf","asdfsws");
+                    }
+                    else
+                        Toast.makeText(mContext, "그룹을 먼저 선택해 주세요.", Toast.LENGTH_SHORT).show();
+                    }
             });
         }
 
@@ -204,6 +221,7 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
 
                     Log.e("gggg",""+groupId);
+
                     if(groupId!=-1) {
                         ((AddPlanActivity) mContext).sendIntent(groupId, 0);
                     }
@@ -273,8 +291,19 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public void setWorker(String worker) {
-        this.worker = worker;
+    public void setTodayWorker(String[] todayWorker,String[] todayWkUid) {
+        curWkNames = todayWorker;
+        curWkUids = todayWkUid;
+        for(String a : curWkNames)
+            this.todayWorker = this.todayWorker+" "+a;
+    }
+
+    public void setWorker(String[] worker,String[] uId) {
+        workerNames = worker;
+        workerUids = uId;
+        for(String a : workerNames)
+            this.worker = this.worker+" "+a;
+
     }
 
     public void setFormat(String format) {
