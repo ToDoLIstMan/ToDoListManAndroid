@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -99,13 +100,14 @@ public class FormatManageActivity extends AppCompatActivity implements View.OnCl
         items = new ArrayList<>();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference().child("format");
+        DatabaseReference myRef = database.getReference().child("format").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                format format = dataSnapshot.getValue(format.class);
-//                FormatManageItem item = new FormatManageItem(format.getFormatName(), format.getMasterUid(), format.getFormatId());
-//                items.add(item);
+                dataSnapshot.getChildren();
+                for(DataSnapshot a : dataSnapshot.getChildren())
+                    items.add(new FormatManageItem(a.getKey(),"",FirebaseAuth.getInstance().getCurrentUser().getUid()));
+
                 lastGrpId=items.size();
                 recyclerView.setAdapter(new FormatManageAdapter(mContext, items));
             }

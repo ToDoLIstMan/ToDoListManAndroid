@@ -79,7 +79,7 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
             final MakeFormatItem curItem = items.get(position);
 //            ((FormatViewHolder)holder).txtEndTime.setText(curItem.getEndTime());
 //            ((FormatViewHolder)holder).txtStartTime.setText(curItem.getStartTime());
-            ((FormatViewHolder)holder).addPlanTxtTitle.setText(curItem.getFormatName());
+            ((FormatViewHolder)holder).addPlanTxtTitle.setText(curItem.getPlanName());
 
 
 //            ((FormatViewHolder)holder).addPlanCardView.setOnClickListener(new View.OnClickListener() {
@@ -115,8 +115,14 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
                     ((FormatFooter)holder).txtEndTime.getText().toString();
                     ((FormatFooter)holder).editFormatDetail.getText().toString();
 
-//                    Log.e("fgfgfgg",((FormatFooter)holder).editTitle.getText().toString());
-                    items.add(new MakeFormatItem( ((FormatFooter)holder).editTitle.getText().toString()));
+                    items.add(new MakeFormatItem(items.size(),
+                            ((FormatFooter)holder).editTitle.getText().toString(),
+                            ((FormatFooter)holder).txtStartTime.getText().toString(),
+                            ((FormatFooter)holder).txtEndTime.getText().toString(),
+                            ((FormatFooter)holder).editFormatDetail.getText().toString()
+                            ));
+
+
                     notifyDataSetChanged();     //리스트 추가한 것 띄어주는 코드
 
                     ((FormatFooter)holder).editTitle.setText("");

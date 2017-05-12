@@ -127,8 +127,11 @@ public class MakeFormatActivity extends AppCompatActivity {
             alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Intent formatManage = new Intent(mContext,FormatManageActivity.class);
-                    
+                  FirebaseDatabase database =FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference().child("format").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .child(input.getText().toString());
+                    for(int i = 0; i<items.size();i++)
+                        myRef.child(""+i).setValue(items.get(i));
                     finish();
 
 //                    FirebaseDatabase database = FirebaseDatabase.getInstance();

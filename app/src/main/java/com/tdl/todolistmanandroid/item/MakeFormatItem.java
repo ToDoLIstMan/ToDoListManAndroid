@@ -16,7 +16,12 @@ public class MakeFormatItem {
     private String endTime;
     private String startTime;
     private String planName;
+    private int id;
 
+
+    public int getId() {
+        return id;
+    }
 
     @Nullable
     public String getFormatName() {
@@ -39,8 +44,8 @@ public class MakeFormatItem {
         return planName;
     }
 
-    public MakeFormatItem(String formatName){
-        this.formatName = formatName;
+    public MakeFormatItem(int id, String planName, String startTime, String endTime, String detail){
+        this.id = id;
         this.detail = detail;
         this.endTime = endTime;
         this.startTime = startTime;
