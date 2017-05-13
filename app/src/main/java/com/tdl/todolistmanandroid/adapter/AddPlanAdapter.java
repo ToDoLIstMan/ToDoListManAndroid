@@ -140,8 +140,9 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
 
 
                     List<Boolean> isDone =new ArrayList<>();
-                    for(int j =0;j<curWkNames.length;j++)
+                    for(int j =0;j<a.size();j++)
                         isDone.add(false);
+
                     items.add(new AddPlanItem(items.size(),
                             ((AddPlanFooter)holder).editTitle.getText().toString(),
                             ((AddPlanFooter)holder).editWorkDetail.getText().toString(),

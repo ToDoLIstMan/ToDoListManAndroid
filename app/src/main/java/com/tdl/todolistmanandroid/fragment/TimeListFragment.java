@@ -135,9 +135,9 @@ public class TimeListFragment extends Fragment {
                     case "whole":
                         lists.add(new TimeListItem(work.getStartTime(), work.getEndTime(), work.getTitle(), work.getDetail(), work.getId(), work.getName(), work.getuId(), work.getIsDone()));
                         break;
-/*                    case "done":
+                    case "done":
                         for(int i = 0;i<work.getuId().size();i++){
-                            if(work.getuId().get(i).equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) && work.getIsDone().get(i)) {
+                            if(work.getuId().get(i).equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) &&  work.getIsDone().get(i)) {
                                 lists.add(new TimeListItem(work.getStartTime(), work.getEndTime(), work.getTitle(), work.getDetail(), work.getId(), work.getName(), work.getuId(), work.getIsDone()));
                                 break;
                             }
@@ -151,7 +151,7 @@ public class TimeListFragment extends Fragment {
                         }
                     }
                         break;
-  */
+
                 default:
                 break;}
 

@@ -22,7 +22,9 @@ import com.tdl.todolistmanandroid.adapter.AddPlanAdapter;
 import com.tdl.todolistmanandroid.database.work;
 import com.tdl.todolistmanandroid.item.AddPlanItem;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -91,11 +93,15 @@ public class AddPlanActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.action_send){
             Log.e("dfdf","입력한다!");
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef = database.getReference().child("work");
             for(int i =0; i<items.size();i++) {
-                Log.e("몇번째?", ""+i);
-                myRef.child("" + groupId).child("2017-5-13").child(""+i).setValue(
+                Log.e("몇번째?", ""+items.get(i).getIsDone().size());
+                myRef.child("" + groupId).child(sdf.format(date)).child(""+i).setValue(
                         new work(i, items.get(i).getTitle(), items.get(i).getDetail(),
                                 items.get(i).getStartTime(), items.get(i).getEndTime(),
                                 items.get(i).getName(), items.get(i).getuId(), items.get(i).getIsDone()));
