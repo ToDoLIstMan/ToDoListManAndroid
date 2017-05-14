@@ -72,7 +72,7 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
         //body(holder)
         if(holder instanceof FormatViewHolder) {
@@ -82,14 +82,14 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
             ((FormatViewHolder)holder).addPlanTxtTitle.setText(curItem.getPlanName());
 
 
-//            ((FormatViewHolder)holder).addPlanCardView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent gotoToDo = new Intent(mContext,FormatManageActivity.class);
-//                gotoToDo.putExtra("PlanName",curItem.getPlanName());
-//                mContext.startActivity(gotoToDo);
-//            }
-//        });
+            ((FormatViewHolder)holder).addPlanCardView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+//                    items.remove(position);
+                    Toast.makeText(mContext, "삭제 기능 준비 중...", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            });
 
 
         }

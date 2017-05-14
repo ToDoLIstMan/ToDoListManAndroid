@@ -97,15 +97,14 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
         if(holder instanceof AddPlanViewHolder) {
             final AddPlanItem curItem = items.get(position-1);
             ((AddPlanAdapter.AddPlanViewHolder) holder).addPlanTxtTitle.setText(curItem.getTitle());
-
-/*        ((AddPlanAdapter.AddPlanViewHolder)holder).addPlanCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent gotoToDo = new Intent(mContext,AddPlanActivity.class);
-                gotoToDo.putExtra("title",curItem.getTitle());
-                mContext.startActivity(gotoToDo);
-            }
-        });*/
+            ((AddPlanAdapter.AddPlanViewHolder)holder).addPlanCardView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+//                    items.remove(position);
+                    Toast.makeText(mContext, "삭제 기능 준비 중...", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            });
 
 
         }
