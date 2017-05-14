@@ -155,39 +155,51 @@ public class SignInActivity extends Activity {
                     AuthCredential credential = FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
                     mAuth.signInWithCredential(credential);
 
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference().child("user").child(""+FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-                    myRef.addValueEventListener(new ValueEventListener() {
+                    new FirebaseAuth.AuthStateListener() {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            Log.e("data",dataSnapshot.toString());
-                            if(dataSnapshot!=null){
-                                Intent gotoMain = new Intent(SignInActivity.this,MainActivity.class);
-                                gotoMain.putExtra("groupUid",dataSnapshot.getValue(user.class).getGroups().get(0));
-                                gotoMain.putExtra("groupName",dataSnapshot.getValue(user.class).getGroupName().get(0));
+                        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                            if(firebaseAuth!=null){
 
-                                startActivity(gotoMain);
-                                finish();
-                            }else {
+                                Log.e("ddd",FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                DatabaseReference myRef = database.getReference().child("user").child(""+FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-                                //현재 유저 이름 찾기 위한 메소드 실행.
-                                pt = new ProfileTracker() {
+                                myRef.addValueEventListener(new ValueEventListener() {
                                     @Override
-                                    protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-                                        userName = currentProfile.getName();
-                                        getRank();
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        Log.e("data",dataSnapshot.toString());
+                                        if(dataSnapshot!=null){
+                                            Intent gotoMain = new Intent(SignInActivity.this,MainActivity.class);
+                                            gotoMain.putExtra("groupUid",dataSnapshot.getValue(user.class).getGroups().get(0));
+                                            gotoMain.putExtra("groupName",dataSnapshot.getValue(user.class).getGroupName().get(0));
+
+                                            startActivity(gotoMain);
+                                            finish();
+                                        }else {
+
+                                            //현재 유저 이름 찾기 위한 메소드 실행.
+                                            pt = new ProfileTracker() {
+                                                @Override
+                                                protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                                                    userName = currentProfile.getName();
+                                                    getRank();
+                                                }
+                                            };
+                                        }
+
                                     }
-                                };
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+                            }else{
+
                             }
-
                         }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+                    };
 
                 }
 

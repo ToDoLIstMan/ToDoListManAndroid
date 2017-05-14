@@ -112,6 +112,20 @@
                 android:value=".activity.FormatManageActivity"/>
         </activity>
 
+        <activity android:name=".activity.MyPageActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity"/>
+        </activity>
+
+
+        <activity android:name=".activity.SettingActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity"/>
+        </activity>
 
     </application>
 

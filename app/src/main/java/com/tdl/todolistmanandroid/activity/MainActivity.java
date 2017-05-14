@@ -386,10 +386,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 drawerLayout.closeDrawer(navView);
                 break;
             case R.id.mypage:
-                startActivity(new Intent(MainActivity.this,SelectPeopleActivity.class));
+                startActivity(new Intent(MainActivity.this,MyPageActivity.class));
                 drawerLayout.closeDrawer(navView);
                 break;
             case R.id.setup:
+                startActivity(new Intent(MainActivity.this,SettingActivity.class));
                 drawerLayout.closeDrawer(navView);
                 break;
         }
