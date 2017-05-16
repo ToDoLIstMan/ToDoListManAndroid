@@ -375,4 +375,8 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
     public String getExcTime() {
         return excTime;
     }
+
+    public String getFormat() {
+        return format;
+    }
 }

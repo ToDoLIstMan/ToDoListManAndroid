@@ -15,15 +15,22 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.adapter.AddPlanAdapter;
+import com.tdl.todolistmanandroid.database.format;
 import com.tdl.todolistmanandroid.database.work;
 import com.tdl.todolistmanandroid.item.AddPlanItem;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -43,9 +50,15 @@ public class AddPlanActivity extends AppCompatActivity {
 
     String[] memberNames;
     String[] memberUids;
+
+    String[] curMemberNames;
+    String[] curMemberUids;
     List<AddPlanItem> items;
+    List<AddPlanItem> formatItems;
     int groupId;
     String excDate;
+    int formatId;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,17 +111,71 @@ public class AddPlanActivity extends AppCompatActivity {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference().child("work");
-            for(int i =0; i<items.size();i++) {
-                Log.e("몇번째?", ""+items.get(i).getIsDone().size());
-                myRef.child("" + groupId).child(((AddPlanAdapter) recyclerView.getAdapter()).getExcTime()).child(""+i).setValue(
-                        new work(i, items.get(i).getTitle(), items.get(i).getDetail(),
-                                items.get(i).getStartTime(), items.get(i).getEndTime(),
-                                items.get(i).getName(), items.get(i).getuId(), items.get(i).getIsDone()));
-            }
-            Toast.makeText(mContext, "일정이 전송되었습니다.", Toast.LENGTH_SHORT).show();
-            finish();
+            formatItems = new ArrayList<>();
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+            final DatabaseReference[] myRef = {database.getReference().child("format").
+                    child(FirebaseAuth.getInstance().getCurrentUser().getUid()).
+                    child(((AddPlanAdapter) recyclerView.getAdapter()).getFormat())};
+            myRef[0].addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    format format = dataSnapshot.getValue(format.class);
+
+                    //int id, String planName, String detail, String startTime, String endTime
+
+                    List<String> a = new ArrayList<>(Arrays.asList(memberNames));
+                    List<String> b = new ArrayList<>(Arrays.asList(memberUids));
+
+                    Log.e("asdasdf",""+a.size());
+                    List<Boolean> isDone =new ArrayList<>();
+                    for(int j =0;j<a.size();j++)
+                        isDone.add(false);
+                    Log.e("asdasdf",""+format.getId());
+
+                    Log.e("asdasdf",""+format.getPlanName());
+                    Log.e("asdasdf",""+format.getDetail());
+                    Log.e("asdasdf",""+format.getStartTime());
+                    Log.e("asdasdf",""+format.getEndTime());
+
+
+                    formatItems.add(new AddPlanItem(format.getId(),format.getPlanName(), format.getDetail(),
+                            format.getStartTime(),format.getEndTime(), a,b, isDone));
+
+                    myRef[0] = database.getReference().child("work");
+                    items.addAll(0,formatItems);
+                    for(int i =0; i<items.size();i++) {
+                        Log.e("몇번째?", ""+items.get(i).getIsDone().size());
+                        myRef[0].child("" + groupId).child(((AddPlanAdapter) recyclerView.getAdapter()).getExcTime()).child(""+i).setValue(
+                                new work(i, items.get(i).getTitle(), items.get(i).getDetail(),
+                                        items.get(i).getStartTime(), items.get(i).getEndTime(),
+                                        items.get(i).getName(), items.get(i).getuId(), items.get(i).getIsDone()));
+                    }
+                    Toast.makeText(mContext, "일정이 전송되었습니다.", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -142,20 +209,20 @@ public class AddPlanActivity extends AppCompatActivity {
                 memberUids = data.getStringArrayExtra("memberUid");
 
                 ((AddPlanAdapter) recyclerView.getAdapter()).setWorker(memberNames,memberUids);
-            } else if (resultCode == 779)
+            } else if (resultCode == 779) {
                 ((AddPlanAdapter) recyclerView.getAdapter()).setFormat(data.getStringExtra("itemTitle"));
-            else if (resultCode == 780) {
+            } else if (resultCode == 780) {
                 ((AddPlanAdapter) recyclerView.getAdapter()).setGroup(data.getStringExtra("itemTitle"));
+                ((AddPlanAdapter) recyclerView.getAdapter()).setGroupId(data.getIntExtra("groupId",-1));
                 groupId = Integer.valueOf(data.getIntExtra("groupId", -1));
-                ((AddPlanAdapter) recyclerView.getAdapter()).setGroupId(Integer.valueOf(data.getIntExtra("groupId", -1)));
             }
             else if(resultCode==781){
-                memberNames = new String[data.getStringArrayExtra("memberName").length];
-                memberUids = new String[data.getStringArrayExtra("memberUid").length];
-                memberNames = data.getStringArrayExtra("memberName");
-                memberUids = data.getStringArrayExtra("memberUid");
+                curMemberNames = new String[data.getStringArrayExtra("memberName").length];
+                curMemberUids = new String[data.getStringArrayExtra("memberUid").length];
+                curMemberNames = data.getStringArrayExtra("memberName");
+                curMemberUids = data.getStringArrayExtra("memberUid");
 
-                ((AddPlanAdapter) recyclerView.getAdapter()).setTodayWorker(memberNames,memberUids);
+                ((AddPlanAdapter) recyclerView.getAdapter()).setTodayWorker(curMemberNames,curMemberUids);
 
             }
 

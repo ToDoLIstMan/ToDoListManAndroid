@@ -8,33 +8,21 @@ import java.util.List;
  */
 
 public class format {
+    int id;
 
-    String formatName, masterUid, formatId, detail, startTime, endTime, planNumber, planName;
-    List<String> work = new ArrayList<>();
+    String formatName, detail, startTime, endTime, planName;
+
+    public int getId() {
+        return id;
+    }
 
     public String getFormatName() {
         return formatName;
     }
-
-    public String getMasterUid() {
-        return masterUid;
-    }
-
-    public String getFormatId() {
-        return formatId;
-    }
-
-    public List<String> getWork() {
-        return work;
-    }
-
-    public String getPlanNumber() {
-        return planNumber;
-    }
-
     public String getDetail() {
         return detail;
     }
+
 
     public String getStartTime() {
         return startTime;
@@ -50,10 +38,13 @@ public class format {
 
 
     public format(){}
-    public format(String formatName, String masterUid, String formatId){
-        this.formatName = formatName;
-        this.masterUid = masterUid;
-        this.formatId = formatId;
-    }
 
+
+    public format(int id, String planName, String detail, String startTime, String endTime){
+        this.id = id;
+        this.planName = planName;
+        this.detail = detail;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
 }
