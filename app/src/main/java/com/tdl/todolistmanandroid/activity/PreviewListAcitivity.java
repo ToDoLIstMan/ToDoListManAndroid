@@ -114,7 +114,7 @@ public class PreviewListAcitivity extends AppCompatActivity {
                                 work work = dataSnapshot.getValue(work.class);
                                 lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),work.getId(),doPeople,doPeople,isDone));
 
-                                recyclerView.setAdapter(new ListAdapter(mContext,lists));
+                                recyclerView.setAdapter(new ListAdapter(mContext,lists,getIntent().getIntExtra("groupId",-1)));
 
                                 progressBar.setVisibility(View.GONE);
                             }
