@@ -1,6 +1,8 @@
 package com.tdl.todolistmanandroid.adapter;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -23,12 +26,14 @@ import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.activity.AddPlanActivity;
 import com.tdl.todolistmanandroid.activity.MainActivity;
 import com.tdl.todolistmanandroid.activity.PickGroupActivity;
+import com.tdl.todolistmanandroid.activity.PreviewListAcitivity;
 import com.tdl.todolistmanandroid.activity.SelectPeopleActivity;
 import com.tdl.todolistmanandroid.item.AddPlanItem;
 import com.tdl.todolistmanandroid.item.SelectPeopleItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -47,7 +52,7 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
     private final int FOOTER = 1;
     private final int HEADER  = -1;
 
-    private String worker ="", format ="", group ="",todayWorker="";
+    private String worker ="", format ="", group ="",todayWorker="",excTime = "";
 
     private String[] workerNames, workerUids, curWkNames, curWkUids;
 
@@ -207,6 +212,7 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
             ((AddPlanViewHeader)holder).txtWorker.setText(worker);
             ((AddPlanViewHeader)holder).txtFormat.setText(format);
             ((AddPlanViewHeader)holder).txtGroup.setText(group);
+
             ((AddPlanViewHeader)holder).btAddGroup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -237,6 +243,30 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                         Toast.makeText(mContext, "그룹을 먼저 선택해 주세요.", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            ((AddPlanViewHeader)holder).btAddTime.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final int curYear = Calendar.getInstance().get(Calendar.YEAR);
+                    final int curMon = Calendar.getInstance().get(Calendar.MONTH);
+                    final int curDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+
+                    Dialog datePicker = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                            month = month+1;
+                            if(1<=month && month<10)
+                                ((AddPlanViewHeader)holder).txtTime.setText(year+"-0"+month+"-"+dayOfMonth);
+                            else
+                                ((AddPlanViewHeader)holder).txtTime.setText(year+"-"+month+"-"+dayOfMonth);
+
+                            excTime = ((AddPlanViewHeader)holder).txtTime.getText().toString();
+                        }
+                    },curYear,curMon,curDay);
+                    datePicker.show();
+                }
+            });
+
         }
     }
 
@@ -258,6 +288,8 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
         @BindView(R.id.txtGroup) TextView txtGroup;
         @BindView(R.id.txtFormat) TextView txtFormat;
         @BindView(R.id.txtWorker) TextView txtWorker;
+        @BindView(R.id.txtTime) TextView txtTime;
+        @BindView(R.id.btAddTime) TextView btAddTime;
         public AddPlanViewHeader(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
@@ -328,11 +360,19 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
         this.groupId = groupId;
     }
 
+    public void setExcTime(String excTime) {
+        this.excTime = excTime;
+    }
+
     public int getGroupId() {
         return groupId;
     }
 
     public String getGroup() {
         return group;
+    }
+
+    public String getExcTime() {
+        return excTime;
     }
 }

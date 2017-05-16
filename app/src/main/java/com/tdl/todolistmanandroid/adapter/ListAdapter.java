@@ -3,11 +3,9 @@ package com.tdl.todolistmanandroid.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +16,6 @@ import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.activity.DetailActivity;
 import com.tdl.todolistmanandroid.item.TimeListItem;
 
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,10 +29,11 @@ public class ListAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private List<TimeListItem> lists;
     private int headCount = 0;
-    public ListAdapter(Context mContext, List<TimeListItem> lists) {
+    int curGrpUid;
+    public ListAdapter(Context mContext, List<TimeListItem> lists, int curGrpUid) {
         this.mContext=mContext;
         this.lists = lists;
-
+        this.curGrpUid = curGrpUid;
     }
 
     @Override
@@ -63,6 +60,7 @@ public class ListAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     Intent gotoDetail = new Intent(mContext,DetailActivity.class);
+                    gotoDetail.putExtra("curGrpUid", curGrpUid);
                     gotoDetail.putExtra("title",item.getTitle());
                     gotoDetail.putExtra("startTime",item.getStartTime());
                     gotoDetail.putExtra("endTime",item.getEndTime());

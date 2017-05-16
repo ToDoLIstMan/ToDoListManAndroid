@@ -22,8 +22,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tdl.todolistmanandroid.R;
+import com.tdl.todolistmanandroid.adapter.FormatManageAdapter;
 import com.tdl.todolistmanandroid.adapter.SelectPeopleAdapter;
+import com.tdl.todolistmanandroid.database.format;
 import com.tdl.todolistmanandroid.database.user;
+import com.tdl.todolistmanandroid.item.FormatManageItem;
 import com.tdl.todolistmanandroid.item.SelectPeopleItem;
 
 import com.tdl.todolistmanandroid.database.group;
@@ -47,12 +50,16 @@ public class SelectPeopleActivity extends AppCompatActivity{
 
     Intent getintent;
 
+    FirebaseAuth mAuth;
+    String curuId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_people);
         mContext = this;
-
+        mAuth = FirebaseAuth.getInstance();
+        curuId = mAuth.getCurrentUser().getUid();
         getintent = getIntent();
 
         Toolbar searchBar = (Toolbar) findViewById(R.id.searchToolbar);
@@ -97,11 +104,9 @@ public class SelectPeopleActivity extends AppCompatActivity{
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         group group = dataSnapshot.getValue(group.class);
-                        List<String> names = group.getMemberName();
-                        List<String> uIds = group.getMemberUid();
-                        for(int i = 0; i<names.size();i++)
-                            items.add(new SelectPeopleItem(R.drawable.kakao_default_profile_image, names.get(i),
-                                    uIds.get(i)));
+                        for(int i = 0; i<group.getMemberName().size();i++)
+                            items.add(new SelectPeopleItem(R.drawable.kakao_default_profile_image, group.getMemberName().get(i),
+                                    group.getMemberUid().get(i)));
                     }
 
                     @Override
@@ -115,19 +120,38 @@ public class SelectPeopleActivity extends AppCompatActivity{
 
 
             case 1:
+                myRef = database.getReference().child("format").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                myRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        dataSnapshot.getChildren();
+                        int i = 0;
+                        for(DataSnapshot a : dataSnapshot.getChildren()){
+                            items.add(new SelectPeopleItem(i,a.getKey(),""));
+                            i++;
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
                 break;
 
 
             case 2:
-                myRef = database.getReference().child("user").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                myRef = database.getReference().child("user").child(curuId);
                 myRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         user user = dataSnapshot.getValue(user.class);
-                        for(int i = 0; i<user.getGroupName().size();i++) {
-                            SelectPeopleItem item = new SelectPeopleItem(user.getGroups().get(i), user.getGroupName().get(i), null);
-                            items.add(item);
-                        }
+                        for(int i = 0; i<user.getGroupName().size();i++)
+                            items.add(new SelectPeopleItem(user.getGroups().get(i), user.getGroupName().get(i), null));
+
                     }
 
                     @Override

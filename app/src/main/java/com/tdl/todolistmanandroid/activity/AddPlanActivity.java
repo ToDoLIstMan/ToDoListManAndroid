@@ -45,6 +45,7 @@ public class AddPlanActivity extends AppCompatActivity {
     String[] memberUids;
     List<AddPlanItem> items;
     int groupId;
+    String excDate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,7 +102,7 @@ public class AddPlanActivity extends AppCompatActivity {
             DatabaseReference myRef = database.getReference().child("work");
             for(int i =0; i<items.size();i++) {
                 Log.e("몇번째?", ""+items.get(i).getIsDone().size());
-                myRef.child("" + groupId).child(sdf.format(date)).child(""+i).setValue(
+                myRef.child("" + groupId).child(((AddPlanAdapter) recyclerView.getAdapter()).getExcTime()).child(""+i).setValue(
                         new work(i, items.get(i).getTitle(), items.get(i).getDetail(),
                                 items.get(i).getStartTime(), items.get(i).getEndTime(),
                                 items.get(i).getName(), items.get(i).getuId(), items.get(i).getIsDone()));

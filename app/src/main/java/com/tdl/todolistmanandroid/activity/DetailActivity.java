@@ -29,6 +29,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
     private Intent getIntent;
     private boolean isFinished;
+    int curGrpUid;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +39,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         isFinished = getIntent.getBooleanExtra("isFinished",false);
 
         makeToolbar();
+
+        curGrpUid =getIntent.getIntExtra("curGrpUid",-1);
 
         txtTitle.setText(getIntent.getStringExtra("title"));
         txtTime.setText(getIntent.getStringExtra("startTime")+" ~ "+getIntent.getStringExtra("endTime"));

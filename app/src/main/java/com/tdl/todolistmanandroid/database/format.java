@@ -49,17 +49,11 @@ public class format {
     }
 
 
+    public format(){}
     public format(String formatName, String masterUid, String formatId){
         this.formatName = formatName;
         this.masterUid = masterUid;
         this.formatId = formatId;
     }
 
-    public void plan(String planNumber, String detail, String startTime, String endTime, String planName){
-        this.planNumber = planNumber;
-        this.detail = detail;
-        this.startTime= startTime;
-        this.endTime= endTime;
-        this.planName= planName;
-    }
 }

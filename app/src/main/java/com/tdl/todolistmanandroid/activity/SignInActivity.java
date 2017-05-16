@@ -1,6 +1,7 @@
 package com.tdl.todolistmanandroid.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -65,6 +67,7 @@ public class SignInActivity extends Activity {
 
     @BindView(R.id.facebook_login) LoginButton login_button;
     @BindView(R.id.kakao_login) com.kakao.usermgmt.LoginButton kakaoLogin;
+    @BindView(R.id.container_delay) FrameLayout container_delay;
 
     private Intent intent;
     CallbackManager mFacebookCallbackManager;
@@ -77,11 +80,13 @@ public class SignInActivity extends Activity {
     String userName, userEmail;
     String rank;
 
+    Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         ButterKnife.bind(this);
+        mContext = this;
 
         facebookLogin();
 
@@ -152,54 +157,58 @@ public class SignInActivity extends Activity {
             login_button.registerCallback(mFacebookCallbackManager, new FacebookCallback<LoginResult>() {
                 @Override
                 public void onSuccess(final LoginResult loginResult) {
+                    container_delay.setVisibility(View.VISIBLE);
                     AuthCredential credential = FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
-                    mAuth.signInWithCredential(credential);
+                    mAuth.signInWithCredential(credential)
+                            .addOnCompleteListener((SignInActivity) mContext, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if(task.isSuccessful()){
+                                        Log.e("ddd",FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                        DatabaseReference myRef = database.getReference().child("user").child(""+FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-                    new FirebaseAuth.AuthStateListener() {
-                        @Override
-                        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                            if(firebaseAuth!=null){
+                                        myRef.addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                Log.e("data",dataSnapshot.toString());
+                                                if(dataSnapshot!=null){
+                                                    Intent gotoMain = new Intent(SignInActivity.this,MainActivity.class);
+                                                    gotoMain.putExtra("groupUid",dataSnapshot.getValue(user.class).getGroups().get(0));
+                                                    gotoMain.putExtra("groupName",dataSnapshot.getValue(user.class).getGroupName().get(0));
+                                                    container_delay.setVisibility(View.GONE);
+                                                    startActivity(gotoMain);
+                                                    finish();
+                                                }else {
 
-                                Log.e("ddd",FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                DatabaseReference myRef = database.getReference().child("user").child(""+FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-                                myRef.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        Log.e("data",dataSnapshot.toString());
-                                        if(dataSnapshot!=null){
-                                            Intent gotoMain = new Intent(SignInActivity.this,MainActivity.class);
-                                            gotoMain.putExtra("groupUid",dataSnapshot.getValue(user.class).getGroups().get(0));
-                                            gotoMain.putExtra("groupName",dataSnapshot.getValue(user.class).getGroupName().get(0));
-
-                                            startActivity(gotoMain);
-                                            finish();
-                                        }else {
-
-                                            //현재 유저 이름 찾기 위한 메소드 실행.
-                                            pt = new ProfileTracker() {
-                                                @Override
-                                                protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-                                                    userName = currentProfile.getName();
-                                                    getRank();
+                                                    //현재 유저 이름 찾기 위한 메소드 실행.
+                                                    pt = new ProfileTracker() {
+                                                        @Override
+                                                        protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                                                            container_delay.setVisibility(View.GONE);
+                                                            userName = currentProfile.getName();
+                                                            getRank();
+                                                        }
+                                                    };
                                                 }
-                                            };
-                                        }
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+
+
+
+                                    }else{
+
 
                                     }
+                                }
+                            });
 
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                });
-
-                            }else{
-
-                            }
-                        }
-                    };
 
                 }
 

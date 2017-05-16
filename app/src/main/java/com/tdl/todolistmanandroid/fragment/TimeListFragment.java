@@ -54,6 +54,7 @@ public class TimeListFragment extends Fragment {
 
     FirebaseDatabase database ;
     DatabaseReference myRef;
+    int curGrpUid;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,7 +69,7 @@ public class TimeListFragment extends Fragment {
         ButterKnife.bind(this,v);
 
         today = new Date();
-        sDF = new SimpleDateFormat("yyyy-M-dd");
+        sDF = new SimpleDateFormat("yyyy-MM-dd");
 
         hasData();
 
@@ -85,6 +86,7 @@ public class TimeListFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
+                    curGrpUid = getArguments().getInt("uid",-2);
                     initList(getArguments().getString("status"));
                 }else {
                     noneWork.setVisibility(View.VISIBLE);
@@ -155,7 +157,7 @@ public class TimeListFragment extends Fragment {
                 default:
                 break;}
 
-                recyclerView.setAdapter(new ListAdapter(getActivity(),lists));
+                recyclerView.setAdapter(new ListAdapter(getActivity(),lists,curGrpUid));
                 progressBar.setVisibility(View.GONE);
             }
 
