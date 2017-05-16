@@ -148,8 +148,9 @@ public class MainAdapter extends RecyclerView.Adapter {
         Intent gotoToDo = ((PickGroupActivity)mContext).getIntent();
         gotoToDo.putExtra("groupName", curItem.getTitle());
         gotoToDo.putExtra("groupUid", curItem.getGroupId());
+        gotoToDo.putExtra("title",curItem.getTitle());
         //((PickGroupActivity)mContext).setResult(R.integer.PICK_GROUP,gotoToDo);
-        //gotoToDo.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //gotoToDo.addFlags(Intent.FLAG_ACTIVIT_NEW_TASK);
         //mContext.startActivity(gotoToDo);
         ((PickGroupActivity)mContext).finish();
 

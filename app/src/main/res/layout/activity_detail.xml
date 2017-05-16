@@ -109,6 +109,16 @@
         android:text="완료"
         android:layout_gravity="center"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="15dp"/>.
+    <Button
+        android:id="@+id/btPostpone"
+        android:layout_width="200dp"
+        android:layout_height="35dp"
+        android:text="미루기"
+        android:layout_gravity="center"/>
+
 
 
 </LinearLayout>
