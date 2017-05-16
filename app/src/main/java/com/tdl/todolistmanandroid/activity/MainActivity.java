@@ -336,7 +336,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                             Intent gotoPreview = new Intent(MainActivity.this,PreviewListAcitivity.class);
                             gotoPreview.putExtra("groupId",curGroupId);
-                            gotoPreview.putExtra("date",""+year+"-"+(month+1)+"-"+dayOfMonth);
+                            if (0<=month && month<9)
+                                gotoPreview.putExtra("date",""+year+"-0"+(month+1)+"-"+dayOfMonth);
+                            else
+                                gotoPreview.putExtra("date",""+year+"-"+(month+1)+"-"+dayOfMonth);
                             startActivity(gotoPreview);
                         }
                         else{
@@ -346,7 +349,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                                 Intent gotoPreview = new Intent(MainActivity.this,PreviewListAcitivity.class);
                                 gotoPreview.putExtra("groupId",curGroupId);
-                                gotoPreview.putExtra("date",""+year+"-"+(month+1)+"-"+dayOfMonth);
+                                if (0<=month && month<9)
+                                    gotoPreview.putExtra("date",""+year+"-0"+(month+1)+"-"+dayOfMonth);
+                                else
+                                    gotoPreview.putExtra("date",""+year+"-"+(month+1)+"-"+dayOfMonth);
                                 startActivity(gotoPreview);
                             }
                             else
