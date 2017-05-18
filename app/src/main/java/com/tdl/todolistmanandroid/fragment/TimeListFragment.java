@@ -110,7 +110,7 @@ public class TimeListFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         lists = new ArrayList<>();
-
+        lists.clear();
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -134,35 +134,42 @@ public class TimeListFragment extends Fragment {
                 work work = dataSnapshot.getValue(work.class);
 
                 switch (status){
-                    case "whole":
-                        lists.add(new TimeListItem(work.getStartTime(), work.getEndTime(), work.getTitle(), work.getDetail(), work.getId(), work.getName(), work.getuId(), work.getIsDone()));
-                        break;
-                    case "done":
-                        for(int i = 0;i<work.getuId().size();i++){
-                            if(work.getuId().get(i).equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) &&  work.getIsDone().get(i)) {
-                                lists.add(new TimeListItem(work.getStartTime(), work.getEndTime(), work.getTitle(), work.getDetail(), work.getId(), work.getName(), work.getuId(), work.getIsDone()));
-                                break;
-                            }
-                        }
-                        break;
-                    case "doing":
-                        for(int i = 0;i<work.getuId().size();i++){
-                        if(work.getuId().get(i).equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) && !work.getIsDone().get(i)) {
+                  case "done":
+                    for(int i = 0;i<work.getuId().size();i++){
+                        if(work.getuId().get(i).equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) &&  work.getIsDone().get(i)) {
                             lists.add(new TimeListItem(work.getStartTime(), work.getEndTime(), work.getTitle(), work.getDetail(), work.getId(), work.getName(), work.getuId(), work.getIsDone()));
-                            break;
+
+                            recyclerView.setAdapter(new ListAdapter(getActivity(),lists,curGrpUid,todayStr));
+                           // break;
                         }
                     }
+                    break;
+                case "doing":
+                    for(int i = 0;i<work.getuId().size();i++){
+                        if(work.getuId().get(i).equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) && !work.getIsDone().get(i)) {
+                            lists.add(new TimeListItem(work.getStartTime(), work.getEndTime(), work.getTitle(), work.getDetail(), work.getId(), work.getName(), work.getuId(), work.getIsDone()));
+
+                            recyclerView.setAdapter(new ListAdapter(getActivity(),lists,curGrpUid,todayStr));
+                          //  break;
+                        }
+                    }
+                    break;
+                    case "whole":
+                        lists.add(new TimeListItem(work.getStartTime(), work.getEndTime(), work.getTitle(), work.getDetail(), work.getId(), work.getName(), work.getuId(), work.getIsDone()));
+
+                        recyclerView.setAdapter(new ListAdapter(getActivity(),lists,curGrpUid,todayStr));
                         break;
 
-                default:
+                    default:
                 break;}
 
-                recyclerView.setAdapter(new ListAdapter(getActivity(),lists,curGrpUid,todayStr));
                 progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                recyclerView.getAdapter().notifyDataSetChanged();
+
             }
 
             @Override

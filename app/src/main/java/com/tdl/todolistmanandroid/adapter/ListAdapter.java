@@ -61,8 +61,7 @@ public class ListAdapter extends RecyclerView.Adapter {
                     done += item.getDoPeople().get(i);
                     if(item.getPeopleUid().get(i).equals(uid)) {
                         ((Holder) holder).checkBox.setChecked(item.getIsDone().get(i));
-                        if(item.getIsDone().get(i))
-                            ((Holder)holder).txtTitle.setPaintFlags(((Holder)holder).txtTitle.getPaintFlags()  | Paint.STRIKE_THRU_TEXT_FLAG);
+                        ((Holder)holder).txtTitle.setPaintFlags(((Holder)holder).txtTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     }
                 }
                 else
@@ -119,7 +118,7 @@ public class ListAdapter extends RecyclerView.Adapter {
     private void sendChgData(boolean isChecked, TimeListItem item, String uid) {
         int userPos = -1;
         for(int i = 0; i<item.getPeopleUid().size();i++){
-            Log.e("Asdf",""+i);
+            Log.e("Asdf "+item.getTitle()," "+i);
             if(item.getPeopleUid().get(i).equals(uid)){
                 userPos = i;
                 break;
