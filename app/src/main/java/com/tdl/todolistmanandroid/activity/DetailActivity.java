@@ -16,11 +16,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.tdl.todolistmanandroid.ChangeDate;
 import com.tdl.todolistmanandroid.R;
+import com.tdl.todolistmanandroid.database.work;
+import com.tdl.todolistmanandroid.item.TimeListItem;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -45,8 +55,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
     private Intent getIntent;
     private boolean isFinished;
-    int curGrpUid;
-    String title;
+    int curGrpUid, id;
+    String title, pickDay;
     Context mContext;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,7 +71,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
         curGrpUid =getIntent.getIntExtra("curGrpUid",-1);
         title = getIntent.getStringExtra("title");
-
+        pickDay = getIntent.getStringExtra("pickDay");
+        id = getIntent.getIntExtra("id",-1);
         Log.e("dfdf",""+curGrpUid);
 
         txtTitle.setText(getIntent.getStringExtra("title"));
@@ -69,17 +80,65 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         txtDetail.setText(getIntent.getStringExtra("detail"));
         txtPeople.setText(getIntent.getStringExtra("people"));
         btDone.setOnClickListener(this);
+        FirebaseDatabase.getInstance().getReference().
+                child("group").child(""+curGrpUid).child("masterUid").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("adsf",dataSnapshot.getValue().toString());
+                if(!dataSnapshot.getValue().toString().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()))
+                    btPostpone.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         btPostpone.setOnClickListener(this);
 
         setBtStatue();
+
+
+    }
+
+
+    private void sendChgData(final boolean isChecked) {
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference().child("work")
+                .child(String.valueOf(curGrpUid)).child(pickDay).child(""+id);
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                work work = dataSnapshot.getValue(work.class);
+                for(int i = 0; i<work.getuId().size();i++){
+                    if(work.getuId().get(i).equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                        List<Boolean> isDone = work.getIsDone();
+                        isDone.set(i,isChecked);
+                        myRef.child("isDone").setValue(isDone);
+                    }
+                }
+
+                myRef.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
     private void setBtStatue() {
         if(isFinished){
             btDone.setBackgroundResource(R.color.colorNoeDone);
+          //  sendChgData(true);
             btDone.setText("취소");
         }else{
             btDone.setBackgroundResource(R.color.colorPrimary);
+          //  sendChgData(false);
             btDone.setText("완료");
         }
     }
@@ -109,16 +168,16 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             else
                 isFinished=true;
             setBtStatue();
+            sendChgData(isFinished);
         }
 
         if(v.getId() == R.id.btPostpone){
             final int curYear = Calendar.getInstance().get(Calendar.YEAR);
             final int curMon = Calendar.getInstance().get(Calendar.MONTH);
             final int curDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-
             Dialog datePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                 @Override
-                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                public void onDateSet(DatePicker view, final int year, final int month, final int dayOfMonth) {
 
                     if(year<curYear){
                         Toast.makeText(mContext, "잘못 선택하셨습니다.", Toast.LENGTH_SHORT).show();
@@ -127,54 +186,70 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                         if(month<curMon){
                             Toast.makeText(mContext, "잘못 선택하셨습니다.", Toast.LENGTH_SHORT).show();
                         }else if(month>curMon){
-                            FirebaseDatabase database =FirebaseDatabase.getInstance();
-                            DatabaseReference myRef = database.getReference().child("work").child(curGrpUid+"");
-                            DatabaseReference myRef2 = database.getReference().child("work").child(curGrpUid+"");
-                            dayToString(month ,dayOfMonth);
-                            myRef2.child(year+"-"+nMonth+"-"+nDay).child(title).getDatabase();
-                            myRef.child(year+"-"+nMonth+"-"+nDay).child(title).setValue(myRef2);
-                            dayToString(curMon,curDay);
-                            myRef.child(curYear+"-"+nMonth+"-"+nDay).child(title).removeValue();
-                            finish();
 
-//                                Toast.makeText(mContext, ""+year+" . "+(month+1)+" . "+dayOfMonth, Toast.LENGTH_SHORT).show();
-                            // 지우고 이 날짜로 보내기
+                            delayWork(year, month, dayOfMonth);
                         }
                         else{
                             if(dayOfMonth>curDay) {
-//                                Toast.makeText(mContext, "" + year + " . " + (month + 1) + " . " + dayOfMonth, Toast.LENGTH_SHORT).show();
-                                FirebaseDatabase database =FirebaseDatabase.getInstance();
-                                DatabaseReference myRef = database.getReference().child("work").child(curGrpUid+"");
-                                DatabaseReference myRef2 = database.getReference().child("work").child(curGrpUid+"");
-                                dayToString(month ,dayOfMonth);
-                                myRef2.child(year+"-"+month+"-"+dayOfMonth).child(title).getDatabase();
-                                myRef.child(year+"-"+month+"-"+dayOfMonth).child(title).setValue(myRef2);
-                                dayToString(curMon,curDay);
-                                myRef.child(curYear+"-"+curMon+"-"+curDay).child(title).removeValue();
-                                finish();
+
+                                delayWork(year, month, dayOfMonth);
                             }
                             else
                                 Toast.makeText(mContext, "잘못 선택하셨습니다.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
+
             },curYear,curMon,curDay);
             datePicker.show();
         }
 
     }
 
-    public void dayToString(int month, int day){
 
-        if(month<9){
-            nMonth = "0"+(month+1);
-        } else  nMonth = (month+1)+"";
+    private void delayWork(final int year, final int month, final int dayOfMonth) {
+        final Date dd = new Date();
+        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        if(day<10){
-            nDay = "0" + day;
-        } else nDay = day+"";
+        ChangeDate cD = new ChangeDate(year, month,dayOfMonth);
+        cD.getDate();   //2017-05-06
 
+        final FirebaseDatabase database =FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference().child("work").child(""+curGrpUid)
+                .child(sdf.format(dd)).child(""+getIntent.getIntExtra("id",-1));
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final work curWork = dataSnapshot.getValue(work.class);
+                myRef.removeValue();
+                final DatabaseReference myr = database.getReference().child("work").child(""+curGrpUid)
+                        .child(""+year+"-"+(month+1)+"-"+dayOfMonth);
+                myr.addValueEventListener(new ValueEventListener() {        //item 갯수 찾기 위해 돌림
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot!=null)
+                            myr.child(""+dataSnapshot.getChildrenCount()).setValue(curWork);
+                        else
+                            myr.child("0").setValue(curWork);
+                        myr.removeEventListener(this);
+                        Toast.makeText(mContext, "2.", Toast.LENGTH_SHORT).show();
 
+                        finish();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+                myRef.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }

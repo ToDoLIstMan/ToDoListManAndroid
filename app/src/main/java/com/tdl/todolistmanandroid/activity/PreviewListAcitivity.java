@@ -87,15 +87,8 @@ public class PreviewListAcitivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         lists = new ArrayList<>();
         timeLists = new HashMap<>();
-
         final List<String> doPeople = new ArrayList<>();
         final List<Boolean> isDone = new ArrayList<>();
-        doPeople.add("test #1");
-        doPeople.add("test #2");
-        doPeople.add("test #3");
-        isDone.add(true);
-        isDone.add(false);
-        isDone.add(false);
 
         Log.e("asdf",""+getIntent().getIntExtra("groupId",-1));
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -103,8 +96,9 @@ public class PreviewListAcitivity extends AppCompatActivity {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot!=null){
+                if(dataSnapshot.exists()){
                     Log.e("asdf","qoeoiwiwiewiew");
+                    lists.clear();
 
                     myRef.addChildEventListener(new ChildEventListener() {
                         @Override
@@ -112,13 +106,16 @@ public class PreviewListAcitivity extends AppCompatActivity {
                             Log.e("asdfasd","asdf");
                             if(dataSnapshot.exists()){
                                 work work = dataSnapshot.getValue(work.class);
-                                lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),work.getId(),doPeople,doPeople,isDone));
+                                lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),work.getId(),work.getName(),work.getuId(),work.getIsDone()));
 
-                                recyclerView.setAdapter(new ListAdapter(mContext,lists,getIntent().getIntExtra("groupId",-1)));
+                                recyclerView.setAdapter(new ListAdapter(mContext,lists,getIntent().getIntExtra("groupId",-1),pickday));
 
                                 progressBar.setVisibility(View.GONE);
                             }
                             else{
+                                Log.e("asdf","-00");
+                                noneWork.setVisibility(View.VISIBLE);
+                                progressBar.setVisibility(View.GONE);
                             }
                         }
 

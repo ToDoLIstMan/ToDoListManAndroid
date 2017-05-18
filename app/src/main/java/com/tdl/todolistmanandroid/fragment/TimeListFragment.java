@@ -55,6 +55,7 @@ public class TimeListFragment extends Fragment {
     FirebaseDatabase database ;
     DatabaseReference myRef;
     int curGrpUid;
+    String todayStr, masterUid;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,7 +71,7 @@ public class TimeListFragment extends Fragment {
 
         today = new Date();
         sDF = new SimpleDateFormat("yyyy-MM-dd");
-
+        todayStr = sDF.format(today);
         hasData();
 
         return v;
@@ -81,7 +82,7 @@ public class TimeListFragment extends Fragment {
 
     private void hasData() {
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference().child("work").child(String.valueOf(getArguments().getInt("uid",-2))).child(sDF.format(today).toString());
+        myRef = database.getReference().child("work").child(String.valueOf(getArguments().getInt("uid",-2))).child(todayStr);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -130,7 +131,6 @@ public class TimeListFragment extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                Log.e("asdf",""+dataSnapshot.getValue());
                 work work = dataSnapshot.getValue(work.class);
 
                 switch (status){
@@ -157,7 +157,7 @@ public class TimeListFragment extends Fragment {
                 default:
                 break;}
 
-                recyclerView.setAdapter(new ListAdapter(getActivity(),lists,curGrpUid));
+                recyclerView.setAdapter(new ListAdapter(getActivity(),lists,curGrpUid,todayStr));
                 progressBar.setVisibility(View.GONE);
             }
 

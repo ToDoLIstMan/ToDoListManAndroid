@@ -107,6 +107,8 @@ public class SelectPeopleActivity extends AppCompatActivity{
                         for(int i = 0; i<group.getMemberName().size();i++)
                             items.add(new SelectPeopleItem(R.drawable.kakao_default_profile_image, group.getMemberName().get(i),
                                     group.getMemberUid().get(i)));
+
+                        Toast.makeText(mContext, "asdfasdf", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -124,13 +126,13 @@ public class SelectPeopleActivity extends AppCompatActivity{
                 myRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        dataSnapshot.getChildren();
                         int i = 0;
                         for(DataSnapshot a : dataSnapshot.getChildren()){
                             items.add(new SelectPeopleItem(i,a.getKey(),""));
                             i++;
                         }
 
+                        Toast.makeText(mContext, "asdfasdf", Toast.LENGTH_SHORT).show();
 
                     }
 

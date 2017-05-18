@@ -85,8 +85,9 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
             ((FormatViewHolder)holder).addPlanCardView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-//                    items.remove(position);
-                    Toast.makeText(mContext, "삭제 기능 준비 중...", Toast.LENGTH_SHORT).show();
+                    items.remove(position);
+                    Toast.makeText(mContext, "삭제 되었습니다.", Toast.LENGTH_SHORT).show();
+                    notifyDataSetChanged();
                     return false;
                 }
             });

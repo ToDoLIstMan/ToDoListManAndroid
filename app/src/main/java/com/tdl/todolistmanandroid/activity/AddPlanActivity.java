@@ -208,6 +208,8 @@ public class AddPlanActivity extends AppCompatActivity {
                 memberNames = data.getStringArrayExtra("memberName");
                 memberUids = data.getStringArrayExtra("memberUid");
 
+
+                ((AddPlanAdapter) recyclerView.getAdapter()).clearWorker();
                 ((AddPlanAdapter) recyclerView.getAdapter()).setWorker(memberNames,memberUids);
             } else if (resultCode == 779) {
                 ((AddPlanAdapter) recyclerView.getAdapter()).setFormat(data.getStringExtra("itemTitle"));
@@ -222,6 +224,7 @@ public class AddPlanActivity extends AppCompatActivity {
                 curMemberNames = data.getStringArrayExtra("memberName");
                 curMemberUids = data.getStringArrayExtra("memberUid");
 
+                ((AddPlanAdapter) recyclerView.getAdapter()).clearTodayWorker();
                 ((AddPlanAdapter) recyclerView.getAdapter()).setTodayWorker(curMemberNames,curMemberUids);
 
             }
