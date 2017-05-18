@@ -105,8 +105,9 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
             ((AddPlanAdapter.AddPlanViewHolder)holder).addPlanCardView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-//                    items.remove(position);
-                    Toast.makeText(mContext, "삭제 기능 준비 중...", Toast.LENGTH_SHORT).show();
+                    items.remove(position-1);
+                    Toast.makeText(mContext, "삭제 되었습니다.", Toast.LENGTH_SHORT).show();
+                    notifyDataSetChanged();
                     return false;
                 }
             });
@@ -158,6 +159,9 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                     notifyDataSetChanged();     //리스트 추가한 것 띄어주는 코드
 
                     ((AddPlanFooter)holder).editTitle.setText("");
+                    ((AddPlanFooter)holder).editWorkDetail.setText("");
+                    ((AddPlanFooter)holder).txtStartTime.setText("");
+                    ((AddPlanFooter)holder).txtEndTime.setText("");
                     Toast.makeText(mContext, "추가되었습니다", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -280,7 +284,6 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
 
 
 
-
     class AddPlanViewHeader extends RecyclerView.ViewHolder{
         @BindView(R.id.btAddGroup) Button btAddGroup;
         @BindView(R.id.btAddFormat) Button btAddFormat;
@@ -363,6 +366,14 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
     public void setExcTime(String excTime) {
         this.excTime = excTime;
     }
+
+    public void clearWorker() {
+        this.worker = "";
+    }
+    public  void clearTodayWorker(){
+        this.todayWorker = "";
+    }
+
 
     public int getGroupId() {
         return groupId;

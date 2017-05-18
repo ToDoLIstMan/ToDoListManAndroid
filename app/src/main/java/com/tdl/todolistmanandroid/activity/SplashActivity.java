@@ -50,6 +50,7 @@ public class SplashActivity extends Activity {
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         gotoMain.putExtra("groupUid",dataSnapshot.getValue(group.class).getId());
                                         gotoMain.putExtra("groupName",dataSnapshot.getValue(group.class).getGroupName());
+                                        gotoMain.putExtra("masterUid",dataSnapshot.getValue(group.class).getMasterUid());
                                         startActivity(gotoMain);
                                         finish();
                                         myRef.onDisconnect();
