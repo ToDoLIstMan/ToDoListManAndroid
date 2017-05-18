@@ -52,6 +52,7 @@ public class SelectPeopleActivity extends AppCompatActivity{
 
     FirebaseAuth mAuth;
     String curuId;
+    int groupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,7 @@ public class SelectPeopleActivity extends AppCompatActivity{
         mAuth = FirebaseAuth.getInstance();
         curuId = mAuth.getCurrentUser().getUid();
         getintent = getIntent();
-
+        groupId = getintent.getIntExtra("groupId",-1);
         Toolbar searchBar = (Toolbar) findViewById(R.id.searchToolbar);
         Log.e("ddd",""+getintent.getIntExtra("status",-1));
         switch (getintent.getIntExtra("status",-1)) {
@@ -87,7 +88,7 @@ public class SelectPeopleActivity extends AppCompatActivity{
             });
         }
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.selectPeopleRecyclerView);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.selectPeopleRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
@@ -99,16 +100,17 @@ public class SelectPeopleActivity extends AppCompatActivity{
 
             case 0:
             case 4:
-                myRef = database.getReference().child("group").child(""+getintent.getIntExtra("groupId",-1));
+                myRef = database.getReference().child("group").child(""+groupId);
                 myRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         group group = dataSnapshot.getValue(group.class);
-                        for(int i = 0; i<group.getMemberName().size();i++)
-                            items.add(new SelectPeopleItem(R.drawable.kakao_default_profile_image, group.getMemberName().get(i),
-                                    group.getMemberUid().get(i)));
-
-                        Toast.makeText(mContext, "asdfasdf", Toast.LENGTH_SHORT).show();
+                        List<String> names = group.getMemberName();
+                        List<String> uids = group.getMemberUid();
+                        for(int i = 0; i<names.size();i++)
+                            items.add(new SelectPeopleItem(R.drawable.kakao_default_profile_image, names.get(i),
+                                uids.get(i)));
+                        recyclerView.setAdapter(new SelectPeopleAdapter(mContext, items,getIntent().getIntExtra("status",-1000),SelectPeopleActivity.this));
                     }
 
                     @Override
@@ -122,17 +124,18 @@ public class SelectPeopleActivity extends AppCompatActivity{
 
 
             case 1:
-                myRef = database.getReference().child("format").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                myRef = database.getReference().child("format").child(curuId);
                 myRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         int i = 0;
-                        for(DataSnapshot a : dataSnapshot.getChildren()){
+                        Iterable<DataSnapshot> keys = dataSnapshot.getChildren();
+                        for(DataSnapshot a : keys){
                             items.add(new SelectPeopleItem(i,a.getKey(),""));
                             i++;
                         }
 
-                        Toast.makeText(mContext, "asdfasdf", Toast.LENGTH_SHORT).show();
+                         recyclerView.setAdapter(new SelectPeopleAdapter(mContext, items,getIntent().getIntExtra("status",-1000),SelectPeopleActivity.this));
 
                     }
 
@@ -145,14 +148,17 @@ public class SelectPeopleActivity extends AppCompatActivity{
                 break;
 
 
-            case 2:
+            case 2:         //잘 되는 코드.
                 myRef = database.getReference().child("user").child(curuId);
                 myRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         user user = dataSnapshot.getValue(user.class);
-                        for(int i = 0; i<user.getGroupName().size();i++)
-                            items.add(new SelectPeopleItem(user.getGroups().get(i), user.getGroupName().get(i), null));
+                        List<Integer> gUid = user.getGroups();
+                        List<String> gName = user.getGroupName();
+                        for(int i = 0; i<gUid.size();i++)
+                            items.add(new SelectPeopleItem(gUid.get(i), gName.get(i), null));
+                        recyclerView.setAdapter(new SelectPeopleAdapter(mContext, items,getIntent().getIntExtra("status",-1000),SelectPeopleActivity.this));
 
                     }
 
@@ -165,7 +171,6 @@ public class SelectPeopleActivity extends AppCompatActivity{
 
         }
 
-        recyclerView.setAdapter(new SelectPeopleAdapter(mContext, items,getIntent().getIntExtra("status",-1000),this));
     }
 
     public void setList(String uId, String name){
