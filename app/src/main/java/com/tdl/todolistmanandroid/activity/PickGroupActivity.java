@@ -125,7 +125,7 @@ public class PickGroupActivity extends AppCompatActivity implements View.OnClick
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                        recyclerView.getAdapter().notifyDataSetChanged();
                     }
 
                     @Override
