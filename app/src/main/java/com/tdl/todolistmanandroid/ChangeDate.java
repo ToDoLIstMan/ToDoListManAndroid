@@ -11,8 +11,8 @@ import java.util.Date;
  */
 
 public class ChangeDate {
-    int year, month, day;
-    String sYear, sMonth, sDay;
+    int year, month, day, out;
+    String sYear, sMonth, sDay, timeData;
 
 
 
@@ -31,6 +31,8 @@ public class ChangeDate {
     public String getDate(){
         return sYear+"-"+sMonth+"-"+sDay;
     }
+
+    public int getOut(){ return out;}
 
 //    public String getToday() {
 //        long now = System.currentTimeMillis();
@@ -52,6 +54,13 @@ public class ChangeDate {
         if(day<10){
             sDay = "0" + day;
         } else sDay = day+"";
+
+    }
+
+    public ChangeDate(String timeData){
+        this.timeData = timeData;
+        String[] times = timeData.split(":");
+        out = Integer.parseInt(times[0])*60 + Integer.parseInt(times[1]);
 
     }
 

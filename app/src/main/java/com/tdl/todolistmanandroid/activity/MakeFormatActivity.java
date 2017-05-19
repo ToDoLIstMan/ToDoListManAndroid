@@ -101,24 +101,27 @@ public class MakeFormatActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_add_plan,menu);
+        inflater.inflate(R.menu.menu_format,menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        if(item.getItemId()==R.id.action_send){
+        if(item.getItemId()==R.id.action_add) {
 //            Log.e("adfadf",""+items.size());
+            if (((MakeFormatAdapter) recyclerView.getAdapter()).getItemCount() == 1)
+                Toast.makeText(this, "일을 추가하세요", Toast.LENGTH_SHORT).show();
+            else{
 
 //            // edittext_dialogue layout의 폼을 가진 AlertDialogue 생성 후 이름을 포멧 추가라고 지정
-            LayoutInflater inflater = LayoutInflater.from(this);
-            View promptView = inflater.inflate(R.layout.edittext_dialog,null);
+                LayoutInflater inflater = LayoutInflater.from(this);
+            View promptView = inflater.inflate(R.layout.edittext_dialog, null);
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("포멧 추가");
             alert.setView(promptView);
 
             // 내용 지정
-            final EditText input = (EditText)promptView.findViewById(R.id.editGroup);
+            final EditText input = (EditText) promptView.findViewById(R.id.editGroup);
             input.requestFocus();
             input.setHint("포멧명을 입력하세요.");
             alert.setView(promptView);
@@ -127,11 +130,11 @@ public class MakeFormatActivity extends AppCompatActivity {
             alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                  FirebaseDatabase database =FirebaseDatabase.getInstance();
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference myRef = database.getReference().child("format").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                             .child(input.getText().toString());
-                    for(int i = 0; i<items.size();i++)
-                        myRef.child(""+i).setValue(items.get(i));
+                    for (int i = 0; i < items.size(); i++)
+                        myRef.child("" + i).setValue(items.get(i));
                     finish();
 
 //                    FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -181,6 +184,7 @@ public class MakeFormatActivity extends AppCompatActivity {
             AlertDialog dialog = alert.create();
             dialog.show();
 
+        }
         }
         return super.onOptionsItemSelected(item);
     }

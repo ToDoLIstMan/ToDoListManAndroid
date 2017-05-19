@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.tdl.todolistmanandroid.ChangeDate;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.activity.FormatManageActivity;
 import com.tdl.todolistmanandroid.activity.SelectPeopleActivity;
@@ -45,6 +46,8 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
         this.mContext = mContext;
         this.items = items;
     }
+    ChangeDate cd1 = new ChangeDate("00:00");
+    ChangeDate cd2 = new ChangeDate("00:00");
 
     @Override
     public int getItemViewType(int position) {
@@ -77,8 +80,6 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
         //body(holder)
         if(holder instanceof FormatViewHolder) {
             final MakeFormatItem curItem = items.get(position);
-//            ((FormatViewHolder)holder).txtEndTime.setText(curItem.getEndTime());
-//            ((FormatViewHolder)holder).txtStartTime.setText(curItem.getStartTime());
             ((FormatViewHolder)holder).addPlanTxtTitle.setText(curItem.getPlanName());
 
 
@@ -98,6 +99,8 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
 
         //footer
         else if(holder instanceof FormatFooter){
+
+
             ((FormatFooter)holder).btnAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -109,6 +112,13 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
             ((FormatFooter)holder).btAddWork.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ChangeDate cd1 = new ChangeDate(((FormatFooter)holder).txtStartTime.getText().toString());
+                    ChangeDate cd2 = new ChangeDate(((FormatFooter)holder).txtEndTime.getText().toString());
+                    if(((FormatFooter)holder).editTitle.getText().toString().equals("")||
+                            (cd1.getOut()-cd2.getOut()>=0))
+                    {
+                        Toast.makeText(mContext, "빈칸을 마저 채우세요", Toast.LENGTH_SHORT).show();}
+                    else{
                     ((FormatFooter)holder).bckAdd.setVisibility(View.VISIBLE);
                     ((FormatFooter)holder).bckInput.setVisibility(View.GONE);
 
@@ -127,7 +137,7 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
                     notifyDataSetChanged();     //리스트 추가한 것 띄어주는 코드
 
                     ((FormatFooter)holder).editTitle.setText("");
-                    Toast.makeText(mContext, "추가되었습니다", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "추가되었습니다", Toast.LENGTH_SHORT).show();}
                 }
             });
 
@@ -158,45 +168,8 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
                 }
             });
 
-        }
+        } else{}
 
-
-
-        else{
-/*
-            // Header
-            ((AddPlanAdapter.AddPlanViewHeader)holder).txtWorker.setText(worker);
-            ((AddPlanAdapter.AddPlanViewHeader)holder).btAddGroup.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent  gotoA = new Intent(mContext,SelectPeopleActivity.class);
-                    gotoA.putExtra("status",2);
-                    gotoA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    ((AddPlanActivity)mContext).startActivityForResult(gotoA,0);
-                }
-            });
-
-
-            ((AddPlanAdapter.AddPlanViewHeader)holder).btAddFormat.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent  gotoA = new Intent(mContext,SelectPeopleActivity.class);
-                    gotoA.putExtra("status",1);
-                    gotoA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(gotoA);
-                }
-            });
-
-            ((AddPlanAdapter.AddPlanViewHeader)holder).btAddWorker.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent  gotoA = new Intent(mContext,SelectPeopleActivity.class);
-                    gotoA.putExtra("status",0);
-                    gotoA.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(gotoA);
-                }
-            });*/
-        }
     }
 
 
