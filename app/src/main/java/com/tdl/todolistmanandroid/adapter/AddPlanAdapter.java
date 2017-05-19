@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.tdl.todolistmanandroid.ChangeDate;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.activity.AddPlanActivity;
 import com.tdl.todolistmanandroid.activity.MainActivity;
@@ -55,6 +56,8 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
     private String worker ="", format ="", group ="",todayWorker="",excTime = "";
 
     private String[] workerNames, workerUids, curWkNames, curWkUids;
+
+//    private String a1 = new ChangeDate(0,0,0).getToday();
 
     private int groupId= -1;
     public AddPlanAdapter(Context mContext, List<AddPlanItem> items) {
@@ -175,7 +178,10 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                     if(((AddPlanFooter)holder).editTitle.getText().toString().equals("")||
                             ((AddPlanFooter)holder).txtStartTime.getText().toString().equals("")||
                             ((AddPlanFooter)holder).txtEndTime.getText().toString().equals("")||
-                            todayWorker.equals("")) Toast.makeText(mContext, "빈칸을 채워주세요", Toast.LENGTH_SHORT).show();
+                            todayWorker.equals("")) {
+                        Toast.makeText(mContext, "빈칸을 채워주세요", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(mContext, a1, Toast.LENGTH_SHORT).show();
+                    }
                     else{
                     ((AddPlanFooter)holder).bckAdd.setVisibility(View.VISIBLE);
                     ((AddPlanFooter)holder).txtStartTime.getText().toString();

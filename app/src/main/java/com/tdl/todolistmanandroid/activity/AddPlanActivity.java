@@ -116,70 +116,74 @@ public class AddPlanActivity extends AppCompatActivity {
             final DatabaseReference[] myRef = new DatabaseReference[1];
 
             myRef[0] = database.getReference().child("work");
-            items.addAll(0,formatItems);
-            for(int i =0; i<items.size();i++) {
-                Log.e("몇번째?", ""+items.get(i).getIsDone().size());
-                myRef[0].child("" + groupId).child(((AddPlanAdapter) recyclerView.getAdapter()).getExcTime()).child(""+i).setValue(
-                        new work(i, items.get(i).getTitle(), items.get(i).getDetail(),
-                                items.get(i).getStartTime(), items.get(i).getEndTime(),
-                                items.get(i).getName(), items.get(i).getuId(), items.get(i).getIsDone()));
+            if(((AddPlanAdapter)recyclerView.getAdapter()).getExcTime()==""||
+                    ((AddPlanAdapter)recyclerView.getAdapter()).getGroup()==""||
+                    ((AddPlanAdapter)recyclerView.getAdapter()).getItemCount()==2){
+                Toast.makeText(this, "내용을 마저 채우세요", Toast.LENGTH_SHORT).show();
+            } else {
+                items.addAll(0, formatItems);
+                for (int i = 0; i < items.size(); i++) {
+                    Log.e("몇번째?", "" + items.get(i).getIsDone().size());
+                    myRef[0].child("" + groupId).child(((AddPlanAdapter) recyclerView.getAdapter()).getExcTime()).child("" + i).setValue(
+                            new work(i, items.get(i).getTitle(), items.get(i).getDetail(),
+                                    items.get(i).getStartTime(), items.get(i).getEndTime(),
+                                    items.get(i).getName(), items.get(i).getuId(), items.get(i).getIsDone()));
+                }
+
+                myRef[0] = database.getReference().child("format").
+                        child(FirebaseAuth.getInstance().getCurrentUser().getUid()).
+                        child(((AddPlanAdapter) recyclerView.getAdapter()).getFormat());
+                myRef[0].addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                        if (!((AddPlanAdapter) recyclerView.getAdapter()).getFormat().equals("")) {
+                            format format = dataSnapshot.getValue(format.class);
+
+
+                            List<String> a = new ArrayList<>(Arrays.asList(memberNames));
+                            List<String> b = new ArrayList<>(Arrays.asList(memberUids));
+
+                            Log.e("asdasdf", "" + a.size());
+                            List<Boolean> isDone = new ArrayList<>();
+                            for (int j = 0; j < a.size(); j++)
+                                isDone.add(false);
+                            Log.e("asdasdf", "" + format.getId());
+
+                            Log.e("asdasdf", "" + format.getPlanName());
+                            Log.e("asdasdf", "" + format.getDetail());
+                            Log.e("asdasdf", "" + format.getStartTime());
+                            Log.e("asdasdf", "" + format.getEndTime());
+
+                            formatItems.add(new AddPlanItem(format.getId(), format.getPlanName(), format.getDetail(),
+                                    format.getStartTime(), format.getEndTime(), a, b, isDone));
+                        }
+                        Toast.makeText(mContext, "일정이 전송되었습니다.", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
             }
-
-                    myRef[0] = database.getReference().child("format").
-                    child(FirebaseAuth.getInstance().getCurrentUser().getUid()).
-                    child(((AddPlanAdapter) recyclerView.getAdapter()).getFormat());
-            myRef[0].addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                    if(!((AddPlanAdapter)recyclerView.getAdapter()).getFormat().equals("")){
-//                    format format = dataSnapshot.getValue(format.class);
-                    format format = dataSnapshot.getValue(format.class);
-
-
-                    List<String> a = new ArrayList<>(Arrays.asList(memberNames));
-                    List<String> b = new ArrayList<>(Arrays.asList(memberUids));
-
-                    Log.e("asdasdf", "" + a.size());
-                    List<Boolean> isDone = new ArrayList<>();
-                    for (int j = 0; j < a.size(); j++)
-                        isDone.add(false);
-                    Log.e("asdasdf", "" + format.getId());
-
-                    Log.e("asdasdf", "" + format.getPlanName());
-                    Log.e("asdasdf", "" + format.getDetail());
-                    Log.e("asdasdf", "" + format.getStartTime());
-                    Log.e("asdasdf", "" + format.getEndTime());
-
-                    formatItems.add(new AddPlanItem(format.getId(), format.getPlanName(), format.getDetail(),
-                            format.getStartTime(), format.getEndTime(), a, b, isDone));
-                }
-                    Toast.makeText(mContext, "일정이 전송되었습니다.", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-
         }
         return super.onOptionsItemSelected(item);
     }

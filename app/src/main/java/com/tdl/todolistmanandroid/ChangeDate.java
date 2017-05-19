@@ -1,5 +1,11 @@
 package com.tdl.todolistmanandroid;
 
+import android.provider.AlarmClock;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Created by songmho on 2017. 5. 16..
  */
@@ -26,6 +32,12 @@ public class ChangeDate {
         return sYear+"-"+sMonth+"-"+sDay;
     }
 
+//    public String getToday() {
+//        long now = System.currentTimeMillis();
+//        Date date = new Date(now);
+//        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD");
+//        return sdf.format(date);
+//    }
 
     public ChangeDate(int year, int month, int day){
         this.year = year;
@@ -42,4 +54,6 @@ public class ChangeDate {
         } else sDay = day+"";
 
     }
+
+
 }
