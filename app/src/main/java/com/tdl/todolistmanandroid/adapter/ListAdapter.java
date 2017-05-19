@@ -35,6 +35,7 @@ public class ListAdapter extends RecyclerView.Adapter {
     private List<TimeListItem> lists;
     int curGrpUid;
     String pickDay;
+    boolean isFinished = false;
     public ListAdapter(Context mContext, List<TimeListItem> lists, int curGrpUid, String pickday) {
         this.mContext=mContext;
         this.lists = lists;
@@ -52,7 +53,6 @@ public class ListAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         String done = "", undone = "";
-            final boolean[] isFinished = {false};
             final TimeListItem item = lists.get(position);
             ((Holder)holder).txtTitle.setText(item.getTitle());
 
@@ -85,7 +85,7 @@ public class ListAdapter extends RecyclerView.Adapter {
                     gotoDetail.putExtra("detail",item.getDetail());
                     gotoDetail.putExtra("supervisior",item.getId());
                     gotoDetail.putExtra("people",item.getDoPeople().toString());
-                    gotoDetail.putExtra("isFinished", isFinished[0]);
+                    gotoDetail.putExtra("isFinished", ((Holder)holder).checkBox.isChecked());
                     gotoDetail.putExtra("pickDay",pickDay);
                     gotoDetail.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(gotoDetail);
@@ -97,14 +97,10 @@ public class ListAdapter extends RecyclerView.Adapter {
 
                      if(isChecked){
                         ((Holder)holder).txtTitle.setPaintFlags(((Holder)holder).txtTitle.getPaintFlags()  | Paint.STRIKE_THRU_TEXT_FLAG);
-                        isFinished[0] = true;
-
                          sendChgData(isChecked, item, uid);
 
                      }else{
                         ((Holder)holder).txtTitle.setPaintFlags(((Holder)holder).txtTitle.getPaintFlags()  ^ Paint.STRIKE_THRU_TEXT_FLAG);
-                        isFinished[0] = false;
-
                          sendChgData(isChecked, item, uid);
 
                     }
@@ -121,6 +117,7 @@ public class ListAdapter extends RecyclerView.Adapter {
             Log.e("Asdf "+item.getTitle()," "+i);
             if(item.getPeopleUid().get(i).equals(uid)){
                 userPos = i;
+                isFinished = isChecked;
                 break;
             }
         }

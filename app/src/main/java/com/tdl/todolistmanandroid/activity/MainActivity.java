@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(getIntent().getIntExtra("groupUid",-1)>-1) {
             curGroupId = getIntent().getIntExtra("groupUid",-1);
             toolbar.setTitle(getIntent().getStringExtra("groupName"));
-
+        //    new AlarmHATT(mContext).Alarm();
         }
         else{
             Toast.makeText(mContext, "들어가있는 그룹이 없습니다. 그룹추가 페이지로 이동합니다.", Toast.LENGTH_SHORT).show();
@@ -241,8 +241,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 for(int i= 0;i<lists.size();i++) {
                     arr = lists.get(i).getStartTime().split(":");
                     lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),work.getId(), work.getName(),work.getuId(),work.getIsDone()));
-                    new AlarmHATT(mContext).Alarm(i,Integer.valueOf(arr[0]),Integer.valueOf(arr[1]),lists.get(i).getTitle());
-                }
+                  }
 
 
             }
