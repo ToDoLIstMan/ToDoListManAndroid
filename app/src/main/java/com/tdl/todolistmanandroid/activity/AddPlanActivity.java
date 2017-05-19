@@ -113,43 +113,47 @@ public class AddPlanActivity extends AppCompatActivity {
 
             formatItems = new ArrayList<>();
             final FirebaseDatabase database = FirebaseDatabase.getInstance();
-            final DatabaseReference[] myRef = {database.getReference().child("format").
+            final DatabaseReference[] myRef = new DatabaseReference[1];
+
+            myRef[0] = database.getReference().child("work");
+            items.addAll(0,formatItems);
+            for(int i =0; i<items.size();i++) {
+                Log.e("몇번째?", ""+items.get(i).getIsDone().size());
+                myRef[0].child("" + groupId).child(((AddPlanAdapter) recyclerView.getAdapter()).getExcTime()).child(""+i).setValue(
+                        new work(i, items.get(i).getTitle(), items.get(i).getDetail(),
+                                items.get(i).getStartTime(), items.get(i).getEndTime(),
+                                items.get(i).getName(), items.get(i).getuId(), items.get(i).getIsDone()));
+            }
+
+                    myRef[0] = database.getReference().child("format").
                     child(FirebaseAuth.getInstance().getCurrentUser().getUid()).
-                    child(((AddPlanAdapter) recyclerView.getAdapter()).getFormat())};
+                    child(((AddPlanAdapter) recyclerView.getAdapter()).getFormat());
             myRef[0].addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                    if(!((AddPlanAdapter)recyclerView.getAdapter()).getFormat().equals("")){
+//                    format format = dataSnapshot.getValue(format.class);
                     format format = dataSnapshot.getValue(format.class);
 
-                    //int id, String planName, String detail, String startTime, String endTime
 
                     List<String> a = new ArrayList<>(Arrays.asList(memberNames));
                     List<String> b = new ArrayList<>(Arrays.asList(memberUids));
 
-                    Log.e("asdasdf",""+a.size());
-                    List<Boolean> isDone =new ArrayList<>();
-                    for(int j =0;j<a.size();j++)
+                    Log.e("asdasdf", "" + a.size());
+                    List<Boolean> isDone = new ArrayList<>();
+                    for (int j = 0; j < a.size(); j++)
                         isDone.add(false);
-                    Log.e("asdasdf",""+format.getId());
+                    Log.e("asdasdf", "" + format.getId());
 
-                    Log.e("asdasdf",""+format.getPlanName());
-                    Log.e("asdasdf",""+format.getDetail());
-                    Log.e("asdasdf",""+format.getStartTime());
-                    Log.e("asdasdf",""+format.getEndTime());
+                    Log.e("asdasdf", "" + format.getPlanName());
+                    Log.e("asdasdf", "" + format.getDetail());
+                    Log.e("asdasdf", "" + format.getStartTime());
+                    Log.e("asdasdf", "" + format.getEndTime());
 
-
-                    formatItems.add(new AddPlanItem(format.getId(),format.getPlanName(), format.getDetail(),
-                            format.getStartTime(),format.getEndTime(), a,b, isDone));
-
-                    myRef[0] = database.getReference().child("work");
-                    items.addAll(0,formatItems);
-                    for(int i =0; i<items.size();i++) {
-                        Log.e("몇번째?", ""+items.get(i).getIsDone().size());
-                        myRef[0].child("" + groupId).child(((AddPlanAdapter) recyclerView.getAdapter()).getExcTime()).child(""+i).setValue(
-                                new work(i, items.get(i).getTitle(), items.get(i).getDetail(),
-                                        items.get(i).getStartTime(), items.get(i).getEndTime(),
-                                        items.get(i).getName(), items.get(i).getuId(), items.get(i).getIsDone()));
-                    }
+                    formatItems.add(new AddPlanItem(format.getId(), format.getPlanName(), format.getDetail(),
+                            format.getStartTime(), format.getEndTime(), a, b, isDone));
+                }
                     Toast.makeText(mContext, "일정이 전송되었습니다.", Toast.LENGTH_SHORT).show();
                     finish();
                 }

@@ -101,7 +101,7 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
         //body(holder)
         if(holder instanceof AddPlanViewHolder) {
             final AddPlanItem curItem = items.get(position-1);
-            ((AddPlanAdapter.AddPlanViewHolder) holder).addPlanTxtTitle.setText(curItem.getTitle());
+            ((AddPlanAdapter.AddPlanViewHolder)holder).addPlanTxtTitle.setText(curItem.getTitle());
             ((AddPlanAdapter.AddPlanViewHolder)holder).addPlanCardView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -128,54 +128,17 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                 }
             });
 
-            ((AddPlanFooter)holder).btAddWork.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    todayWorker="";
-                    ((AddPlanFooter)holder).bckAdd.setVisibility(View.VISIBLE);
-                    ((AddPlanFooter)holder).bckInput.setVisibility(View.GONE);
-
-                    ((AddPlanFooter)holder).txtStartTime.getText().toString();
-                    ((AddPlanFooter)holder).txtEndTime.getText().toString();
-                    ((AddPlanFooter)holder).editWorkDetail.getText().toString();
-
-
-                    List<String> a = new ArrayList<>(Arrays.asList(curWkNames));
-                    List<String> b = new ArrayList<>(Arrays.asList(curWkUids));
-
-
-                    List<Boolean> isDone =new ArrayList<>();
-                    for(int j =0;j<a.size();j++)
-                        isDone.add(false);
-
-                    items.add(new AddPlanItem(items.size(),
-                            ((AddPlanFooter)holder).editTitle.getText().toString(),
-                            ((AddPlanFooter)holder).editWorkDetail.getText().toString(),
-                            ((AddPlanFooter)holder).txtStartTime.getText().toString(),
-                            ((AddPlanFooter)holder).txtEndTime.getText().toString(),
-                            a, b,isDone
-                            ));
-
-                    notifyDataSetChanged();     //리스트 추가한 것 띄어주는 코드
-
-                    ((AddPlanFooter)holder).editTitle.setText("");
-                    ((AddPlanFooter)holder).editWorkDetail.setText("");
-                    ((AddPlanFooter)holder).txtStartTime.setText("");
-                    ((AddPlanFooter)holder).txtEndTime.setText("");
-                    Toast.makeText(mContext, "추가되었습니다", Toast.LENGTH_SHORT).show();
-                }
-            });
 
             ((AddPlanFooter)holder).btnStartTime.setOnClickListener(new View.OnClickListener() {
                 int hour, minute;
                 @Override
                 public void onClick(View v) {
-                   TimePickerDialog t = new TimePickerDialog(mContext, new TimePickerDialog.OnTimeSetListener() {
-                       @Override
-                       public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                           ((AddPlanFooter)holder).txtStartTime.setText(hourOfDay+":"+minute);
-                       }
-                   }, hour, minute, true);
+                    TimePickerDialog t = new TimePickerDialog(mContext, new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            ((AddPlanFooter)holder).txtStartTime.setText(hourOfDay+":"+minute);
+                        }
+                    }, hour, minute, true);
                     t.show();
                 }
             });
@@ -192,11 +155,9 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                     t.show();
                 }
             });
-
             ((AddPlanFooter)holder).btnAddPeople.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
 
                     if(groupId!=-1) {
                         ((AddPlanActivity) mContext).sendIntent(groupId, 4);
@@ -204,8 +165,50 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                     }
                     else
                         Toast.makeText(mContext, "그룹을 먼저 선택해 주세요.", Toast.LENGTH_SHORT).show();
-                    }
+                }
             });
+
+            ((AddPlanFooter)holder).btAddWork.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if(((AddPlanFooter)holder).editTitle.getText().toString().equals("")||
+                            ((AddPlanFooter)holder).txtStartTime.getText().toString().equals("")||
+                            ((AddPlanFooter)holder).txtEndTime.getText().toString().equals("")||
+                            todayWorker.equals("")) Toast.makeText(mContext, "빈칸을 채워주세요", Toast.LENGTH_SHORT).show();
+                    else{
+                    ((AddPlanFooter)holder).bckAdd.setVisibility(View.VISIBLE);
+                    ((AddPlanFooter)holder).txtStartTime.getText().toString();
+                    ((AddPlanFooter)holder).txtEndTime.getText().toString();
+                    ((AddPlanFooter)holder).editWorkDetail.getText().toString();
+                    ((AddPlanFooter)holder).bckInput.setVisibility(View.GONE);
+
+                    todayWorker="";
+                    List<String> a = new ArrayList<>(Arrays.asList(curWkNames));
+                    List<String> b = new ArrayList<>(Arrays.asList(curWkUids));
+                    List<Boolean> isDone =new ArrayList<>();
+                    for(int j =0;j<a.size();j++)
+                        isDone.add(false);
+
+                    items.add(new AddPlanItem(items.size(),
+                            ((AddPlanFooter)holder).editTitle.getText().toString(),
+                            ((AddPlanFooter)holder).editWorkDetail.getText().toString(),
+                            ((AddPlanFooter)holder).txtStartTime.getText().toString(),
+                            ((AddPlanFooter)holder).txtEndTime.getText().toString(),
+                            a, b,isDone));
+
+
+
+                    // 추가까지 다 되고 난 후의 코드
+                    notifyDataSetChanged();     //리스트 추가한 것 띄어주는 코드
+                    ((AddPlanFooter)holder).editTitle.setText("");
+                    ((AddPlanFooter)holder).editWorkDetail.setText("");
+                    ((AddPlanFooter)holder).txtStartTime.setText("");
+                    ((AddPlanFooter)holder).txtEndTime.setText("");
+                    Toast.makeText(mContext, "추가되었습니다", Toast.LENGTH_SHORT).show();}
+                }});
+
+
         }
 
 
@@ -220,7 +223,6 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
             ((AddPlanViewHeader)holder).btAddGroup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     ((AddPlanActivity)mContext).sendIntent(position,2);
                 }
             });
@@ -229,7 +231,6 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
             ((AddPlanViewHeader)holder).btAddFormat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     ((AddPlanActivity)mContext).sendIntent(position,1);
                 }
             });
@@ -239,10 +240,8 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
 
                     Log.e("gggg",""+groupId);
-
-                    if(groupId!=-1) {
+                    if(groupId!=-1)
                         ((AddPlanActivity) mContext).sendIntent(groupId, 0);
-                    }
                     else
                         Toast.makeText(mContext, "그룹을 먼저 선택해 주세요.", Toast.LENGTH_SHORT).show();
                 }
