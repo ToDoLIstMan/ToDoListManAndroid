@@ -60,6 +60,8 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
             return -100;
     }
 
+
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if(viewType==BODY) {
@@ -81,6 +83,9 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
         if(holder instanceof FormatViewHolder) {
             final MakeFormatItem curItem = items.get(position);
             ((FormatViewHolder)holder).addPlanTxtTitle.setText(curItem.getPlanName());
+            ((FormatViewHolder)holder).addPlanTxtStartTime.setText(curItem.getStartTime());
+            ((FormatViewHolder)holder).addPlanTxtEndTime.setText(curItem.getEndTime());
+            ((FormatViewHolder)holder).addPlanTxtDetail.setText(curItem.getDetail());
 
 
             ((FormatViewHolder)holder).addPlanCardView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -112,8 +117,8 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
             ((FormatFooter)holder).btAddWork.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ChangeDate cd1 = new ChangeDate(((FormatFooter)holder).txtStartTime.getText().toString());
-                    ChangeDate cd2 = new ChangeDate(((FormatFooter)holder).txtEndTime.getText().toString());
+                    ChangeDate cd1 = new ChangeDate(((FormatFooter)holder).btnStartTime.getText().toString());
+                    ChangeDate cd2 = new ChangeDate(((FormatFooter)holder).btnEndTime.getText().toString());
                     if(((FormatFooter)holder).editTitle.getText().toString().equals("")||
                             (cd1.getOut()-cd2.getOut()>=0))
                     {
@@ -122,14 +127,14 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
                     ((FormatFooter)holder).bckAdd.setVisibility(View.VISIBLE);
                     ((FormatFooter)holder).bckInput.setVisibility(View.GONE);
 
-                    ((FormatFooter)holder).txtStartTime.getText().toString();
-                    ((FormatFooter)holder).txtEndTime.getText().toString();
+                    ((FormatFooter)holder).btnStartTime.getText().toString();
+                    ((FormatFooter)holder).btnEndTime.getText().toString();
                     ((FormatFooter)holder).editFormatDetail.getText().toString();
 
                     items.add(new MakeFormatItem(items.size(),
                             ((FormatFooter)holder).editTitle.getText().toString(),
-                            ((FormatFooter)holder).txtStartTime.getText().toString(),
-                            ((FormatFooter)holder).txtEndTime.getText().toString(),
+                            ((FormatFooter)holder).btnStartTime.getText().toString(),
+                            ((FormatFooter)holder).btnEndTime.getText().toString(),
                             ((FormatFooter)holder).editFormatDetail.getText().toString()
                             ));
 
@@ -148,7 +153,7 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
                     TimePickerDialog t = new TimePickerDialog(mContext, new TimePickerDialog.OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            ((FormatFooter)holder).txtStartTime.setText(hourOfDay+":"+minute);
+                            ((FormatFooter)holder).btnStartTime.setText(hourOfDay+":"+minute);
                         }
                     }, hour, minute, true);
                     t.show();
@@ -161,7 +166,7 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
                     TimePickerDialog t = new TimePickerDialog(mContext, new TimePickerDialog.OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            ((FormatFooter)holder).txtEndTime.setText(hourOfDay+":"+minute);
+                            ((FormatFooter)holder).btnEndTime.setText(hourOfDay+":"+minute);
                         }
                     }, hour, minute, true);
                     t.show();
@@ -183,6 +188,9 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
     class FormatViewHolder extends RecyclerView.ViewHolder{
         @Nullable@BindView(R.id.addPlanTxtTitle) TextView addPlanTxtTitle;
         @Nullable@BindView(R.id.addPlanCardView) CardView addPlanCardView;
+        @Nullable@BindView(R.id.addPlanTxtStartTime) TextView addPlanTxtStartTime;
+        @Nullable@BindView(R.id.addPlanTxtEndTime) TextView addPlanTxtEndTime;
+        @Nullable@BindView(R.id.addPlanTxtDetail) TextView addPlanTxtDetail;
         FormatViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
@@ -196,9 +204,8 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
         @BindView(R.id.btnAdd) FloatingActionButton btnAdd;
 
 
+
         @BindView(R.id.editTitle) EditText editTitle;
-        @BindView(R.id.txtStartTime) TextView txtStartTime;
-        @BindView(R.id.txtEndTime) TextView txtEndTime;
         @BindView(R.id.editFormatDetail) EditText editFormatDetail;
 
         @BindView(R.id.btnStartTime) Button btnStartTime;
