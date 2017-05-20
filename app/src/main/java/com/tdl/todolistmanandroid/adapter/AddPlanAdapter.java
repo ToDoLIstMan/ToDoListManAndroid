@@ -105,6 +105,9 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
         if(holder instanceof AddPlanViewHolder) {
             final AddPlanItem curItem = items.get(position-1);
             ((AddPlanAdapter.AddPlanViewHolder)holder).addPlanTxtTitle.setText(curItem.getTitle());
+            ((AddPlanViewHolder)holder).addPlanTxtStartTime.setText(curItem.getStartTime());
+            ((AddPlanViewHolder)holder).addPlanTxtEndTime.setText(curItem.getEndTime());
+            ((AddPlanViewHolder)holder).addPlanTxtDetail.setText(curItem.getDetail());
             ((AddPlanAdapter.AddPlanViewHolder)holder).addPlanCardView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -139,7 +142,7 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                     TimePickerDialog t = new TimePickerDialog(mContext, new TimePickerDialog.OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            ((AddPlanFooter)holder).txtStartTime.setText(hourOfDay+":"+minute);
+                            ((AddPlanFooter)holder).btnStartTime.setText(hourOfDay+":"+minute);
                         }
                     }, hour, minute, true);
                     t.show();
@@ -152,7 +155,7 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                     TimePickerDialog t = new TimePickerDialog(mContext, new TimePickerDialog.OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            ((AddPlanFooter)holder).txtEndTime.setText(hourOfDay+":"+minute);
+                            ((AddPlanFooter)holder).btnEndTime.setText(hourOfDay+":"+minute);
                         }
                     }, hour, minute, true);
                     t.show();
@@ -176,16 +179,16 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
 
                     if(((AddPlanFooter)holder).editTitle.getText().toString().equals("")||
-                            ((AddPlanFooter)holder).txtStartTime.getText().toString().equals("")||
-                            ((AddPlanFooter)holder).txtEndTime.getText().toString().equals("")||
+                            ((AddPlanFooter)holder).btnStartTime.getText().toString().equals("")||
+                            ((AddPlanFooter)holder).btnEndTime.getText().toString().equals("")||
                             todayWorker.equals("")) {
                         Toast.makeText(mContext, "빈칸을 채워주세요", Toast.LENGTH_SHORT).show();
 //                        Toast.makeText(mContext, a1, Toast.LENGTH_SHORT).show();
                     }
                     else{
                     ((AddPlanFooter)holder).bckAdd.setVisibility(View.VISIBLE);
-                    ((AddPlanFooter)holder).txtStartTime.getText().toString();
-                    ((AddPlanFooter)holder).txtEndTime.getText().toString();
+                    ((AddPlanFooter)holder).btnStartTime.getText().toString();
+                    ((AddPlanFooter)holder).btnEndTime.getText().toString();
                     ((AddPlanFooter)holder).editWorkDetail.getText().toString();
                     ((AddPlanFooter)holder).bckInput.setVisibility(View.GONE);
 
@@ -199,8 +202,8 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                     items.add(new AddPlanItem(items.size(),
                             ((AddPlanFooter)holder).editTitle.getText().toString(),
                             ((AddPlanFooter)holder).editWorkDetail.getText().toString(),
-                            ((AddPlanFooter)holder).txtStartTime.getText().toString(),
-                            ((AddPlanFooter)holder).txtEndTime.getText().toString(),
+                            ((AddPlanFooter)holder).btnStartTime.getText().toString(),
+                            ((AddPlanFooter)holder).btnEndTime.getText().toString(),
                             a, b,isDone));
 
 
@@ -209,8 +212,8 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                     notifyDataSetChanged();     //리스트 추가한 것 띄어주는 코드
                     ((AddPlanFooter)holder).editTitle.setText("");
                     ((AddPlanFooter)holder).editWorkDetail.setText("");
-                    ((AddPlanFooter)holder).txtStartTime.setText("");
-                    ((AddPlanFooter)holder).txtEndTime.setText("");
+                    ((AddPlanFooter)holder).btnStartTime.setText("");
+                    ((AddPlanFooter)holder).btnEndTime.setText("");
                     Toast.makeText(mContext, "추가되었습니다", Toast.LENGTH_SHORT).show();}
                 }});
 
@@ -226,7 +229,7 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
             ((AddPlanViewHeader)holder).txtFormat.setText(format);
             ((AddPlanViewHeader)holder).txtGroup.setText(group);
 
-            ((AddPlanViewHeader)holder).btAddGroup.setOnClickListener(new View.OnClickListener() {
+            ((AddPlanViewHeader)holder).addGroupLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ((AddPlanActivity)mContext).sendIntent(position,2);
@@ -234,14 +237,14 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
             });
 
 
-            ((AddPlanViewHeader)holder).btAddFormat.setOnClickListener(new View.OnClickListener() {
+            ((AddPlanViewHeader)holder).addFormatLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ((AddPlanActivity)mContext).sendIntent(position,1);
                 }
             });
 
-            ((AddPlanViewHeader)holder).btAddWorker.setOnClickListener(new View.OnClickListener() {
+            ((AddPlanViewHeader)holder).addWorkerLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -253,7 +256,7 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                 }
             });
 
-            ((AddPlanViewHeader)holder).btAddTime.setOnClickListener(new View.OnClickListener() {
+            ((AddPlanViewHeader)holder).addTimeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     final int curYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -290,22 +293,24 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
 
 
     class AddPlanViewHeader extends RecyclerView.ViewHolder{
-        @BindView(R.id.btAddGroup) Button btAddGroup;
-        @BindView(R.id.btAddFormat) Button btAddFormat;
-        @BindView(R.id.btAddWorker) Button btAddWorker;
+        @BindView(R.id.addGroupLayout) LinearLayout addGroupLayout;
+        @BindView(R.id.addFormatLayout) LinearLayout addFormatLayout;
+        @BindView(R.id.addWorkerLayout) LinearLayout addWorkerLayout;
         @BindView(R.id.txtGroup) TextView txtGroup;
         @BindView(R.id.txtFormat) TextView txtFormat;
         @BindView(R.id.txtWorker) TextView txtWorker;
         @BindView(R.id.txtTime) TextView txtTime;
-        @BindView(R.id.btAddTime) TextView btAddTime;
+        @BindView(R.id.addTimeLayout) LinearLayout addTimeLayout;
         public AddPlanViewHeader(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
     }
     class AddPlanViewHolder extends RecyclerView.ViewHolder{
-        @BindView(R.id.addPlanTxtTitle)
-        TextView addPlanTxtTitle;
+        @BindView(R.id.addPlanTxtTitle) TextView addPlanTxtTitle;
+        @BindView(R.id.addPlanTxtStartTime) TextView addPlanTxtStartTime;
+        @BindView(R.id.addPlanTxtEndTime) TextView addPlanTxtEndTime;
+        @BindView(R.id.addPlanTxtDetail) TextView addPlanTxtDetail;
         @BindView(R.id.addPlanCardView)
         CardView addPlanCardView;
         AddPlanViewHolder(View itemView) {
@@ -323,10 +328,7 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
         @BindView(R.id.btnAdd)
         FloatingActionButton btnAdd;
 
-        @BindView(R.id.editTitle)
-        EditText editTitle;
-        @BindView(R.id.txtStartTime) TextView txtStartTime;
-        @BindView(R.id.txtEndTime) TextView txtEndTime;
+        @BindView(R.id.editTitle) EditText editTitle;
         @BindView(R.id.txtPeople) TextView txtPeople;
         @BindView(R.id.editWorkDetail) EditText editWorkDetail;
 

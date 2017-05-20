@@ -23,6 +23,7 @@ import com.android.volley.toolbox.Volley;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
@@ -185,6 +186,7 @@ public class SignInActivity extends Activity {
                                                     pt = new ProfileTracker() {
                                                         @Override
                                                         protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+
                                                             container_delay.setVisibility(View.GONE);
                                                             userName = currentProfile.getName();
                                                             getRank();

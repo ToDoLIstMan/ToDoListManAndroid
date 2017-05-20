@@ -1,16 +1,25 @@
 package com.tdl.todolistmanandroid.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -64,7 +73,6 @@ public class FormatManageActivity extends AppCompatActivity implements View.OnCl
      */
     private void makeToolbar() {
         toolbar.setTitle("포멧관리하기");
-        setSupportActionBar(toolbar);
 
         setSupportActionBar(toolbar);
         if(getSupportActionBar() !=null){
