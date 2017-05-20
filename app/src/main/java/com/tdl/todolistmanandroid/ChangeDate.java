@@ -13,6 +13,7 @@ import java.util.Date;
 public class ChangeDate {
     int year, month, day, out;
     String sYear, sMonth, sDay, timeData;
+    String today;
 
 
 
@@ -55,6 +56,15 @@ public class ChangeDate {
             sDay = "0" + day;
         } else sDay = day+"";
 
+    }
+
+    public String getToday(int year, int month, int day){
+        String sMonth = "", sDay="";
+        if(0<month && month<10)
+            sMonth = "0"+month;
+        if(0<day && day<10)
+            sDay = "0"+day;
+            return ""+year+"-"+sMonth+"-"+sDay;
     }
 
     public ChangeDate(String timeData){

@@ -47,6 +47,7 @@ import com.tdl.todolistmanandroid.item.TimeListItem;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -82,6 +83,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ButterKnife.bind(this);
         mContext=this;
 
+        try {
+            new AlarmHATT(mContext).Alarm(1, 4, 39, "hi!");
+        }catch (Exception e){
+            Log.e("error : ",e.toString());
+        }
+
         makeToolbar();
         makeViewPager();
 
@@ -106,8 +113,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     user u = dataSnapshot.getValue(user.class);
            //         Toast.makeText(mContext, "추가되었습니다", Toast.LENGTH_SHORT).show();
                     List<String> a = u.getGroupName();
+                    List<Integer> b = u.getGroups();
 
-                    navGroupId.addAll(u.getGroups());
+                    a.removeAll(Collections.singleton(null));
+                    b.removeAll(Collections.singleton(null));
+                    navGroupId.addAll(b);
                     navGroupName.addAll(a);
                     for (String i : a)
                         itema.add(i).setTitle(i);
@@ -142,10 +152,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * Toolbar 생성 메소드
      */
     private void makeToolbar() {
+        Log.e("asdf",getIntent().getIntExtra("groupUid",-1)+"");
         if(getIntent().getIntExtra("groupUid",-1)>-1) {
             curGroupId = getIntent().getIntExtra("groupUid",-1);
             toolbar.setTitle(getIntent().getStringExtra("groupName"));
-        //    new AlarmHATT(mContext).Alarm();
         }
         else{
             Toast.makeText(mContext, "들어가있는 그룹이 없습니다. 그룹추가 페이지로 이동합니다.", Toast.LENGTH_SHORT).show();
@@ -221,77 +231,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    /**
-     * 데이터 불어와 리스트 초기화하는 메소드
-     */
-
-    private void initList() {
-        Date today = new Date();
-        SimpleDateFormat sDF = new SimpleDateFormat("yyyy-M-dd");
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference().child("work").child(String.valueOf(getIntent().getIntExtra("groupId",-1))).child(sDF.format(today).toString());
-        myRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                work work = dataSnapshot.getValue(work.class);
-                Log.e("asdf",work.getTitle());
-
-                String[] arr;
-                for(int i= 0;i<lists.size();i++) {
-                    arr = lists.get(i).getStartTime().split(":");
-                    lists.add(new TimeListItem(work.getStartTime(),work.getEndTime(),work.getTitle(),work.getDetail(),work.getId(), work.getName(),work.getuId(),work.getIsDone()));
-                  }
-
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 
 
     public class AlarmHATT {
         private Context context;
         public AlarmHATT(Context context) {
             this.context=context;
+            Log.e("asdfadsf","asdf");
         }
         public void Alarm(int count,int hour,int min, String title) {
             AlarmManager am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
-            intent.putExtra("num",count);
-            intent.putExtra("title",title);
-            Log.e("adsf","nkjkjk");
+            intent.putExtra("userUid",FirebaseAuth.getInstance().getCurrentUser().getUid());
             PendingIntent sender = PendingIntent.getBroadcast(MainActivity.this, count, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             Calendar calendar = Calendar.getInstance();
             //알람시간 calendar에 set해주기
-            calendar.set(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)),calendar.get(Calendar.DATE),hour,min,0);
+
+            if(calendar.get(Calendar.HOUR)<4)
+                calendar.set(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)),calendar.get(Calendar.DATE),4,0,0);
+            else
+                calendar.set(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH))+1,calendar.get(Calendar.DATE),4,0,0);
+            Log.e("month",""+calendar.get(Calendar.MONTH));
+
+
             Log.e("month",""+calendar.get(Calendar.MONTH));
             calendar.add(Calendar.SECOND,10);
 
             if(Build.VERSION.SDK_INT >= 23 ){
                 am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
-                Log.e("adsf","11111");
-        }
+                 }
             else {
                 if (Build.VERSION.SDK_INT >= 19) {
                     am.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);Log.e("adsf","22222");

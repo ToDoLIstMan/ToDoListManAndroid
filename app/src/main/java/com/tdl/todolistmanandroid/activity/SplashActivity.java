@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,6 +19,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.database.group;
 import com.tdl.todolistmanandroid.database.user;
+
+import java.util.Collections;
+import java.util.List;
 
 public class SplashActivity extends Activity {
 
@@ -38,13 +42,17 @@ public class SplashActivity extends Activity {
                     database = FirebaseDatabase.getInstance();
                     final DatabaseReference myRef = database.getReference().child("user")
                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    myRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists()){
                             user curuser = dataSnapshot.getValue(user.class);
-                            try{
-                                int groupUid = curuser.getGroups().get(0);
+                                List<Integer>  a = curuser.getGroups();
+                                a.removeAll(Collections.singleton(null));
+                                int groupUid = a.get(0);
+                                Log.e("adsf",curuser.getGroups().toString()+"");
                                 final DatabaseReference myRef = database.getReference().child("group").child(""+groupUid);
+
                                 myRef.addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -61,7 +69,7 @@ public class SplashActivity extends Activity {
 
                                     }
                                 });
-                            }catch (Exception error){
+                            }else {
                                 gotoMain.putExtra("groupUid",-1);
                                 gotoMain.putExtra("groupName","");
 
