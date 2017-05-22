@@ -8,4 +8,10 @@
         android:layout_height="wrap_content"
         layout="@layout/tool_bar"
         android:layout_marginBottom="20dp"/>
+
+    <Button
+        android:id="@+id/btnLogOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="로그아웃"/>
 </LinearLayout>

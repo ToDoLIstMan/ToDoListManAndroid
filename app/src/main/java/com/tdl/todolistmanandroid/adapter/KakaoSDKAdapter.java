@@ -48,7 +48,7 @@ public class KakaoSDKAdapter extends KakaoAdapter {
         return new IApplicationConfig() {
         @Override
         public Context getApplicationContext() {
-            return ToDoListManAndroid.getGlobalApplicationContext();
+            return ToDoListManAndroid.instance;
         }
     };
     }

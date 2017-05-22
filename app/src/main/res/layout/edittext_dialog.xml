@@ -2,6 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/editName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="20dp"
+        android:inputType="textCapSentences"  >
+        <requestFocus />
+    </EditText>
+
     <EditText
         android:id="@+id/editGroup"
         android:layout_width="match_parent"
@@ -11,9 +25,5 @@
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="20dp"
-        android:inputType="textCapSentences" >
-
-        <requestFocus />
-    </EditText>
-
+        android:inputType="textCapSentences"/>
 </LinearLayout>

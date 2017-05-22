@@ -28,10 +28,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class MyPageAdapter extends RecyclerView.Adapter{
 
     private Context mContext;
-    int lastPosition = -1;
     private ArrayList<MyPageItem> mItems;
-    MyPageItem curItem = mItems.get(lastPosition-1);
-
 
     public MyPageAdapter(ArrayList<MyPageItem> mItems, Context mContext){
         this.mItems = mItems;
@@ -47,6 +44,7 @@ public class MyPageAdapter extends RecyclerView.Adapter{
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        MyPageItem curItem = mItems.get(position);
         ((MyPageAdapter.ViewHolder) holder).txtName.setText(curItem.getName());
         ((MyPageAdapter.ViewHolder) holder).txtDetail.setText(curItem.getDetail());
 

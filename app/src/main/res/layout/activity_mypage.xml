@@ -6,40 +6,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         layout="@layout/tool_bar"/>
-
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/recyclerViewMy1">
-
-
-
-    </android.support.v7.widget.RecyclerView>
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:background="#eeeeee"
-        android:paddingLeft="10dp"
-        android:paddingBottom="5dp">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="13dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="그룹"
-            android:textSize="17sp"/>
-    </LinearLayout>
-
-    <!--<android.support.v7.widget.RecyclerView-->
-        <!--android:id="@+id/recyclerViewMy2"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
-
-
-
-    <!--</android.support.v7.widget.RecyclerView>-->
-
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

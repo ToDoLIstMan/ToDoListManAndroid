@@ -13,7 +13,7 @@ import com.tdl.todolistmanandroid.adapter.KakaoSDKAdapter;
  */
 
 public class ToDoListManAndroid extends Application{
-    private static volatile ToDoListManAndroid instance = null;
+    public static volatile ToDoListManAndroid instance = null;
      @Override
     public void onCreate() {
         super.onCreate();

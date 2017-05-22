@@ -10,13 +10,21 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -52,6 +60,7 @@ import com.tdl.todolistmanandroid.database.user;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,10 +120,11 @@ public class SignInActivity extends Activity {
     private class SessionCallback implements ISessionCallback {
         @Override
         public void onSessionOpened() {
-            Toast.makeText(SignInActivity.this, "adsfasdf", Toast.LENGTH_SHORT).show();
+            Log.e("asdfasdf","asdfasdf");
 
             Toast.makeText(getApplicationContext(), "Successfully logged in to Kakao. Now creating or updating a Firebase User.", Toast.LENGTH_LONG).show();
             String accessToken = Session.getCurrentSession().getAccessToken();
+            Log.e("Asdfasdf",accessToken);
             getFirebaseJwt(accessToken).continueWithTask(new Continuation<String, Task<AuthResult>>() {
                     @Override
                     public Task<AuthResult> then(@NonNull Task<String> task) throws Exception {
@@ -125,9 +135,47 @@ public class SignInActivity extends Activity {
                 }).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        container_delay.setVisibility(View.VISIBLE);
                         if (task.isSuccessful()) {
-                            getRank();
+
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference myRef = database.getReference().child("user").child(""+FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+                            myRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    Log.e("data",dataSnapshot.toString());
+                                    if(dataSnapshot!=null){
+                                        Intent gotoMain = new Intent(SignInActivity.this,MainActivity.class);
+                                        List<Integer>  a = dataSnapshot.getValue(user.class).getGroups();
+                                        if(a.size()>0) {
+                                            a.removeAll(Collections.singleton(null));
+
+                                            gotoMain.putExtra("groupUid", dataSnapshot.getValue(user.class).getGroups().get(0));
+                                            gotoMain.putExtra("groupName", dataSnapshot.getValue(user.class).getGroupName().get(0));
+                                        }else{
+                                            gotoMain.putExtra("groupUid", -1);
+                                            gotoMain.putExtra("groupName", -1);
+                                        }
+                                        container_delay.setVisibility(View.GONE);
+                                        startActivity(gotoMain);
+                                        finish();
+                                    }else {
+                                        container_delay.setVisibility(View.GONE);
+                                        getRank();
+                                    }
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                    container_delay.setVisibility(View.GONE);
+                                }
+                            });
+
                         } else {
+                            container_delay.setVisibility(View.GONE);
                             Toast.makeText(getApplicationContext(), "Failed to create a Firebase user.", Toast.LENGTH_LONG).show();
                             if (task.getException() != null) {
                                 Log.e(TAG, task.getException().toString());
@@ -139,7 +187,6 @@ public class SignInActivity extends Activity {
 
         @Override
         public void onSessionOpenFailed(KakaoException exception) {
-            Toast.makeText(SignInActivity.this, "ddddddd", Toast.LENGTH_SHORT).show();
             if(exception != null) {
                 Logger.e(exception);
             }
@@ -175,8 +222,17 @@ public class SignInActivity extends Activity {
                                                 Log.e("data",dataSnapshot.toString());
                                                 if(dataSnapshot!=null){
                                                     Intent gotoMain = new Intent(SignInActivity.this,MainActivity.class);
-                                                    gotoMain.putExtra("groupUid",dataSnapshot.getValue(user.class).getGroups().get(0));
-                                                    gotoMain.putExtra("groupName",dataSnapshot.getValue(user.class).getGroupName().get(0));
+                                                    List<Integer>  a = dataSnapshot.getValue(user.class).getGroups();
+                                                    if(a.size()>0) {
+                                                        a.removeAll(Collections.singleton(null));
+
+                                                        gotoMain.putExtra("groupUid", dataSnapshot.getValue(user.class).getGroups().get(0));
+                                                        gotoMain.putExtra("groupName", dataSnapshot.getValue(user.class).getGroupName().get(0));
+                                                    }else{
+                                                        gotoMain.putExtra("groupUid", -1);
+                                                        gotoMain.putExtra("groupName", -1);
+                                                    }
+
                                                     container_delay.setVisibility(View.GONE);
                                                     startActivity(gotoMain);
                                                     finish();
@@ -240,15 +296,20 @@ public class SignInActivity extends Activity {
         alert.setTitle("계급 추가");
         alert.setView(promptView);
 
-        final EditText input = (EditText)promptView.findViewById(R.id.editGroup);
-        input.requestFocus();
-        input.setHint("계급을 입력하세요.");
+        final EditText inputGroup = (EditText)promptView.findViewById(R.id.editGroup);
+        final EditText inputName = (EditText)promptView.findViewById(R.id.editName);
+        inputGroup.requestFocus();
+        inputGroup.setHint("계급을 입력하세요.");
+
+        inputName.setHint("이름을 입력하세요.");
+
         alert.setView(promptView);
 
         alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                rank= input.getText().toString();
+                rank= inputGroup.getText().toString();
+                userName = inputName.getText().toString();
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference().child("user");
                 List<Integer> group = new ArrayList<>();
@@ -287,7 +348,8 @@ public class SignInActivity extends Activity {
                     source.setResult(firebaseToken);
                 } catch (Exception e) {
                     source.setException(e);
-                }
+                    Log.e(TAG, e.toString());
+                    }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -303,6 +365,10 @@ public class SignInActivity extends Activity {
                 return params;
             }
         };
+
+        request.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         queue.add(request);
         return source.getTask();

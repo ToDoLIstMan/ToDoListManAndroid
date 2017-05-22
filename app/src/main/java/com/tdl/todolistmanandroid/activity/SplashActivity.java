@@ -48,27 +48,36 @@ public class SplashActivity extends Activity {
                             if(dataSnapshot.exists()){
                             user curuser = dataSnapshot.getValue(user.class);
                                 List<Integer>  a = curuser.getGroups();
-                                a.removeAll(Collections.singleton(null));
-                                int groupUid = a.get(0);
-                                Log.e("adsf",curuser.getGroups().toString()+"");
-                                final DatabaseReference myRef = database.getReference().child("group").child(""+groupUid);
+                                if(a.size()>0) {
+                                    a.removeAll(Collections.singleton(null));
+                                    int groupUid = a.get(0);
+                                    Log.e("adsf", curuser.getGroups().toString() + "");
+                                    final DatabaseReference myRef = database.getReference().child("group").child("" + groupUid);
 
-                                myRef.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        gotoMain.putExtra("groupUid",dataSnapshot.getValue(group.class).getId());
-                                        gotoMain.putExtra("groupName",dataSnapshot.getValue(group.class).getGroupName());
-                                        gotoMain.putExtra("masterUid",dataSnapshot.getValue(group.class).getMasterUid());
-                                        startActivity(gotoMain);
-                                        finish();
-                                        myRef.onDisconnect();
-                                    }
+                                    myRef.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            gotoMain.putExtra("groupUid", dataSnapshot.getValue(group.class).getId());
+                                            gotoMain.putExtra("groupName", dataSnapshot.getValue(group.class).getGroupName());
+                                            gotoMain.putExtra("masterUid", dataSnapshot.getValue(group.class).getMasterUid());
+                                            startActivity(gotoMain);
+                                            finish();
+                                            myRef.onDisconnect();
+                                        }
 
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
 
-                                    }
-                                });
+                                        }
+                                    });
+                                }
+                                else{
+                                    gotoMain.putExtra("groupUid",-1);
+                                    gotoMain.putExtra("groupName","");
+
+                                    myRef.onDisconnect();
+                                    startActivity(gotoMain);finish();
+                                }
                             }else {
                                 gotoMain.putExtra("groupUid",-1);
                                 gotoMain.putExtra("groupName","");

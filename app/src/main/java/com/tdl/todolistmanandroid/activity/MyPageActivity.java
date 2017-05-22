@@ -41,10 +41,9 @@ import butterknife.ButterKnife;
 public class MyPageActivity extends AppCompatActivity{
 
     @BindView(R.id.toolbar) Toolbar toolbar;
-
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
 
     Context mContext;
-    RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
 
     @Override
@@ -53,12 +52,12 @@ public class MyPageActivity extends AppCompatActivity{
         setContentView(R.layout.activity_mypage);
         ButterKnife.bind(this);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewMy1);
         recyclerView.setHasFixedSize(true);
         ArrayList<MyPageItem> items = new ArrayList<>();
 
         mContext = this;
         makeToolbar();
+
         items.add(new MyPageItem("이름", ""));
         items.add(new MyPageItem("계급", ""));
         layoutManager = new LinearLayoutManager(mContext);

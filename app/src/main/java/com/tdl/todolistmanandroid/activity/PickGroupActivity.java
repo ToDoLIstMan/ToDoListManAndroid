@@ -159,6 +159,8 @@ public class PickGroupActivity extends AppCompatActivity implements View.OnClick
             alert.setView(promptView);
 
             final EditText input = (EditText)promptView.findViewById(R.id.editGroup);
+
+            promptView.findViewById(R.id.editName).setVisibility(View.GONE);
             input.requestFocus();
             input.setHint("그룹명을 입력하세요.");
             alert.setView(promptView);
@@ -166,13 +168,9 @@ public class PickGroupActivity extends AppCompatActivity implements View.OnClick
             alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference myRef = database.getReference().child("group").child(String.valueOf(lastGroupId+1));
-                    group group = new group(lastGroupId+1, FirebaseAuth.getInstance().getCurrentUser().getUid(),input.getText().toString(),new ArrayList<String>(),new ArrayList<String>());
-                    myRef.setValue(group);
-
-                    myRef = database.getReference().child("user").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    final DatabaseReference[] myRef = {database.getReference().child("user").child(FirebaseAuth.getInstance().getCurrentUser().getUid())};
+                    myRef[0].addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -189,6 +187,14 @@ public class PickGroupActivity extends AppCompatActivity implements View.OnClick
                             g.put("groupName",masterGroupName);
 
                             dataSnapshot.getRef().updateChildren(g);
+
+                            myRef[0] = database.getReference().child("group").child(String.valueOf(lastGroupId+1));
+                            List<String> memberName = new ArrayList<>();
+                            memberName.add(dataSnapshot.getValue(user.class).getName());
+                            List<String> memberUid = new ArrayList<>();
+                            memberUid.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            group group = new group(lastGroupId+1, FirebaseAuth.getInstance().getCurrentUser().getUid(),input.getText().toString(),memberName,memberUid);
+                            myRef[0].setValue(group);
                             Toast.makeText(mContext, "추가되었습니다.", Toast.LENGTH_SHORT).show();
                         }
 
