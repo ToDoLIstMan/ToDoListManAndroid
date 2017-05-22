@@ -36,10 +36,7 @@ public class format {
         return planName;
     }
 
-
-    public format(){}
-
-
+    public  format(){}
     public format(int id, String planName, String detail, String startTime, String endTime){
         this.id = id;
         this.planName = planName;

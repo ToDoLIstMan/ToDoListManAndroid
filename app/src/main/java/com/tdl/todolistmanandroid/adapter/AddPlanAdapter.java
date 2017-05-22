@@ -381,7 +381,6 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
         this.todayWorker = "";
     }
 
-
     public int getGroupId() {
         return groupId;
     }

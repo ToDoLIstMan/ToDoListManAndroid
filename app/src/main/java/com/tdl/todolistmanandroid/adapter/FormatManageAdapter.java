@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.activity.DetailActivity;
+import com.tdl.todolistmanandroid.activity.FormatDetailActivity;
 import com.tdl.todolistmanandroid.item.FormatManageItem;
 import com.tdl.todolistmanandroid.item.TimeListItem;
 
@@ -54,7 +55,7 @@ public class FormatManageAdapter extends RecyclerView.Adapter {
         ((Holder)holder).cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gotoDetail = new Intent(mContext,DetailActivity.class);
+                Intent gotoDetail = new Intent(mContext,FormatDetailActivity.class);
                 gotoDetail.putExtra("formatName",item.getFormatName());
                 gotoDetail.putExtra("formatId",item.getFormatId());
                 gotoDetail.putExtra("masterUid",item.getMasterUid());
