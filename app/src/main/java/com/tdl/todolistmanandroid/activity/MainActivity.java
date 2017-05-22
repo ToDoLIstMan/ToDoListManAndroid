@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navView.getMenu().clear();
         final SubMenu itema = navView.getMenu().addSubMenu("내그룹");
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference().child("user");
+        final DatabaseReference myRef = database.getReference().child("user");
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     navGroupName.addAll(a);
                     for (String i : a)
                         itema.add(i).setTitle(i);
+                    myRef.onDisconnect();
                 }
             }
 

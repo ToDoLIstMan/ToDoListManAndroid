@@ -120,6 +120,7 @@ public class SignInActivity extends Activity {
     private class SessionCallback implements ISessionCallback {
         @Override
         public void onSessionOpened() {
+            container_delay.setVisibility(View.VISIBLE);
             Log.e("asdfasdf","asdfasdf");
 
             Toast.makeText(getApplicationContext(), "Successfully logged in to Kakao. Now creating or updating a Firebase User.", Toast.LENGTH_LONG).show();
@@ -135,17 +136,16 @@ public class SignInActivity extends Activity {
                 }).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        container_delay.setVisibility(View.VISIBLE);
                         if (task.isSuccessful()) {
 
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            DatabaseReference myRef = database.getReference().child("user").child(""+FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            final DatabaseReference myRef = database.getReference().child("user").child(""+FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                             myRef.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    Log.e("data",dataSnapshot.toString());
-                                    if(dataSnapshot!=null){
+                                    Log.e("data",FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                    try{
                                         Intent gotoMain = new Intent(SignInActivity.this,MainActivity.class);
                                         List<Integer>  a = dataSnapshot.getValue(user.class).getGroups();
                                         if(a.size()>0) {
@@ -160,9 +160,11 @@ public class SignInActivity extends Activity {
                                         container_delay.setVisibility(View.GONE);
                                         startActivity(gotoMain);
                                         finish();
-                                    }else {
+                                        myRef.onDisconnect();
+                                    }catch (Exception e){
                                         container_delay.setVisibility(View.GONE);
                                         getRank();
+                                        myRef.onDisconnect();
                                     }
 
                                 }
@@ -214,13 +216,13 @@ public class SignInActivity extends Activity {
                                     if(task.isSuccessful()){
                                         Log.e("ddd",FirebaseAuth.getInstance().getCurrentUser().getUid());
                                         FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                        DatabaseReference myRef = database.getReference().child("user").child(""+FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                        final DatabaseReference myRef = database.getReference().child("user").child(""+FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                                         myRef.addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
                                                 Log.e("data",dataSnapshot.toString());
-                                                if(dataSnapshot!=null){
+                                                try {
                                                     Intent gotoMain = new Intent(SignInActivity.this,MainActivity.class);
                                                     List<Integer>  a = dataSnapshot.getValue(user.class).getGroups();
                                                     if(a.size()>0) {
@@ -235,8 +237,9 @@ public class SignInActivity extends Activity {
 
                                                     container_delay.setVisibility(View.GONE);
                                                     startActivity(gotoMain);
+                                                    myRef.onDisconnect();
                                                     finish();
-                                                }else {
+                                                }catch(Exception e) {
 
                                                     //현재 유저 이름 찾기 위한 메소드 실행.
                                                     pt = new ProfileTracker() {
@@ -246,6 +249,8 @@ public class SignInActivity extends Activity {
                                                             container_delay.setVisibility(View.GONE);
                                                             userName = currentProfile.getName();
                                                             getRank();
+
+                                                            myRef.onDisconnect();
                                                         }
                                                     };
                                                 }
@@ -290,42 +295,44 @@ public class SignInActivity extends Activity {
      * 추가정보를 받고 파이어베이스로 전달하는 메소드
      */
     private void getRank() {
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View promptView = inflater.inflate(R.layout.edittext_dialog,null);
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("계급 추가");
-        alert.setView(promptView);
+        if(!SignInActivity.this.isFinishing()) {
+            LayoutInflater inflater = LayoutInflater.from(this);
+            View promptView = inflater.inflate(R.layout.edittext_dialog, null);
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("계급 추가");
+            alert.setView(promptView);
 
-        final EditText inputGroup = (EditText)promptView.findViewById(R.id.editGroup);
-        final EditText inputName = (EditText)promptView.findViewById(R.id.editName);
-        inputGroup.requestFocus();
-        inputGroup.setHint("계급을 입력하세요.");
+            final EditText inputGroup = (EditText) promptView.findViewById(R.id.editGroup);
+            final EditText inputName = (EditText) promptView.findViewById(R.id.editName);
+            inputGroup.requestFocus();
+            inputGroup.setHint("계급을 입력하세요.");
 
-        inputName.setHint("이름을 입력하세요.");
+            inputName.setHint("이름을 입력하세요.");
 
-        alert.setView(promptView);
+            alert.setView(promptView);
 
-        alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                rank= inputGroup.getText().toString();
-                userName = inputName.getText().toString();
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference().child("user");
-                List<Integer> group = new ArrayList<>();
+            alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    rank = inputGroup.getText().toString();
+                    userName = inputName.getText().toString();
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference().child("user");
+                    List<Integer> group = new ArrayList<>();
 
-                List<String> groupName = new ArrayList<>();
-                user user = new user(userName,rank,group,groupName,group,groupName);
-                myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
-                Intent gotoMain = new Intent(SignInActivity.this,MainActivity.class);
+                    List<String> groupName = new ArrayList<>();
+                    user user = new user(userName, rank, group, groupName, group, groupName);
+                    myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
+                    Intent gotoMain = new Intent(SignInActivity.this, MainActivity.class);
 
-                startActivity(gotoMain);
-                finish();
-            }
-        });
+                    startActivity(gotoMain);
+                    finish();
+                }
+            });
 
-        AlertDialog dialog = alert.create();
-        dialog.show();
+            AlertDialog dialog = alert.create();
+            dialog.show();
+        }
     }
     /**
      *
