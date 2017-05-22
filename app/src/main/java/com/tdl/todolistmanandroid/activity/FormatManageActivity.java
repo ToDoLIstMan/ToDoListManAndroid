@@ -54,7 +54,6 @@ public class FormatManageActivity extends AppCompatActivity implements View.OnCl
 //    private int lastFormatId = -1;
     int lastGrpId = -1;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
