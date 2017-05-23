@@ -20,6 +20,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.tdl.todolistmanandroid.ChangeDate;
+import com.tdl.todolistmanandroid.ChangeTime;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.activity.FormatManageActivity;
 import com.tdl.todolistmanandroid.activity.SelectPeopleActivity;
@@ -48,6 +49,7 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
     }
     ChangeDate cd1 = new ChangeDate("00:00");
     ChangeDate cd2 = new ChangeDate("00:00");
+    ChangeTime tc = new ChangeTime(0,0);
 
     @Override
     public int getItemViewType(int position) {
@@ -153,7 +155,8 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
                     TimePickerDialog t = new TimePickerDialog(mContext, new TimePickerDialog.OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            ((FormatFooter)holder).btnStartTime.setText(hourOfDay+":"+minute);
+                            tc = new ChangeTime(hourOfDay,minute);
+                            ((FormatFooter)holder).btnStartTime.setText(tc.getFullTime());
                         }
                     }, hour, minute, true);
                     t.show();
@@ -166,7 +169,8 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
                     TimePickerDialog t = new TimePickerDialog(mContext, new TimePickerDialog.OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            ((FormatFooter)holder).btnEndTime.setText(hourOfDay+":"+minute);
+                            tc = new ChangeTime(hourOfDay,minute);
+                            ((FormatFooter)holder).btnEndTime.setText(tc.getFullTime());
                         }
                     }, hour, minute, true);
                     t.show();

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.tdl.todolistmanandroid.ChangeTime;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.activity.FormatDetailActivity;
 import com.tdl.todolistmanandroid.activity.FormatManageActivity;
@@ -46,6 +47,8 @@ public class FormatDetailAdapter extends RecyclerView.Adapter{
 
 
     private int groupId = -1;
+
+    ChangeTime tc = new ChangeTime(0,0);
     public FormatDetailAdapter(Context mContext, List<FormatDetailItem> items, String formatName) {
         this.mContext = mContext;
         this.items = items;
@@ -123,7 +126,8 @@ public class FormatDetailAdapter extends RecyclerView.Adapter{
                     TimePickerDialog t = new TimePickerDialog(mContext, new TimePickerDialog.OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            ((FormatDetailFooter)holder).btnStartTime.setText(hourOfDay+":"+minute);
+                            tc= new ChangeTime(hourOfDay,minute);
+                            ((FormatDetailFooter)holder).btnStartTime.setText(tc.getFullTime());
                         }
                     }, hour, minute, true);
                     t.show();
@@ -136,7 +140,8 @@ public class FormatDetailAdapter extends RecyclerView.Adapter{
                     TimePickerDialog t = new TimePickerDialog(mContext, new TimePickerDialog.OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            ((FormatDetailFooter)holder).btnEndTime.setText(hourOfDay+":"+minute);
+                            tc= new ChangeTime(hourOfDay,minute);
+                            ((FormatDetailFooter)holder).btnEndTime.setText(tc.getFullTime());
                         }
                     }, hour, minute, true);
                     t.show();

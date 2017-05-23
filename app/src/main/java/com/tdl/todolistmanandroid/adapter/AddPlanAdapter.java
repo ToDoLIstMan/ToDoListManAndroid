@@ -23,6 +23,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.tdl.todolistmanandroid.ChangeDate;
+import com.tdl.todolistmanandroid.ChangeTime;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.activity.AddPlanActivity;
 import com.tdl.todolistmanandroid.activity.MainActivity;
@@ -56,6 +57,8 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
     private String worker ="", format ="", group ="",todayWorker="",excTime = "";
 
     private String[] workerNames, workerUids, curWkNames, curWkUids;
+
+    ChangeTime tc = new ChangeTime(0,0);
 
 //    private String a1 = new ChangeDate(0,0,0).getToday();
 
@@ -142,7 +145,8 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                     TimePickerDialog t = new TimePickerDialog(mContext, new TimePickerDialog.OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            ((AddPlanFooter)holder).btnStartTime.setText(hourOfDay+":"+minute);
+                            tc = new ChangeTime(hourOfDay,minute);
+                            ((AddPlanFooter)holder).btnStartTime.setText(tc.getFullTime());
                         }
                     }, hour, minute, true);
                     t.show();
@@ -155,7 +159,8 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                     TimePickerDialog t = new TimePickerDialog(mContext, new TimePickerDialog.OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            ((AddPlanFooter)holder).btnEndTime.setText(hourOfDay+":"+minute);
+                            tc = new ChangeTime(hourOfDay,minute);
+                            ((AddPlanFooter)holder).btnEndTime.setText(tc.getFullTime());
                         }
                     }, hour, minute, true);
                     t.show();

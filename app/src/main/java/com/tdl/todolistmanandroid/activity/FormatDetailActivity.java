@@ -174,6 +174,14 @@ public class FormatDetailActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_edit,menu);
+        return true;
+    }
+
+
 
 //    public void sendIntent(int position, int status){
 //        Intent gotoA = new Intent(FormatDetailActivity.this,DetailActivity.class);

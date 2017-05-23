@@ -46,14 +46,13 @@ public class SplashActivity extends Activity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if(dataSnapshot.exists()){
-                            user curuser = dataSnapshot.getValue(user.class);
+                                user curuser = dataSnapshot.getValue(user.class);
                                 List<Integer>  a = curuser.getGroups();
                                 if(a.size()>0) {
                                     a.removeAll(Collections.singleton(null));
                                     int groupUid = a.get(0);
                                     Log.e("adsf", curuser.getGroups().toString() + "");
                                     final DatabaseReference myRef = database.getReference().child("group").child("" + groupUid);
-
                                     myRef.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -74,14 +73,12 @@ public class SplashActivity extends Activity {
                                 else{
                                     gotoMain.putExtra("groupUid",-1);
                                     gotoMain.putExtra("groupName","");
-
                                     myRef.onDisconnect();
                                     startActivity(gotoMain);finish();
                                 }
                             }else {
                                 gotoMain.putExtra("groupUid",-1);
                                 gotoMain.putExtra("groupName","");
-
                                 myRef.onDisconnect();
                                 startActivity(gotoMain);finish();
                             }
@@ -93,7 +90,6 @@ public class SplashActivity extends Activity {
 
                         }
                     });
-
 
                 }
                 else {
