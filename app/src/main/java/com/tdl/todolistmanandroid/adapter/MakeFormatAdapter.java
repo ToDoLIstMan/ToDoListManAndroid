@@ -50,6 +50,7 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
     ChangeDate cd1 = new ChangeDate("00:00");
     ChangeDate cd2 = new ChangeDate("00:00");
     ChangeTime tc = new ChangeTime(0,0);
+    String time1="", time2="";
 
     @Override
     public int getItemViewType(int position) {
@@ -119,12 +120,16 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
             ((FormatFooter)holder).btAddWork.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    time1 = new ChangeTime(((FormatFooter)holder).btnStartTime.getText().toString()).getFullTime();
+                    time2 = new ChangeTime(((FormatFooter)holder).btnEndTime.getText().toString()).getFullTime();
                     ChangeDate cd1 = new ChangeDate(((FormatFooter)holder).btnStartTime.getText().toString());
                     ChangeDate cd2 = new ChangeDate(((FormatFooter)holder).btnEndTime.getText().toString());
                     if(((FormatFooter)holder).editTitle.getText().toString().equals("")||
-                            (cd1.getOut()-cd2.getOut()>=0))
+                            (time1.equals("00:00")&&time2.equals("00:00")))
                     {
-                        Toast.makeText(mContext, "빈칸을 마저 채우세요", Toast.LENGTH_SHORT).show();}
+                        Toast.makeText(mContext, "빈칸을 채워주세요", Toast.LENGTH_SHORT).show();}
+                    else if(cd1.getOut()-cd2.getOut()>=0)
+                        Toast.makeText(mContext, "완료시간이 시작시간보다 빠릅니다", Toast.LENGTH_SHORT).show();
                     else{
                     ((FormatFooter)holder).bckAdd.setVisibility(View.VISIBLE);
                     ((FormatFooter)holder).bckInput.setVisibility(View.GONE);
@@ -143,7 +148,9 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
 
                     notifyDataSetChanged();     //리스트 추가한 것 띄어주는 코드
 
-                    ((FormatFooter)holder).editTitle.setText("");
+                        ((FormatFooter)holder).editTitle.setText("");
+                        ((FormatFooter)holder).btnStartTime.setText("00:00");
+                        ((FormatFooter)holder).btnEndTime.setText("00:00");
                     Toast.makeText(mContext, "추가되었습니다", Toast.LENGTH_SHORT).show();}
                 }
             });

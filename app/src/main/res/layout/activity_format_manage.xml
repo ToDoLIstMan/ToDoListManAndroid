@@ -36,5 +36,6 @@
         android:layout_width="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_margin="10dp"
-        android:src="@mipmap/icon_plus"/>
+        android:src="@mipmap/icon_plus"
+        android:translationZ="6dp"/>
 </FrameLayout>

@@ -7,7 +7,7 @@ package com.tdl.todolistmanandroid;
 
 public class ChangeTime {
     int hour, min, out;
-    String sHour, sMin, timeData;
+    String sHour, sMin, timeData, stoi;
     String today;
 
 
@@ -23,6 +23,8 @@ public class ChangeTime {
     public String getFullTime(){
         return sHour+":"+sMin;
     }
+
+    public String getStoi() { return stoi; }
 
     public int getOut(){ return out;}
 
@@ -42,8 +44,15 @@ public class ChangeTime {
 
     public ChangeTime(String timeData){
         this.timeData = timeData;
+        ChangeTime ct;
+
         String[] times = timeData.split(":");
         out = Integer.parseInt(times[0])*60 + Integer.parseInt(times[1]);
+
+        hour = Integer.parseInt(times[0]);
+        min = Integer.parseInt(times[1]);
+        ct = new ChangeTime(hour,min);
+        stoi = ct.getFullTime();
 
     }
 

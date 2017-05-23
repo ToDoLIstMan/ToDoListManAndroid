@@ -115,7 +115,7 @@ public class MakeFormatActivity extends AppCompatActivity {
 
 //            // edittext_dialogue layout의 폼을 가진 AlertDialogue 생성 후 이름을 포멧 추가라고 지정
                 LayoutInflater inflater = LayoutInflater.from(this);
-            View promptView = inflater.inflate(R.layout.edittext_dialog, null);
+            View promptView = inflater.inflate(R.layout.edittext_single_dialog, null);
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("포멧 추가");
             alert.setView(promptView);

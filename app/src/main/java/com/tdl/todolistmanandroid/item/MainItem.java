@@ -9,7 +9,7 @@ import java.util.List;
 
 
 public class MainItem {
-    private String title, masterUid;
+    private String title, masterUid, startTime, endTime;
     private int groupId;
     List<String> memberUid =new ArrayList<>();
     List<String> memberName =new ArrayList<>();
@@ -26,6 +26,10 @@ public class MainItem {
     public int getGroupId() {
         return groupId;
     }
+
+    public String getStartTime() { return startTime;}
+
+    public String getEndTime() { return endTime;}
 
     public String getMasterUid() {
         return masterUid;

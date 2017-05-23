@@ -1,8 +1,10 @@
 package com.tdl.todolistmanandroid.activity;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -66,6 +68,7 @@ public class FormatManageActivity extends AppCompatActivity implements View.OnCl
         fab.setOnClickListener(this);
 
         progressBar.setVisibility(View.GONE);
+
     }
     /**
      * Toolbar 생성 메소드

@@ -57,7 +57,8 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
     private String worker ="", format ="", group ="",todayWorker="",excTime = "";
 
     private String[] workerNames, workerUids, curWkNames, curWkUids;
-
+    ChangeDate cd1 = new ChangeDate("00:00");
+    ChangeDate cd2 = new ChangeDate("00:00");
     ChangeTime tc = new ChangeTime(0,0);
 
 //    private String a1 = new ChangeDate(0,0,0).getToday();
@@ -182,14 +183,16 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
             ((AddPlanFooter)holder).btAddWork.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ChangeDate cd1 = new ChangeDate(((AddPlanFooter)holder).btnStartTime.getText().toString());
+                    ChangeDate cd2 = new ChangeDate(((AddPlanFooter)holder).btnEndTime.getText().toString());
 
                     if(((AddPlanFooter)holder).editTitle.getText().toString().equals("")||
-                            ((AddPlanFooter)holder).btnStartTime.getText().toString().equals("")||
-                            ((AddPlanFooter)holder).btnEndTime.getText().toString().equals("")||
+                            (new ChangeTime(((AddPlanFooter)holder).btnStartTime.getText().toString()).getFullTime().equals("")&&
+                                    new ChangeTime(((AddPlanFooter)holder).btnEndTime.getText().toString()).getFullTime().equals(""))||
                             todayWorker.equals("")) {
                         Toast.makeText(mContext, "빈칸을 채워주세요", Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(mContext, a1, Toast.LENGTH_SHORT).show();
-                    }
+                    } else if(cd1.getOut()-cd2.getOut()>=0)
+                        Toast.makeText(mContext, "완료시간이 시작시간보다 빠릅니다", Toast.LENGTH_SHORT).show();
                     else{
                     ((AddPlanFooter)holder).bckAdd.setVisibility(View.VISIBLE);
                     ((AddPlanFooter)holder).btnStartTime.getText().toString();
@@ -217,8 +220,8 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                     notifyDataSetChanged();     //리스트 추가한 것 띄어주는 코드
                     ((AddPlanFooter)holder).editTitle.setText("");
                     ((AddPlanFooter)holder).editWorkDetail.setText("");
-                    ((AddPlanFooter)holder).btnStartTime.setText("");
-                    ((AddPlanFooter)holder).btnEndTime.setText("");
+                    ((AddPlanFooter)holder).btnStartTime.setText("00:00");
+                    ((AddPlanFooter)holder).btnEndTime.setText("00:00");
                     Toast.makeText(mContext, "추가되었습니다", Toast.LENGTH_SHORT).show();}
                 }});
 
@@ -351,15 +354,31 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
     public void setTodayWorker(String[] todayWorker,String[] todayWkUid) {
         curWkNames = todayWorker;
         curWkUids = todayWkUid;
-        for(String a : curWkNames)
-            this.todayWorker = this.todayWorker+" "+a;
+        if(curWkNames.length==1) {
+            String out = curWkNames[0];
+            this.todayWorker = out;}
+        else if(curWkNames.length>1){
+            String out = curWkNames[0]+" 외 "+(curWkNames.length-1)+"명";
+            this.todayWorker = out;}
+        else
+            this.todayWorker = "";
+//        for(String a : curWkNames)
+//            this.todayWorker = this.todayWorker+" "+a;
     }
 
     public void setWorker(String[] worker,String[] uId) {
         workerNames = worker;
         workerUids = uId;
-        for(String a : workerNames)
-            this.worker = this.worker+" "+a;
+        if(workerNames.length==1){
+            String out = workerNames[0];
+            this.worker = out;}
+        else if(workerNames.length>1){
+            String out = workerNames[0]+" 외 "+(workerNames.length-1)+"명";
+            this.worker = out;}
+        else
+            this.worker="";
+//        for(String a : workerNames)
+//            this.worker = this.worker+" "+a;
 
     }
 

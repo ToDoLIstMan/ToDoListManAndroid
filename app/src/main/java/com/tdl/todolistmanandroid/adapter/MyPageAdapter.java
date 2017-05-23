@@ -77,7 +77,7 @@ public class MyPageAdapter extends RecyclerView.Adapter{
             if(mypageHeader.getuId().contains("kakao"))
                 ((ViewHeader)holder).txtLogin.setText("카카오");
             else
-                ((ViewHeader)holder).txtName.setText("Facebook");
+                ((ViewHeader)holder).txtLogin.setText("Facebook");
         } else {
             if(position>0 && position<=groupItems.size())
                 ((ViewHolder)holder).txtName.setText(groupItems.get(position-1).getName());

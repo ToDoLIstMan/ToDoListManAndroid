@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.tdl.todolistmanandroid.ChangeTime;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.activity.DetailActivity;
 import com.tdl.todolistmanandroid.item.TimeListItem;
@@ -33,6 +34,7 @@ import butterknife.ButterKnife;
 public class ListAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private List<TimeListItem> lists;
+    ChangeTime ct = new ChangeTime("00:00");
     int curGrpUid;
     String pickDay;
     boolean isFinished = false;
@@ -53,8 +55,11 @@ public class ListAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         String done = "", undone = "";
-            final TimeListItem item = lists.get(position);
-            ((Holder)holder).txtTitle.setText(item.getTitle());
+        final TimeListItem item = lists.get(position);
+        ((Holder)holder).txtTitle.setText(item.getTitle());
+        ct = new ChangeTime(item.getStartTime());
+        ((Holder)holder).startTime.setText(new ChangeTime(item.getStartTime()).getStoi());
+        ((Holder)holder).endTime.setText(new ChangeTime(item.getEndTime()).getStoi());
 
             for(int i = 0; i<item.getDoPeople().size();i++) {
                 if(item.getIsDone().get(i)) {
@@ -143,6 +148,8 @@ public class ListAdapter extends RecyclerView.Adapter {
         @BindView(R.id.txtDone) TextView txtDone;
         @BindView(R.id.checkBox) AppCompatCheckBox checkBox;
         @BindView(R.id.cardView) CardView cardView;
+        @BindView(R.id.txtStartTime) TextView startTime;
+        @BindView(R.id.txtEndTime) TextView endTime;
 
         public Holder(View itemView) {
             super(itemView);

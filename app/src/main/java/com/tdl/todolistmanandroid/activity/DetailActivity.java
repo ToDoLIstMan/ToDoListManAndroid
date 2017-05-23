@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.tdl.todolistmanandroid.ChangeDate;
+import com.tdl.todolistmanandroid.ChangeTime;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.database.work;
 import com.tdl.todolistmanandroid.item.TimeListItem;
@@ -58,6 +59,10 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     int curGrpUid, id;
     String title, pickDay;
     Context mContext;
+
+    ChangeTime ct1 = new ChangeTime(0,0);
+    ChangeTime ct2 = new ChangeTime(0,0);
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +80,11 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         id = getIntent.getIntExtra("id",-1);
         Log.e("dfdf",""+curGrpUid);
 
+        ct1 = new ChangeTime(getIntent.getStringExtra("startTime"));
+        ct2 = new ChangeTime(getIntent.getStringExtra("endTime"));
+
         txtTitle.setText(getIntent.getStringExtra("title"));
-        txtTime.setText(getIntent.getStringExtra("startTime")+" ~ "+getIntent.getStringExtra("endTime"));
+        txtTime.setText(ct1.getStoi()+"~"+ct2.getStoi());
         txtDetail.setText(getIntent.getStringExtra("detail"));
         txtPeople.setText(getIntent.getStringExtra("people"));
         btDone.setOnClickListener(this);
