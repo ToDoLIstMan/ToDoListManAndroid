@@ -10,9 +10,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.tdl.todolistmanandroid.R;
 
 import butterknife.ButterKnife;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by HyunWook Kim on 2017-04-18.
@@ -29,6 +31,7 @@ public class AddWorkActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.footer_plan);
         ButterKnife.bind(this);
      /*   final EditText workTitleEditText = (EditText) findViewById(R.id.workTitleEditText);
