@@ -17,6 +17,11 @@
         android:name=".ToDoListManAndroid"
         android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="2d9eb840e4d56a88082892d3a5ffabe10a4472a1"
+            />
+
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data android:name="com.kakao.sdk.AppKey" android:value="@string/kakao_app_key_debug"/>
         <receiver android:name=".Receiver.AlarmReceiver"/>
