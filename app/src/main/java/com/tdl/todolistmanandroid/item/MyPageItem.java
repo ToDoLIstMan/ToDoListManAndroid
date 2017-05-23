@@ -9,23 +9,20 @@ import java.util.List;
 
 public class MyPageItem {
 
-    String name, detail;
+    String name;
+    int id;
 
-    /**
-     *
-     * @return title을 반환
-     */
     public String getName() {
         return name;
     }
 
-    public String getDetail() {
-        return detail;
+    public int getId() {
+        return id;
     }
 
-    public MyPageItem(String name, String detail){
+    public MyPageItem(int id, String name){
         this.name = name;
-        this.detail = detail;
+        this.id = id;
     }
 
 }
