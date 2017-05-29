@@ -126,7 +126,7 @@ public class SignInActivity extends Activity {
             container_delay.setVisibility(View.VISIBLE);
             Log.e("asdfasdf","asdfasdf");
 
-            Toast.makeText(getApplicationContext(), "Successfully logged in to Kakao. Now creating or updating a Firebase User.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "카카오톡에 로그인 됐습니다", Toast.LENGTH_LONG).show();
             String accessToken = Session.getCurrentSession().getAccessToken();
             Log.e("Asdfasdf",accessToken);
             getFirebaseJwt(accessToken).continueWithTask(new Continuation<String, Task<AuthResult>>() {
@@ -181,7 +181,7 @@ public class SignInActivity extends Activity {
 
                         } else {
                             container_delay.setVisibility(View.GONE);
-                            Toast.makeText(getApplicationContext(), "Failed to create a Firebase user.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "파이어베이스 유저를 만들지 못했습니다", Toast.LENGTH_LONG).show();
                             if (task.getException() != null) {
                                 Log.e(TAG, task.getException().toString());
                             }
@@ -195,6 +195,7 @@ public class SignInActivity extends Activity {
             if(exception != null) {
                 Logger.e(exception);
             }
+            Toast.makeText(getApplicationContext(), "카카오톡으로 회원가입이 실패했습니다", Toast.LENGTH_LONG).show();
         }
     }
 
