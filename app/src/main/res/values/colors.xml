@@ -6,4 +6,5 @@
     <color name="divider">#CCCCCC</color>
     <color name="colorNoeDone">#CCCCCC</color>
     <color name="white">#FFFFFF</color>
+    <color name="backgroundColor">#FAFAFA</color>
 </resources>

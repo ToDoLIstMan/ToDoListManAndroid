@@ -63,14 +63,14 @@ public class ListAdapter extends RecyclerView.Adapter {
 
             for(int i = 0; i<item.getDoPeople().size();i++) {
                 if(item.getIsDone().get(i)) {
-                    done += item.getDoPeople().get(i);
+                    done += item.getDoPeople().get(i)+" ";
                     if(item.getPeopleUid().get(i).equals(uid)) {
                         ((Holder) holder).checkBox.setChecked(item.getIsDone().get(i));
                         ((Holder)holder).txtTitle.setPaintFlags(((Holder)holder).txtTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     }
                 }
                 else
-                    undone += item.getDoPeople().get(i);
+                    undone += item.getDoPeople().get(i)+" ";
 
             }
             if(!item.getPeopleUid().contains(uid))

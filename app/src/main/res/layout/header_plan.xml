@@ -7,55 +7,52 @@
     <LinearLayout
         android:id="@+id/addGroupLayout"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="3"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_margin="15dp"
         android:gravity="center">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="해당 그룹"
             android:layout_weight="1"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/fontMid"/>
         <TextView
             android:id="@+id/txtGroup"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center|right"
             android:layout_weight="2"
-            android:textSize="20sp"
+            android:textSize="@dimen/fontMid"
             android:maxLines="1"/>
     </LinearLayout>
     <View
-        android:layout_marginLeft="7dp"
-        android:layout_marginRight="7dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/divider"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginLeft="15dp"
+        android:layout_margin="15dp"
         android:weightSum="3"
         android:gravity="center"
         android:id="@+id/addFormatLayout">
+
         <TextView
+            android:id="@+id/textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="포맷 추가"
             android:layout_weight="1"
-            android:textSize="20sp"/>
+            android:text="포맷 추가"
+            android:textSize="@dimen/fontMid" />
+
         <TextView
             android:id="@+id/txtFormat"
-            android:textSize="20sp"
+            android:textSize="@dimen/fontMid"
             android:layout_weight="2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -64,8 +61,8 @@
     </LinearLayout>
 
     <View
-        android:layout_marginLeft="7dp"
-        android:layout_marginRight="7dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/divider"/>
@@ -74,11 +71,8 @@
     <LinearLayout
         android:id="@+id/addWorkerLayout"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="3">
@@ -88,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="당번 추가"
-            android:textSize="20sp" />
+            android:textSize="@dimen/fontMid" />
 
         <TextView
             android:id="@+id/txtWorker"
@@ -97,14 +91,14 @@
             android:layout_weight="2"
             android:gravity="center|right"
             android:maxLines="1"
-            android:textSize="20sp" />
+            android:textSize="@dimen/fontMid" />
 
     </LinearLayout>
 
 
     <View
-        android:layout_marginLeft="7dp"
-        android:layout_marginRight="7dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/divider"/>
@@ -112,12 +106,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginLeft="15dp"
+            android:layout_margin="15dp"
             android:weightSum="3"
             android:gravity="center"
             android:id="@+id/addTimeLayout">
@@ -126,7 +117,7 @@
             android:layout_height="wrap_content"
             android:text="수행 날짜"
             android:layout_weight="1"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/fontMid"/>
 
             <TextView
                 android:id="@+id/txtTime"
@@ -135,12 +126,12 @@
                 android:layout_weight="2"
                 android:gravity="center|right"
                 android:maxLines="1"
-                android:textSize="20sp" />
+                android:textSize="@dimen/fontMid" />
 
     </LinearLayout>
     <View
-        android:layout_marginLeft="7dp"
-        android:layout_marginRight="7dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/divider"/>

@@ -9,4 +9,5 @@
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     android:background="?attr/colorPrimary"
-    android:translationZ="4dp"/>
+    android:translationZ="4dp"
+    android:layout_marginBottom="10dp"/>

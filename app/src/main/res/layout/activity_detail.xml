@@ -2,123 +2,189 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <include
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        layout="@layout/tool_bar"
-        android:layout_marginBottom="20dp"/>
+        layout="@layout/tool_bar"/>
 
     <LinearLayout
+        android:id="@+id/addGroupLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="10dp"
-        android:weightSum="6">
-            <TextView
-                android:text="제목 : "
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:layout_weight="1"/>
+        android:weightSum="3"
+        android:layout_margin="15dp"
+        android:gravity="center">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="제목"
+            android:layout_weight="1"
+            android:textSize="@dimen/fontMid"/>
         <TextView
             android:id="@+id/txtTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_weight="5"
-            android:layout_gravity="left"/>
+            android:gravity="center|right"
+            android:layout_weight="2"
+            android:textSize="@dimen/fontMid"
+            android:maxLines="1"/>
     </LinearLayout>
-
+    <View
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider"
+        android:visibility="invisible"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="10dp"
-        android:weightSum="6">
+        android:layout_margin="15dp"
+        android:weightSum="3"
+        android:gravity="center"
+        android:id="@+id/addFormatLayout">
+
         <TextView
-            android:text="시간 : "
-            android:layout_width="70dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="시간"
+            android:textSize="@dimen/fontMid" />
+
         <TextView
             android:id="@+id/txtTime"
-            android:layout_width="wrap_content"
+            android:textSize="@dimen/fontMid"
+            android:layout_weight="2"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_weight="5"
-            android:layout_gravity="left"/>
+            android:gravity="center|right"
+            android:maxLines="1"/>
     </LinearLayout>
 
+    <View
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider"
+        android:visibility="invisible"/>
+
+
     <LinearLayout
+        android:id="@+id/addWorkerLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="10dp"
-        android:weightSum="6">
+        android:weightSum="3">
+
         <TextView
-            android:text="근무자 : "
-            android:layout_width="70dp"
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="담당자"
+            android:textSize="@dimen/fontMid" />
+
         <TextView
             android:id="@+id/txtPeople"
-            android:layout_width="wrap_content"
-            android:textSize="18sp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="5"
-            android:layout_gravity="left"/>
+            android:layout_weight="2"
+            android:gravity="center|right"
+            android:maxLines="1"
+            android:textSize="@dimen/fontMid" />
+
     </LinearLayout>
+
+
+    <View
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider"
+        android:visibility="invisible"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="35dp"
-        android:weightSum="6">
+        android:layout_margin="15dp"
+        android:weightSum="3"
+        android:id="@+id/addTimeLayout">
         <TextView
-            android:text="세부사항 : "
-            android:layout_width="70dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_weight="1"/>
+            android:text="세부 사항"
+            android:layout_weight="1"
+            android:textSize="@dimen/fontMid"/>
+
         <TextView
             android:id="@+id/txtDetail"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_weight="5"
-            android:layout_gravity="left"/>
+            android:layout_weight="2"
+            android:gravity="right"
+            android:maxLines="15"
+            android:textSize="@dimen/fontMid" />
+
     </LinearLayout>
+    <View
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider"
+        android:visibility="invisible"/>
+    <View
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center">
 
     <Button
         android:id="@+id/btDone"
-        android:layout_width="200dp"
-        android:layout_height="35dp"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:textSize="@dimen/fontMid"
         android:text="완료"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorPrimary"
+        android:drawableLeft="@mipmap/checkmark_24"
+        android:padding="15dp"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="15dp"/>.
+        <View
+            android:layout_width="40dp"
+            android:layout_height="1dp"/>
+
     <Button
         android:id="@+id/btPostpone"
-        android:layout_width="200dp"
-        android:layout_height="35dp"
+        android:layout_width="120dp"
+        android:layout_height="60dp"
+        android:padding="15dp"
+        android:textSize="@dimen/fontMid"
+        android:background="@color/white"
         android:text="미루기"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center_horizontal"
+        android:drawableLeft="@mipmap/delay_24"/>
 
 
+
+    </LinearLayout>
 
 </LinearLayout>

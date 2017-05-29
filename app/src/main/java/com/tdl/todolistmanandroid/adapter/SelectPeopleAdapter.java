@@ -79,20 +79,20 @@ public class SelectPeopleAdapter extends RecyclerView.Adapter<SelectPeopleAdapte
 //        item_layout=0;
 
 
-        if(item_layout==0 || item_layout==4){
+        if(item_layout==0 || item_layout==4) {
             final SelectPeopleItem item = items.get(position);
-            Drawable drawable = context.getResources().getDrawable(item.getImage());
+                Drawable drawable = context.getResources().getDrawable(item.getImage());
             holder.image.setBackground(drawable);
             holder.userName.setText(item.getUserName());
 
             holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(isChecked)
-                        ((SelectPeopleActivity)context).setList(item.getUseruId(),item.getUserName());
+                    if (isChecked)
+                        ((SelectPeopleActivity) context).setList(item.getUseruId(), item.getUserName());
 
                     else
-                        ((SelectPeopleActivity)context).deleteMember(item.getUseruId(),item.getUserName());
+                        ((SelectPeopleActivity) context).deleteMember(item.getUseruId(), item.getUserName());
                 }
             });
 

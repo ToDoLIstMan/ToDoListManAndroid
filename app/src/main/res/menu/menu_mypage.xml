@@ -10,5 +10,5 @@
         android:id="@+id/action_done"
         android:title="완료"
         android:visible="false"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>

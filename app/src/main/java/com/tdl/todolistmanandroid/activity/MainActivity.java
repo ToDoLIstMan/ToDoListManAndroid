@@ -40,6 +40,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.tdl.todolistmanandroid.ChangeDate;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.Receiver.AlarmReceiver;
 import com.tdl.todolistmanandroid.adapter.TimeTabAdapter;
@@ -308,9 +309,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             final int curMon = Calendar.getInstance().get(Calendar.MONTH);
             final int curDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
+
             Dialog datePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    ChangeDate cd = new ChangeDate(year,month,dayOfMonth);
                     if(year>curYear){
                         Toast.makeText(mContext, "잘못 선택하셨습니다.", Toast.LENGTH_SHORT).show();
                         return;
@@ -322,23 +325,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                             Intent gotoPreview = new Intent(MainActivity.this,PreviewListAcitivity.class);
                             gotoPreview.putExtra("groupId",curGroupId);
-                            if (0<=month && month<9)
-                                gotoPreview.putExtra("date",""+year+"-0"+(month+1)+"-"+dayOfMonth);
-                            else
-                                gotoPreview.putExtra("date",""+year+"-"+(month+1)+"-"+dayOfMonth);
+                            gotoPreview.putExtra("date",cd.getDate());
                             startActivity(gotoPreview);
                         }
                         else{
                             if(dayOfMonth<=curDay) {
-                            //    Toast.makeText(mContext, "" + year + " . " + (month + 1) + " . " + dayOfMonth, Toast.LENGTH_SHORT).show();
-
-
                                 Intent gotoPreview = new Intent(MainActivity.this,PreviewListAcitivity.class);
                                 gotoPreview.putExtra("groupId",curGroupId);
-                                if (0<=month && month<9)
-                                    gotoPreview.putExtra("date",""+year+"-0"+(month+1)+"-"+dayOfMonth);
-                                else
-                                    gotoPreview.putExtra("date",""+year+"-"+(month+1)+"-"+dayOfMonth);
+                                gotoPreview.putExtra("date",cd.getDate());
                                 startActivity(gotoPreview);
                             }
                             else

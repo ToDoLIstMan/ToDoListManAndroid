@@ -7,13 +7,15 @@
             android:layout_gravity="center_horizontal"
             android:id="@+id/userNameText"
             android:layout_width="match_parent"
-            android:layout_height="65dp"
+            android:layout_height="30dp"
             android:gravity="center_vertical"
-            android:textSize="30sp"
-            android:layout_margin="8dp"/>
+            android:textSize="18sp"
+            android:layout_margin="15dp"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/colorPrimary"/>
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:background="@color/divider"/>
 </LinearLayout>

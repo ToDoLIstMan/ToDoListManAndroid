@@ -24,7 +24,6 @@
                 android:id="@+id/drawerTextRank"
                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#222222"
                 android:textSize="30sp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginBottom="5dp"/>
@@ -32,7 +31,6 @@
                 android:id="@+id/drawerTextName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#222222"
                 android:textSize="30sp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginBottom="15dp"/>
