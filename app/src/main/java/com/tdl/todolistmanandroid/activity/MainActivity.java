@@ -28,6 +28,8 @@ import android.view.SubMenu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -78,6 +80,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     int curGroupId;
 
+    TextView drawerName;
+    TextView drawerRank;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +91,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mContext=this;
+
+        View headerView = navView.inflateHeaderView(R.layout.main_header);
+        drawerName = (TextView)headerView.findViewById(R.id.drawerTextName);
+        drawerRank = (TextView)headerView.findViewById(R.id.drawerTextRank);
+
 
         try {
             new AlarmHATT(mContext).Alarm(1, 4, 39, "hi!");
@@ -114,6 +125,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if((FirebaseAuth.getInstance().getCurrentUser().getUid()).equals(dataSnapshot.getKey())) {
                     user u = dataSnapshot.getValue(user.class);
+                    drawerName.setText(u.getName());
+                    drawerRank.setText(u.getRank());
            //         Toast.makeText(mContext, "추가되었습니다", Toast.LENGTH_SHORT).show();
                     List<String> a = u.getGroupName();
                     List<Integer> b = u.getGroups();
