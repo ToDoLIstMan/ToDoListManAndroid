@@ -2,14 +2,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="18dp">
+            android:layout_marginLeft="18dp"
+            android:orientation="horizontal"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp">
             <TextView
                 android:id="@+id/txtName"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="RankRankGroup"
+                android:gravity="left|center_vertical"/>
+            <ImageView
+                android:id="@+id/isMaster"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/icon_master_color_96"
+                android:layout_gravity="right|center_vertical"
+                android:visibility="gone"/>
+        </FrameLayout>
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="@color/divider"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:layout_marginLeft="10dp"/>-->
+
 
 </LinearLayout>

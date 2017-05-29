@@ -2,12 +2,14 @@ package com.tdl.todolistmanandroid.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tdl.todolistmanandroid.R;
@@ -81,8 +83,10 @@ public class MyPageAdapter extends RecyclerView.Adapter{
         } else {
             if(position>0 && position<=groupItems.size())
                 ((ViewHolder)holder).txtName.setText(groupItems.get(position-1).getName());
-            else
-                ((ViewHolder)holder).txtName.setText(masterItems.get(position-(groupItems.size()+1)).getName());
+            else {
+                ((ViewHolder) holder).txtName.setText(masterItems.get(position - (groupItems.size() + 1)).getName());
+                ((ViewHolder) holder).isMaster.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -93,6 +97,7 @@ public class MyPageAdapter extends RecyclerView.Adapter{
 
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.txtName) TextView txtName;
+        @BindView(R.id.isMaster) ImageView isMaster;
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

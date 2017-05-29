@@ -245,7 +245,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                         else
                             myr.child("0").setValue(curWork);
                         myr.removeEventListener(this);
-                        Toast.makeText(mContext, "2.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, "일정이 미뤄졌습니다", Toast.LENGTH_SHORT).show();
 
                         finish();
                     }
