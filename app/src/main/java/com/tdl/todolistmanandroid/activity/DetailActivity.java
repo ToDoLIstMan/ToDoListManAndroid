@@ -147,10 +147,12 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             btDone.setBackgroundResource(R.color.colorNoeDone);
           //  sendChgData(true);
             btDone.setText("취소");
+            btPostpone.setEnabled(false);
         }else{
             btDone.setBackgroundResource(R.color.colorPrimary);
           //  sendChgData(false);
             btDone.setText("완료");
+            btPostpone.setEnabled(true);
         }
     }
 
@@ -222,7 +224,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         final Date dd = new Date();
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        ChangeDate cD = new ChangeDate(year, month,dayOfMonth);
+        final ChangeDate cD = new ChangeDate(year, month,dayOfMonth);
         cD.getDate();   //2017-05-06
 
         final FirebaseDatabase database =FirebaseDatabase.getInstance();
@@ -234,7 +236,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 final work curWork = dataSnapshot.getValue(work.class);
                 myRef.removeValue();
                 final DatabaseReference myr = database.getReference().child("work").child(""+curGrpUid)
-                        .child(""+year+"-"+(month+1)+"-"+dayOfMonth);
+                        .child(cD.getDate());
                 myr.addValueEventListener(new ValueEventListener() {        //item 갯수 찾기 위해 돌림
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

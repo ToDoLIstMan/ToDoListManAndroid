@@ -3,8 +3,8 @@
     <string name="open">open</string>
     <string name="close">close</string>
     <string name="facebook_app_id">1301328716568982</string>
+    <string name="facebook_app_key_degbug">z/g+u/WxhnOced+q50cI1j6N2gs=</string>
     <string name="kakao_app_key">1508df11056ab490a6aa18779eba2915</string>
     <string name="kakao_app_key_debug">c3e9fe130dbacdcb8b839ebb6a574cd0</string>
-
     <integer name="PICK_GROUP">12</integer>
 </resources>

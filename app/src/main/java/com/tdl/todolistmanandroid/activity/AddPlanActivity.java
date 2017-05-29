@@ -119,9 +119,10 @@ public class AddPlanActivity extends AppCompatActivity {
             final DatabaseReference[] myRef = new DatabaseReference[1];
 
             myRef[0] = database.getReference().child("work");
-            if(((AddPlanAdapter)recyclerView.getAdapter()).getExcTime()==""||
-                    ((AddPlanAdapter)recyclerView.getAdapter()).getGroup()==""||
-                    ((AddPlanAdapter)recyclerView.getAdapter()).getItemCount()==2){
+            if(((AddPlanAdapter)recyclerView.getAdapter()).getExcTime().equals("")||
+                    ((AddPlanAdapter)recyclerView.getAdapter()).getGroup().equals("")||
+                    (((recyclerView.getAdapter()).getItemCount()==2)&&
+                            (((AddPlanAdapter)recyclerView.getAdapter()).getFormat().equals("")))){
                 Toast.makeText(this, "내용을 마저 채우세요", Toast.LENGTH_SHORT).show();
             } else {
                 items.addAll(0, formatItems);
@@ -160,6 +161,8 @@ public class AddPlanActivity extends AppCompatActivity {
 
                             formatItems.add(new AddPlanItem(format.getId(), format.getPlanName(), format.getDetail(),
                                     format.getStartTime(), format.getEndTime(), a, b, isDone));
+
+
                         }
                         Toast.makeText(mContext, "일정이 전송되었습니다.", Toast.LENGTH_SHORT).show();
                         finish();

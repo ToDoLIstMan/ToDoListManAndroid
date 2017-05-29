@@ -148,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
+
         navView.inflateMenu(R.menu.main_drawer);
     }
 
