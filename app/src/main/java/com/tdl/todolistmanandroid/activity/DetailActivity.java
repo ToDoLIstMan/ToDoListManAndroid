@@ -145,12 +145,12 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private void setBtStatue() {
         if(isFinished){
             btDone.setBackgroundResource(R.color.colorNoeDone);
-          //  sendChgData(true);
+            sendChgData(true);
             btDone.setText("취소");
             btPostpone.setEnabled(false);
         }else{
             btDone.setBackgroundResource(R.color.colorPrimary);
-          //  sendChgData(false);
+            sendChgData(false);
             btDone.setText("완료");
             btPostpone.setEnabled(true);
         }

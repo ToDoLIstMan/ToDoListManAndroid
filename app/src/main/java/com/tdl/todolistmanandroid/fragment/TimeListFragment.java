@@ -72,7 +72,7 @@ public class TimeListFragment extends Fragment {
         today = new Date();
         sDF = new SimpleDateFormat("yyyy-MM-dd");
         todayStr = sDF.format(today);
-        hasData();
+//        hasData();
 
         return v;
     }
