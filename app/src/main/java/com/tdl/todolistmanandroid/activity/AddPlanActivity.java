@@ -118,21 +118,12 @@ public class AddPlanActivity extends AppCompatActivity {
             final FirebaseDatabase database = FirebaseDatabase.getInstance();
             final DatabaseReference[] myRef = new DatabaseReference[1];
 
-            myRef[0] = database.getReference().child("work");
             if(((AddPlanAdapter)recyclerView.getAdapter()).getExcTime().equals("")||
                     ((AddPlanAdapter)recyclerView.getAdapter()).getGroup().equals("")||
                     (((recyclerView.getAdapter()).getItemCount()==2)&&
                             (((AddPlanAdapter)recyclerView.getAdapter()).getFormat().equals("")))){
                 Toast.makeText(this, "내용을 마저 채우세요", Toast.LENGTH_SHORT).show();
             } else {
-                items.addAll(0, formatItems);
-                for (int i = 0; i < items.size(); i++) {
-                    Log.e("몇번째?", "" + items.get(i).getIsDone().size());
-                    myRef[0].child("" + groupId).child(((AddPlanAdapter) recyclerView.getAdapter()).getExcTime()).child("" + i).setValue(
-                            new work(i, items.get(i).getTitle(), items.get(i).getDetail(),
-                                    items.get(i).getStartTime(), items.get(i).getEndTime(),
-                                    items.get(i).getName(), items.get(i).getuId(), items.get(i).getIsDone()));
-                }
 
                 myRef[0] = database.getReference().child("format").
                         child(FirebaseAuth.getInstance().getCurrentUser().getUid()).
@@ -164,6 +155,18 @@ public class AddPlanActivity extends AppCompatActivity {
 
 
                         }
+
+                        items.addAll(0, formatItems);
+
+                        myRef[0] = database.getReference().child("work");
+                        for (int i = 0; i < items.size(); i++) {
+                            Log.e("몇번째?", "" + items.get(i).getIsDone().size());
+                            myRef[0].child("" + groupId).child(((AddPlanAdapter) recyclerView.getAdapter()).getExcTime()).child("" + i).setValue(
+                                    new work(i, items.get(i).getTitle(), items.get(i).getDetail(),
+                                            items.get(i).getStartTime(), items.get(i).getEndTime(),
+                                            items.get(i).getName(), items.get(i).getuId(), items.get(i).getIsDone()));
+                        }
+
                         Toast.makeText(mContext, "일정이 전송되었습니다.", Toast.LENGTH_SHORT).show();
                         finish();
                     }
