@@ -77,8 +77,11 @@ public class TimeListFragment extends Fragment {
         return v;
     }
 
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        hasData();
+    }
 
     private void hasData() {
         database = FirebaseDatabase.getInstance();
@@ -89,6 +92,7 @@ public class TimeListFragment extends Fragment {
                 if(dataSnapshot.exists()) {
                     curGrpUid = getArguments().getInt("uid",-2);
                     initList(getArguments().getString("status"));
+                    noneWork.setVisibility(View.GONE);
                 }else {
                     noneWork.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
@@ -133,6 +137,7 @@ public class TimeListFragment extends Fragment {
 
                 work work = dataSnapshot.getValue(work.class);
 
+                noneWork.setVisibility(View.GONE);
                 switch (status){
                   case "done":
                     for(int i = 0;i<work.getuId().size();i++){
