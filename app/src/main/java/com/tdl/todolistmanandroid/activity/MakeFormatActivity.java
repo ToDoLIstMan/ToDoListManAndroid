@@ -121,6 +121,7 @@ public class MakeFormatActivity extends AppCompatActivity {
             View promptView = inflater.inflate(R.layout.edittext_single_dialog, null);
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("포멧 추가");
+            alert.setMessage("이전에 사용한 포맷의 이름으로 사용하지 마십시오");
             alert.setView(promptView);
 
             // 내용 지정

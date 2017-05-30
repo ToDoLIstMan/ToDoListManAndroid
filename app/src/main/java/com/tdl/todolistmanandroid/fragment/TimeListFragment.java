@@ -72,7 +72,7 @@ public class TimeListFragment extends Fragment {
         today = new Date();
         sDF = new SimpleDateFormat("yyyy-MM-dd");
         todayStr = sDF.format(today);
-//        hasData();
+        hasData();
 
         return v;
     }
@@ -80,7 +80,7 @@ public class TimeListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        hasData();
+     //   hasData();
     }
 
     private void hasData() {
@@ -173,8 +173,46 @@ public class TimeListFragment extends Fragment {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                recyclerView.getAdapter().notifyDataSetChanged();
+                try {
+                    recyclerView.getAdapter().notifyDataSetChanged();
+                } catch(Exception e){
+                    work work = dataSnapshot.getValue(work.class);
 
+                    noneWork.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
+                    lists.clear();
+                    switch (status){
+                        case "done":
+                            for(int i = 0;i<work.getuId().size();i++){
+                                if(work.getuId().get(i).equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) &&  work.getIsDone().get(i)) {
+                                    lists.add(new TimeListItem(work.getStartTime(), work.getEndTime(), work.getTitle(), work.getDetail(), work.getId(), work.getName(), work.getuId(), work.getIsDone()));
+
+                                    recyclerView.setAdapter(new ListAdapter(getActivity(),lists,curGrpUid,todayStr));
+                                    // break;
+                                }
+                            }
+                            break;
+                        case "doing":
+                            for(int i = 0;i<work.getuId().size();i++){
+                                if(work.getuId().get(i).equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) && !work.getIsDone().get(i)) {
+                                    lists.add(new TimeListItem(work.getStartTime(), work.getEndTime(), work.getTitle(), work.getDetail(), work.getId(), work.getName(), work.getuId(), work.getIsDone()));
+
+                                    recyclerView.setAdapter(new ListAdapter(getActivity(),lists,curGrpUid,todayStr));
+                                    //  break;
+                                }
+                            }
+                            break;
+                        case "whole":
+                            lists.add(new TimeListItem(work.getStartTime(), work.getEndTime(), work.getTitle(), work.getDetail(), work.getId(), work.getName(), work.getuId(), work.getIsDone()));
+
+                            recyclerView.setAdapter(new ListAdapter(getActivity(),lists,curGrpUid,todayStr));
+                            break;
+
+                        default:
+                            break;}
+
+                    progressBar.setVisibility(View.GONE);
+                }
             }
 
             @Override

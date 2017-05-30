@@ -2,9 +2,11 @@ package com.tdl.todolistmanandroid.adapter;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,6 +21,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.tdl.todolistmanandroid.ChangeTime;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.activity.FormatDetailActivity;
@@ -96,6 +100,28 @@ public class FormatDetailAdapter extends RecyclerView.Adapter{
             ((FormatDetailViewHolder)holder).addPlanCardView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+
+                    alert.setTitle("포맷 삭제");
+                    alert.setMessage("이 포맷을 삭제하시겠습니까?");
+                    alert.setPositiveButton("네", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            FirebaseDatabase.getInstance().getReference().child("format").
+                                    child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(formatName)
+                                    .child(""+curItem.getId()).removeValue();
+                            notifyDataSetChanged();
+                            Toast.makeText(mContext, "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    alert.show();
+
                     items.remove(position-1);
                     Toast.makeText(mContext, "삭제 되었습니다.", Toast.LENGTH_SHORT).show();
                     notifyDataSetChanged();

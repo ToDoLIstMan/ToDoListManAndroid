@@ -95,8 +95,7 @@ public class FormatDetailActivity extends AppCompatActivity {
         final DatabaseReference myRef = database.getReference().child("format").child(FirebaseAuth.getInstance().
                 getCurrentUser().getUid()).child(getIntent.getStringExtra("formatName"))
                 /*.child(getIntent.getStringExtra("formatId"))*/;
-        Log.e("adf",getIntent().getStringExtra("formatName"));
-        myRef.addChildEventListener(new ChildEventListener() {
+         myRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.e("dddd","");

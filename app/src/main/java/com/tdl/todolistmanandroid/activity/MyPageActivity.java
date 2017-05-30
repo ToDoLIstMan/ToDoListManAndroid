@@ -81,7 +81,7 @@ public class MyPageActivity extends AppCompatActivity{
                         groupItems.add(new MyPageItem(u.getGroups().get(i), u.getGroupName().get(i)));
                 }
 
-                Log.e("",groupItems.get(0).getName());
+//                Log.e("",groupItems.get(0).getName());
 
                 layoutManager = new LinearLayoutManager(mContext);
                 recyclerView.setLayoutManager(layoutManager);

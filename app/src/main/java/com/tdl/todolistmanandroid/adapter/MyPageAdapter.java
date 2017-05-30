@@ -41,7 +41,7 @@ public class MyPageAdapter extends RecyclerView.Adapter{
 
 
     public MyPageAdapter(Context mContext, MypageHeader mypageHeader, ArrayList<MyPageItem> groupItems, ArrayList<MyPageItem> masterItems) {
-        Log.e("",groupItems.get(0).getName());
+//        Log.e("",groupItems.get(0).getName());
         this.groupItems = new ArrayList<>();
         this.masterItems = new ArrayList<>();
         this.groupItems.addAll(groupItems);

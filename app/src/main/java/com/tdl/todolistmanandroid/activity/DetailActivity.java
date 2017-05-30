@@ -97,6 +97,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         txtDetail.setText(getIntent.getStringExtra("detail"));
         txtPeople.setText(getIntent.getStringExtra("people"));
         btDone.setOnClickListener(this);
+
+
         FirebaseDatabase.getInstance().getReference().
                 child("group").child(""+curGrpUid).child("masterUid").addValueEventListener(new ValueEventListener() {
             @Override

@@ -146,7 +146,11 @@ public class FormatManageActivity extends AppCompatActivity implements View.OnCl
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                try {
+                    recyclerView.getAdapter().notifyDataSetChanged();
+                } catch (Exception e){
 
+                }
             }
 
             @Override
