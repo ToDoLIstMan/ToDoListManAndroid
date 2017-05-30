@@ -3,6 +3,10 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="15dp">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -11,6 +15,15 @@
         android:text="기본 정보"
         android:layout_gravity="left|center_vertical"
         android:layout_marginBottom="10dp"/>
+
+        <Button
+            android:id="@+id/btnMoti"
+            android:layout_width="68dp"
+            android:layout_height="42dp"
+            android:layout_gravity="right|center_vertical"
+            android:text="수정"
+            />
+    </FrameLayout>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,6 +38,12 @@
             android:layout_gravity="left|center_vertical"/>
 
 
+        <EditText
+            android:id="@+id/editRank"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/txtRank"
             android:layout_width="wrap_content"

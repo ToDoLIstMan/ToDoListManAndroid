@@ -1,24 +1,39 @@
 package com.tdl.todolistmanandroid.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.kakao.usermgmt.response.model.User;
 import com.tdl.todolistmanandroid.R;
 import com.tdl.todolistmanandroid.activity.MyPageActivity;
+import com.tdl.todolistmanandroid.database.user;
 import com.tdl.todolistmanandroid.item.MyPageItem;
 import com.tdl.todolistmanandroid.item.MypageHeader;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,7 +86,7 @@ public class MyPageAdapter extends RecyclerView.Adapter{
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof ViewHeader) {
             Log.e("dd",mypageHeader.getName());
             ((ViewHeader)holder).txtName.setText(mypageHeader.getName());
@@ -80,6 +95,62 @@ public class MyPageAdapter extends RecyclerView.Adapter{
                 ((ViewHeader)holder).txtLogin.setText("카카오");
             else
                 ((ViewHeader)holder).txtLogin.setText("Facebook");
+
+            ((ViewHeader)holder).btnMoti.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(((ViewHeader)holder).btnMoti.getText().equals("수정")){
+
+                        ((ViewHeader)holder).editRank.setVisibility(View.VISIBLE);
+                        ((ViewHeader)holder).editRank.setText(mypageHeader.getRank());
+                        ((ViewHeader)holder).txtRank.setVisibility(View.GONE);
+                        ((ViewHeader)holder).btnMoti.setText("완료");
+                    } else if(((ViewHeader)holder).btnMoti.getText().equals("완료")){
+                        AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+                        alert.setTitle("정보 수정");
+                        alert.setMessage("입력한 정보로 수정하시겠습니까?");
+                        alert.setPositiveButton("네", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                final DatabaseReference ref = FirebaseDatabase.getInstance().getReference()
+                                            .child("user").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                ref.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        ref.removeEventListener(this);
+                                        Log.e("asdf",dataSnapshot.toString());
+                                        user u = dataSnapshot.getValue(user.class);
+                                        u.setRank(((ViewHeader)holder).editRank.getText().toString());
+                                        ref.setValue(u);
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+
+                                ((ViewHeader)holder).btnMoti.setText("수정");
+                                ((ViewHeader)holder).txtRank.setVisibility(View.VISIBLE);
+                                ((ViewHeader)holder).editRank.setVisibility(View.GONE);
+
+
+                            }
+                        }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ((ViewHeader)holder).btnMoti.setText("수정");
+                                ((ViewHeader)holder).txtRank.setVisibility(View.VISIBLE);
+                                ((ViewHeader)holder).editRank.setVisibility(View.GONE);
+                              }
+                        });
+                        alert.show();
+
+                    }
+                }
+            });
         } else {
             if(position>0 && position<=groupItems.size())
                 ((ViewHolder)holder).txtName.setText(groupItems.get(position-1).getName());
@@ -109,6 +180,8 @@ public class MyPageAdapter extends RecyclerView.Adapter{
         @BindView(R.id.txtName) TextView txtName;
         @BindView(R.id.txtRank) TextView txtRank;
         @BindView(R.id.txtLogin) TextView txtLogin;
+        @BindView(R.id.btnMoti) Button btnMoti;
+        @BindView(R.id.editRank) EditText editRank;
 
         public ViewHeader(View itemView) {
             super(itemView);

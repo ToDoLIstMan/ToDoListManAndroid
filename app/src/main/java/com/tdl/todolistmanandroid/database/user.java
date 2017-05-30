@@ -44,6 +44,14 @@ public class user {
 
     public user(){}
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank;
+    }
+
     public user(String name, String rank, List<Integer> groups, List<String> groupName, List<Integer> masterGroups, List<String> masterGroupName){
         this.name = name;
         this.rank = rank;
