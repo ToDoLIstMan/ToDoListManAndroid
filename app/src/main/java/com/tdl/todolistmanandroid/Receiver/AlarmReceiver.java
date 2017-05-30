@@ -56,44 +56,48 @@ public class AlarmReceiver extends BroadcastReceiver {
                              if(dataSnapshot.exists()) {
                                  work work = dataSnapshot.getValue(work.class);
                                  Log.e("dfdfd","adsfadsf");
-                                 AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-                                 Intent intent = new Intent(context, WorkReceiver.class);
-                                 intent.putExtra("title",work.getTitle());
-                                 intent.putExtra("detail",work.getDetail());
-                                 String[] a =new String[2];
-                                 a = work.getStartTime().split(":");
-                                 Log.e("adsf",a[0]+"   "+a[1]);
-                                 PendingIntent sender = PendingIntent.getBroadcast(context, Integer.valueOf(i+"00"+work.getId()), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                 if(work.getuId().contains(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                                     AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                                     Intent intent = new Intent(context, WorkReceiver.class);
+                                     intent.putExtra("title", work.getTitle());
+                                     intent.putExtra("detail", work.getDetail());
+                                     String[] a = new String[2];
+                                     a = work.getStartTime().split(":");
+                                     Log.e("adsf", a[0] + "   " + a[1]);
+                                     PendingIntent sender = PendingIntent.getBroadcast(context, Integer.valueOf(i + "00" + work.getId()), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                                 Calendar calendar = Calendar.getInstance();
-                                 //알람시간 calendar에 set해주기
-                                 if(calendar.get(Calendar.HOUR)<4)
-                                     calendar.set(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)),calendar.get(Calendar.DATE),Integer.valueOf(a[0]),Integer.valueOf(a[1]),0);
-                                 else
-                                     calendar.set(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)),calendar.get(Calendar.DATE),Integer.valueOf(a[0]),Integer.valueOf(a[1]),0);
-                                 Log.e("month",""+calendar.get(Calendar.MONTH));
+                                     Calendar calendar = Calendar.getInstance();
+                                     //알람시간 calendar에 set해주기
+                                     if (calendar.get(Calendar.HOUR) < 4)
+                                         calendar.set(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH)), calendar.get(Calendar.DATE), Integer.valueOf(a[0]), Integer.valueOf(a[1]), 0);
+                                     else
+                                         calendar.set(calendar.get(Calendar.YEAR), (calendar.get(Calendar.MONTH)), calendar.get(Calendar.DATE), Integer.valueOf(a[0]), Integer.valueOf(a[1]), 0);
+                                     Log.e("month", "" + calendar.get(Calendar.MONTH));
 
 
-                                 calendar.add(Calendar.SECOND,10);
+                                     calendar.add(Calendar.SECOND, 10);
 
-                                 if(Build.VERSION.SDK_INT >= 23 ){
-                                     am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
-                                     Log.e("your sdk verson is","up to 23");
+                                     if (Build.VERSION.SDK_INT >= 23) {
+                                         am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+                                         Log.e("your sdk verson is", "up to 23");
+                                     } else {
+                                         if (Build.VERSION.SDK_INT >= 19) {
+                                             am.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+                                             Log.e("your sdk verson is", "up to 19");
+
+                                         } else {
+                                             am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+                                             Log.e("your sdk verson is", "under the 19");
+
+                                         }
+                                     }
+
+
+                                     Log.e("dfd", "알람 생성");
                                  }
                                  else {
-                                     if (Build.VERSION.SDK_INT >= 19) {
-                                         am.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
-                                         Log.e("your sdk verson is","up to 19");
-
-                                     } else {
-                                         am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
-                                         Log.e("your sdk verson is","under the 19");
-
-                                     }
+                                     Log.e("get Alarm", "오늘 일 없음.");
                                  }
-
-
-                                 Log.e("dfd", "알람 생성");
                              }else {
                                  Log.e("get Alarm", "오늘 일 없음.");
                              }
