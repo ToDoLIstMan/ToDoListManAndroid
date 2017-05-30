@@ -22,11 +22,11 @@ public class WorkReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        Log.e("adsf","asdfasdf");
 
-               NotificationManager notificationmanager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationmanager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(context, PickGroupActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-        Log.e("title : ",intent.getStringExtra("hi!"));
-        Notification.Builder builder = new Notification.Builder(context);
+         Notification.Builder builder = new Notification.Builder(context);
         builder.setSmallIcon(R.mipmap.ic_launcher).setTicker("HETT").setWhen(System.currentTimeMillis())
                 .setNumber(1).setContentTitle(intent.getStringExtra("title")).setContentText(""+intent.getStringExtra("detail"))
                 .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE).setContentIntent(pendingIntent).setAutoCancel(true);

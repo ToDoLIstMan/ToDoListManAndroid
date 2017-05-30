@@ -49,28 +49,28 @@ public class AlarmReceiver extends BroadcastReceiver {
                 groupId.addAll(u.getGroups());
 
                 myRef[0].removeEventListener(this);
-                for(int i : groupId) {
-                     database.getReference().child("work").child("" + i).child("2017-05-20").addChildEventListener(new ChildEventListener() {
+                for(final int i : groupId) {
+                     database.getReference().child("work").child("" + i).child("2017-05-30").addChildEventListener(new ChildEventListener() {
                          @Override
                          public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                              if(dataSnapshot.exists()) {
                                  work work = dataSnapshot.getValue(work.class);
-
-
+                                 Log.e("dfdfd","adsfadsf");
                                  AlarmManager am = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
                                  Intent intent = new Intent(context, WorkReceiver.class);
                                  intent.putExtra("title",work.getTitle());
                                  intent.putExtra("detail",work.getDetail());
                                  String[] a =new String[2];
                                  a = work.getStartTime().split(":");
-                                 PendingIntent sender = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                 Log.e("adsf",a[0]+"   "+a[1]);
+                                 PendingIntent sender = PendingIntent.getBroadcast(context, Integer.valueOf(i+"00"+work.getId()), intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                                  Calendar calendar = Calendar.getInstance();
                                  //알람시간 calendar에 set해주기
                                  if(calendar.get(Calendar.HOUR)<4)
                                      calendar.set(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)),calendar.get(Calendar.DATE),Integer.valueOf(a[0]),Integer.valueOf(a[1]),0);
                                  else
-                                     calendar.set(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH))+1,calendar.get(Calendar.DATE),Integer.valueOf(a[0]),Integer.valueOf(a[1]),0);
+                                     calendar.set(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)),calendar.get(Calendar.DATE),Integer.valueOf(a[0]),Integer.valueOf(a[1]),0);
                                  Log.e("month",""+calendar.get(Calendar.MONTH));
 
 
