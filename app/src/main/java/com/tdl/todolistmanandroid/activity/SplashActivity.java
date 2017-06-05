@@ -62,7 +62,7 @@ public class SplashActivity extends Activity {
                     database = FirebaseDatabase.getInstance();
                     final DatabaseReference myRef = database.getReference().child("user")
                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    myRef.addValueEventListener(new ValueEventListener() {
+                    final ValueEventListener v1 = myRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
@@ -72,8 +72,8 @@ public class SplashActivity extends Activity {
                                     a.removeAll(Collections.singleton(null));
                                     int groupUid = a.get(0);
                                     Log.e("adsf", curuser.getGroups().toString() + "");
-                                    final DatabaseReference myRef = database.getReference().child("group").child("" + groupUid);
-                                    myRef.addValueEventListener(new ValueEventListener() {
+                                    final DatabaseReference myRef1 = database.getReference().child("group").child("" + groupUid);
+                                    myRef1.addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
                                             gotoMain.putExtra("groupUid", dataSnapshot.getValue(group.class).getId());
@@ -81,7 +81,8 @@ public class SplashActivity extends Activity {
                                             gotoMain.putExtra("masterUid", dataSnapshot.getValue(group.class).getMasterUid());
                                             startActivity(gotoMain);
                                             finish();
-                                            myRef.onDisconnect();
+
+                                            myRef1.removeEventListener(this);
                                         }
 
                                         @Override
@@ -89,18 +90,23 @@ public class SplashActivity extends Activity {
 
                                         }
                                     });
+
                                 } else {
                                     gotoMain.putExtra("groupUid", -1);
                                     gotoMain.putExtra("groupName", "");
-                                    myRef.onDisconnect();
                                     startActivity(gotoMain);
+                                    myRef.removeEventListener(this);
                                     finish();
                                 }
+
+
+                                myRef.removeEventListener(this);
                             } else {
                                 gotoMain.putExtra("groupUid", -1);
                                 gotoMain.putExtra("groupName", "");
-                                myRef.onDisconnect();
                                 startActivity(gotoMain);
+
+                                myRef.removeEventListener(this);
                                 finish();
                             }
 

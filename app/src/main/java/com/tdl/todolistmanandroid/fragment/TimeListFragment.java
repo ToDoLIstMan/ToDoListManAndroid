@@ -69,9 +69,9 @@ public class TimeListFragment extends Fragment {
         FrameLayout v = (FrameLayout) inflater.inflate(R.layout.fragment_list, container, false);
         ButterKnife.bind(this,v);
 
-        today = new Date();
-        sDF = new SimpleDateFormat("yyyy-MM-dd");
-        todayStr = sDF.format(today);
+
+        todayStr = getArguments().getString("date");
+        Log.e("today is", todayStr);
         hasData();
 
         return v;

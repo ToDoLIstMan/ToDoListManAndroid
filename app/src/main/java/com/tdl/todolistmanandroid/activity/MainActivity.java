@@ -81,10 +81,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     int curGroupId;
 
+    Date date ;
+    String curDate = new String();
+    SimpleDateFormat sDF;
+
     TextView drawerName;
     TextView drawerRank;
 
 
+    int curYear;
+    int curMon;
+    int curDay;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,12 +99,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mContext=this;
+        date = new Date();
+        sDF = new SimpleDateFormat("yyyy-MM-dd");
+        curDate = sDF.format(date).toString();
 
         View headerView = navView.inflateHeaderView(R.layout.main_header);
         drawerName = (TextView)headerView.findViewById(R.id.drawerTextName);
         drawerRank = (TextView)headerView.findViewById(R.id.drawerTextRank);
 
 
+       curYear = Calendar.getInstance().get(Calendar.YEAR);
+       curMon = Calendar.getInstance().get(Calendar.MONTH);
+        curDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         try {
             new AlarmHATT(mContext).Alarm(1, 4, 39, "hi!");
         }catch (Exception e){
@@ -227,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void addViewPagerAdapter() {
-        timeTabAdapter = new TimeTabAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),curGroupId);
+        timeTabAdapter = new TimeTabAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),curGroupId,curDate);
         viewPager.setAdapter(timeTabAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -305,9 +318,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.e("Asdf","Asdf");
         if(item.getItemId() == R.id.action_date){
-            final int curYear = Calendar.getInstance().get(Calendar.YEAR);
-            final int curMon = Calendar.getInstance().get(Calendar.MONTH);
-            final int curDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
 
             Dialog datePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -321,19 +331,60 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         if(month>curMon){
                             Toast.makeText(mContext, "잘못 선택하셨습니다.", Toast.LENGTH_SHORT).show();
                         }else if(month<curMon){
-                            //Toast.makeText(mContext, ""+year+" . "+(month+1)+" . "+dayOfMonth, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, ""+year+" . "+(month+1)+" . "+dayOfMonth, Toast.LENGTH_SHORT).show();
 
                             Intent gotoPreview = new Intent(MainActivity.this,PreviewListAcitivity.class);
                             gotoPreview.putExtra("groupId",curGroupId);
-                            gotoPreview.putExtra("date",cd.getDate());
-                            startActivity(gotoPreview);
+
+
+                            if (month+1<10) {
+                                if(dayOfMonth<10)
+                                    curDate = "" + year + "-0" + (month + 1) + "-0" + dayOfMonth;
+                                else
+                                    curDate = "" + year + "-0" + (month + 1) + "-" + dayOfMonth;
+                            }else {
+
+                                if(dayOfMonth<10)
+                                    curDate = "" + year + "-" + (month + 1) + "-0" + dayOfMonth;
+                                else
+                                    curDate = "" + year + "-" + (month + 1) + "-" + dayOfMonth;
+                            }
+                            curYear = year;
+                            curMon = (month);
+                            curDay = dayOfMonth;
+
+                            timeTabAdapter = new TimeTabAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),curGroupId,curDate);
+                            viewPager.setAdapter(timeTabAdapter);
+
+//
+//                            ((TimeTabAdapter)viewPager.getAdapter()).setCurDate(curDate);
+//                            viewPager.getAdapter().notifyDataSetChanged();
                         }
                         else{
                             if(dayOfMonth<=curDay) {
                                 Intent gotoPreview = new Intent(MainActivity.this,PreviewListAcitivity.class);
                                 gotoPreview.putExtra("groupId",curGroupId);
-                                gotoPreview.putExtra("date",cd.getDate());
-                                startActivity(gotoPreview);
+                                if (month+1<10) {
+                                    if(dayOfMonth<10)
+                                        curDate = "" + year + "-0" + (month + 1) + "-0" + dayOfMonth;
+                                    else
+                                        curDate = "" + year + "-0" + (month + 1) + "-" + dayOfMonth;
+                                }else {
+
+                                    if(dayOfMonth<10)
+                                        curDate = "" + year + "-" + (month + 1) + "-0" + dayOfMonth;
+                                    else
+                                        curDate = "" + year + "-" + (month + 1) + "-" + dayOfMonth;
+                                }
+                                curYear = year;
+                                curMon = (month);
+                                curDay = dayOfMonth;
+
+                                timeTabAdapter = new TimeTabAdapter(getSupportFragmentManager(), tabLayout.getTabCount(),curGroupId,curDate);
+                                viewPager.setAdapter(timeTabAdapter);
+
+//                                ((TimeTabAdapter)viewPager.getAdapter()).setCurDate(curDate);
+//                                viewPager.getAdapter().notifyDataSetChanged();
                             }
                             else
                                 Toast.makeText(mContext, "잘못 선택하셨습니다.", Toast.LENGTH_SHORT).show();

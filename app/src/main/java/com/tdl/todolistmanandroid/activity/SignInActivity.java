@@ -128,7 +128,6 @@ public class SignInActivity extends Activity {
 
             Toast.makeText(getApplicationContext(), "카카오톡에 로그인 됐습니다", Toast.LENGTH_LONG).show();
             String accessToken = Session.getCurrentSession().getAccessToken();
-            Log.e("Asdfasdf",accessToken);
             getFirebaseJwt(accessToken).continueWithTask(new Continuation<String, Task<AuthResult>>() {
                     @Override
                     public Task<AuthResult> then(@NonNull Task<String> task) throws Exception {
@@ -162,12 +161,12 @@ public class SignInActivity extends Activity {
                                         }
                                         container_delay.setVisibility(View.GONE);
                                         startActivity(gotoMain);
-                                        finish();
-                                        myRef.onDisconnect();
+                                        finish();   myRef.removeEventListener(this);
+
                                     }catch (Exception e){
                                         container_delay.setVisibility(View.GONE);
-                                        getRank();
-                                        myRef.onDisconnect();
+                                        getRank();   myRef.removeEventListener(this);
+
                                     }
 
                                 }
@@ -241,10 +240,11 @@ public class SignInActivity extends Activity {
 
                                                     container_delay.setVisibility(View.GONE);
                                                     startActivity(gotoMain);
-                                                    myRef.onDisconnect();
+                                                    myRef.removeEventListener(this);
                                                     finish();
                                                 }catch(Exception e) {
 
+                                                    myRef.removeEventListener(this);
                                                     //현재 유저 이름 찾기 위한 메소드 실행.
                                                     pt = new ProfileTracker() {
                                                         @Override
@@ -254,7 +254,6 @@ public class SignInActivity extends Activity {
                                                             userName = currentProfile.getName();
                                                             getRank();
 
-                                                            myRef.onDisconnect();
                                                         }
                                                     };
                                                 }

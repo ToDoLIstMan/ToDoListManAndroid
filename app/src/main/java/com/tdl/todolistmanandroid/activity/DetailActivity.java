@@ -135,6 +135,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                         List<Boolean> isDone = work.getIsDone();
                         isDone.set(i,isChecked);
                         myRef.child("isDone").setValue(isDone);
+                    } else{
+                        btDone.setVisibility(View.GONE);
                     }
                 }
 

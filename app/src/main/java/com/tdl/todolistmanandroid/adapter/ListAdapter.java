@@ -74,7 +74,7 @@ public class ListAdapter extends RecyclerView.Adapter {
 
             }
             if(!item.getPeopleUid().contains(uid))
-                ((Holder)holder).checkBox.setClickable(false);
+                ((Holder)holder).checkBox.setVisibility(View.GONE);
 
             ((Holder) holder).txtDone.setText(done);
             ((Holder) holder).txtUndone.setText(undone);
