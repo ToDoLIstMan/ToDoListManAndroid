@@ -280,10 +280,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Calendar calendar = Calendar.getInstance();
             //알람시간 calendar에 set해주기
 
-            if(calendar.get(Calendar.HOUR)<4)
-                calendar.set(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)),calendar.get(Calendar.DATE),calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),0);
+            if(calendar.get(Calendar.HOUR_OF_DAY)<22)
+                calendar.set(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)),calendar.get(Calendar.DATE),22,0,0);
             else
-                calendar.set(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)),calendar.get(Calendar.DATE),calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),0);
+                calendar.set(calendar.get(Calendar.YEAR),(calendar.get(Calendar.MONTH)),calendar.get(Calendar.DATE)+1,22,0,0);
             Log.e("month",""+calendar.get(Calendar.MONTH));
 
 
