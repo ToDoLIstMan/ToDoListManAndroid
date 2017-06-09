@@ -275,11 +275,17 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                         @Override
                         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                             month = month+1;
-                            if(1<=month && month<10)
-                                ((AddPlanViewHeader)holder).txtTime.setText(year+"-0"+month+"-"+dayOfMonth);
-                            else
-                                ((AddPlanViewHeader)holder).txtTime.setText(year+"-"+month+"-"+dayOfMonth);
-
+                            if(1<=month && month<10) {
+                                if(1<= dayOfMonth && dayOfMonth<10)
+                                    ((AddPlanViewHeader) holder).txtTime.setText(year + "-0" + month + "-0" + dayOfMonth);
+                                else
+                                    ((AddPlanViewHeader) holder).txtTime.setText(year + "-0" + month + "-" + dayOfMonth);
+                            }else {
+                                if(1<= dayOfMonth && dayOfMonth<10)
+                                    ((AddPlanViewHeader) holder).txtTime.setText(year + "-0" + month + "-0" + dayOfMonth);
+                                else
+                                    ((AddPlanViewHeader) holder).txtTime.setText(year + "-" + month + "-" + dayOfMonth);
+                            }
                             excTime = ((AddPlanViewHeader)holder).txtTime.getText().toString();
                         }
                     },curYear,curMon,curDay);
