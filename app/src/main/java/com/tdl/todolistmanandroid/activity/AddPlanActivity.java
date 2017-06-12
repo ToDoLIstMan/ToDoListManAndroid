@@ -139,21 +139,12 @@ public class AddPlanActivity extends AppCompatActivity {
                             List<String> a = new ArrayList<>(Arrays.asList(memberNames));
                             List<String> b = new ArrayList<>(Arrays.asList(memberUids));
 
-                            Log.e("asdasdf", "" + a.size());
                             List<Boolean> isDone = new ArrayList<>();
                             for (int j = 0; j < a.size(); j++)
                                 isDone.add(false);
-                            Log.e("asdasdf", "" + format.getId());
-
-                            Log.e("asdasdf", "" + format.getPlanName());
-                            Log.e("asdasdf", "" + format.getDetail());
-                            Log.e("asdasdf", "" + format.getStartTime());
-                            Log.e("asdasdf", "" + format.getEndTime());
 
                             formatItems.add(new AddPlanItem(format.getId(), format.getPlanName(), format.getDetail(),
                                     format.getStartTime(), format.getEndTime(), a, b, isDone));
-
-
                         }
 
                         items.addAll(0, formatItems);

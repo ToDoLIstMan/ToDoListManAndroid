@@ -282,7 +282,7 @@ public class AddPlanAdapter extends RecyclerView.Adapter {
                                     ((AddPlanViewHeader) holder).txtTime.setText(year + "-0" + month + "-" + dayOfMonth);
                             }else {
                                 if(1<= dayOfMonth && dayOfMonth<10)
-                                    ((AddPlanViewHeader) holder).txtTime.setText(year + "-0" + month + "-0" + dayOfMonth);
+                                    ((AddPlanViewHeader) holder).txtTime.setText(year + "-" + month + "-0" + dayOfMonth);
                                 else
                                     ((AddPlanViewHeader) holder).txtTime.setText(year + "-" + month + "-" + dayOfMonth);
                             }

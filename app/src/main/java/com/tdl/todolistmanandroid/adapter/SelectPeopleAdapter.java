@@ -83,7 +83,7 @@ public class SelectPeopleAdapter extends RecyclerView.Adapter<SelectPeopleAdapte
             final SelectPeopleItem item = items.get(position);
                 Drawable drawable = context.getResources().getDrawable(item.getImage());
             holder.image.setBackground(drawable);
-            holder.userName.setText(item.getUserName());
+            holder.userName.setText(item.getUseruId());
 
             holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override

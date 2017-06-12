@@ -151,6 +151,7 @@ public class MakeFormatAdapter extends RecyclerView.Adapter {
                         ((FormatFooter)holder).editTitle.setText("");
                         ((FormatFooter)holder).btnStartTime.setText("00:00");
                         ((FormatFooter)holder).btnEndTime.setText("00:00");
+                        ((FormatFooter)holder).editFormatDetail.setText("");
                     Toast.makeText(mContext, "추가되었습니다", Toast.LENGTH_SHORT).show();}
                 }
             });

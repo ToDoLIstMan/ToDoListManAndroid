@@ -4,7 +4,7 @@ android {
         release {
             keyAlias 'todolist'
             keyPassword 'ToDoList'
-            storeFile file('/Users/songmho/Projects/Android/ToDoListManAndroid/ToDoList.jks')
+            storeFile file('F:/projects/android/ToDoListManAndroid/ToDoList.jks')
             storePassword 'ToDoList'
         }
     }
